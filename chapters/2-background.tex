@@ -1,0 +1,29 @@
+\chapter{Background}\label{chap:background}
+
+\section{The Rust Programming Language.}\label{sec:rust}
+
+Rust is a system programming language that focuses on safety, speed, and concurrency. It ensures memory safety without garbage collection, meaning pure Rust programs are free from null pointer dereferences and data races.
+Rust's ownership system—integrated into its type system—is inspired by
+\textit{linear logic}~\cite{Girard87, Girard95} and \textit{linear types}~\cite{Wadler90, Odersky92}, enforcing that each piece of memory (a value) has a single \textit{owner} (the variable binding) at any time~\cite{Clarke98, Boyapati02}.
+When the owner goes out of scope, the memory is automatically deallocated, enabling user-defined destructors and supporting the \textit{resource acquisition is initialization} (RAII) pattern~\cite{Stroustrup94}.
+Ownership can be transferred (\textit{moved}) or temporarily shared (\textit{borrowed}) through references. Rust supports two types of borrows: multiple \textit{immutable} borrows or a single \textit{mutable} borrow, but never both at the same time. These constraints, enforced by the compiler through \textit{borrow checking}, guarantee memory safety and prevent dangling pointers by ensuring that reference lifetimes never outlive their owners.
+To support low-level operations, Rust provides \inlinerust{unsafe} blocks, where the compiler's safety guarantees are suspended and the burden of avoiding undefined behavior falls on the programmer. Outside of these blocks, Rust enforces strict safety, making undefined behavior impossible in safe code.
+Rust supports software variability through its attribute system, particularly the \inlinerust{cfg} attribute, which allows conditional compilation based on specified configuration predicates. A feature in Rust is defined by all \textit{terms} annotated with the same \textit{config name} in a \inlinerust{cfg} \textit{outer attribute}.
+The inclusion of a feature in a product depends on the evaluation of a \textit{configuration predicate} at compile time, e.g., \inlinerust{#[cfg(any(unix, windows))]}. 
+\texttt{Cargo}---Rust's package manager---lets developers declare features using \textit{config names} in the \texttt{Cargo.toml} file, combining them with logical operators into \textit{configuration predicates}.
+Feature dependencies, i.e., \textit{cross-tree constraints} of \textit{feature models}~\cite{Kang90,Seidl16,Karatas10}, can also be specified in the same file.
+
+
+\section{Dispatch Mechanisms}\label{sec:dispatch}
+\lipsum[1-1]
+\paragraph{Specialization}
+\lipsum[1-1]
+\paragraph{Function Cloning}
+\lipsum[1-1]
+\paragraph{Monomorphization}
+\lipsum[1-1]
+\paragraph{Overloading}
+\lipsum[1-1]
+
+\section{Metaprogramming}\label{sec:metaprogramming}
+\lipsum[1-4]

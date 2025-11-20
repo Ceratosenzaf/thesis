@@ -1,0 +1,60 @@
+\documentclass{adapt-lab}
+
+%lorem ipsum
+\usepackage{lipsum}
+\usepackage{pifont}
+\usepackage{rotating}
+\usepackage{wrapfig}
+
+\newcommand{\cwcomment}[1]{\profcomment[Walter]{#1}}
+\newcommand{\evcomment}[1]{\studcomment[Edo]{#1}}
+
+\setminted{style=default, fontfamily=cmtt}
+\setmintedinline{style=default, fontfamily=cmtt}
+%\setminted{bgcolor=white}
+
+
+\newcommand{\mytool}{\textsc{MyTool}\xspace}
+% \newcommand{\slr}[1]{{\color{MidnightBlue}#1}}
+
+%\usepackage{amsthm}
+%\usepackage{amssymb}
+%\usepackage{amsmath}
+%\usepackage{subfig}
+
+\begin{document}
+
+\title{Employing Metaprogramming: A Macro-Driven Strategy for Overcoming Compiler-Imposed Limitations on Specialization.}
+\author{Davide Cerato}
+\matricola{984481}
+\ayear{2024--2025}
+\advisor{Prof.\,Walter Cazzola}
+\coadvisor{Mr.\,Federico Cristiano Bruzzone}
+\school{}
+\degree{BSc in Computer Science}
+\selectlanguage{english}
+
+\makefirstpage
+
+\frontmatter
+
+\tableofcontents
+
+\mainmatter
+
+
+\input{chapters/1-introduction.tex}
+\input{chapters/2-background.tex}
+\input{chapters/3-approach.tex}
+\input{chapters/4-experimentation.tex}
+\input{chapters/5-related-work.tex}
+\input{chapters/6-future-work.tex}
+\input{chapters/7-conclusions.tex}
+
+
+\appendix
+
+\bibliographystyle{plain}
+\bibliography{local}
+
+\end{document}
