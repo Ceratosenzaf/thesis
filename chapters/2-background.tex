@@ -1,29 +1,87 @@
 \chapter{Background}\label{chap:background}
 
 \section{The Rust Programming Language.}\label{sec:rust}
+Rust is a system programming language that focuses on safety, speed, and concurrency.
+It ensures memory safety without garbage collection, meaning pure Rust programs are free from null pointer dereferences and data races.
 
-Rust is a system programming language that focuses on safety, speed, and concurrency. It ensures memory safety without garbage collection, meaning pure Rust programs are free from null pointer dereferences and data races.
-Rust's ownership system—integrated into its type system—is inspired by
-\textit{linear logic}~\cite{Girard87, Girard95} and \textit{linear types}~\cite{Wadler90, Odersky92}, enforcing that each piece of memory (a value) has a single \textit{owner} (the variable binding) at any time~\cite{Clarke98, Boyapati02}.
+Rust's ownership system—integrated into its type system—is inspired by \textit{linear logic}~\cite{Girard87, Girard95} and \textit{linear types}~\cite{Wadler90, Odersky92}, enforcing that each piece of memory (a value) has a single \textit{owner} (the variable binding) at any time~\cite{Clarke98, Boyapati02}.
 When the owner goes out of scope, the memory is automatically deallocated, enabling user-defined destructors and supporting the \textit{resource acquisition is initialization} (RAII) pattern~\cite{Stroustrup94}.
-Ownership can be transferred (\textit{moved}) or temporarily shared (\textit{borrowed}) through references. Rust supports two types of borrows: multiple \textit{immutable} borrows or a single \textit{mutable} borrow, but never both at the same time. These constraints, enforced by the compiler through \textit{borrow checking}, guarantee memory safety and prevent dangling pointers by ensuring that reference lifetimes never outlive their owners.
-To support low-level operations, Rust provides \inlinerust{unsafe} blocks, where the compiler's safety guarantees are suspended and the burden of avoiding undefined behavior falls on the programmer. Outside of these blocks, Rust enforces strict safety, making undefined behavior impossible in safe code.
-Rust supports software variability through its attribute system, particularly the \inlinerust{cfg} attribute, which allows conditional compilation based on specified configuration predicates. A feature in Rust is defined by all \textit{terms} annotated with the same \textit{config name} in a \inlinerust{cfg} \textit{outer attribute}.
+Ownership can be transferred (\textit{moved}) or temporarily shared (\textit{borrowed}) through references.
+Rust supports two types of borrows: multiple \textit{immutable} borrows or a single \textit{mutable} borrow, but never both at the same time.
+These constraints, enforced by the compiler through \textit{borrow checking}, guarantee memory safety and prevent dangling pointers by ensuring that reference lifetimes never outlive their owners.
+To support low-level operations, Rust provides \inlinerust{unsafe} blocks, where the compiler's safety guarantees are suspended and the burden of avoiding undefined behavior falls on the programmer.
+Outside of these blocks, Rust enforces strict safety, making undefined behavior impossible in safe code.
+
+Rust's trait system is a central mechanism for expressing polymorphism and shared behavior across types~\cite{RustBook,Matsakis14}.
+Traits (\inlinerust{trait}) define a set of method signatures that types can implement, enabling abstraction over operations without committing to a concrete type.
+Implementation blocks (\inlinerust{impl}) associate specific types with traits, providing concrete method definitions that satisfy the trait's contract.
+Rust also supports \textit{inherent implementations}, where methods are defined directly on a type without requiring a trait, allowing type-specific functionality and constructor-like associated functions.
+By combining \textit{traits}, \textit{trait bounds}, and \textit{impl blocks}, Rust achieves ad hoc polymorphism~\cite{Cardelli85,Wadler90} and generic programming while preserving static guarantees and enabling the compiler to resolve method calls efficiently at compile time.
+Trait-based design is tightly integrated with Rust's ownership and borrowing model, ensuring that polymorphic abstractions do not compromise memory safety or aliasing rules.
+
+Rust supports software variability through its attribute system, particularly the \inlinerust{cfg} attribute, which allows conditional compilation based on specified configuration predicates
+A feature in Rust is defined by all \textit{terms} annotated with the same \textit{config name} in a \inlinerust{cfg} \textit{outer attribute}.
 The inclusion of a feature in a product depends on the evaluation of a \textit{configuration predicate} at compile time, e.g., \inlinerust{#[cfg(any(unix, windows))]}. 
 \texttt{Cargo}---Rust's package manager---lets developers declare features using \textit{config names} in the \texttt{Cargo.toml} file, combining them with logical operators into \textit{configuration predicates}.
 Feature dependencies, i.e., \textit{cross-tree constraints} of \textit{feature models}~\cite{Kang90,Seidl16,Karatas10}, can also be specified in the same file.
 
 
 \section{Dispatch Mechanisms}\label{sec:dispatch}
-\lipsum[1-1]
-\paragraph{Specialization}
-\lipsum[1-1]
-\paragraph{Function Cloning}
-\lipsum[1-1]
+Modern programming languages employ a variety of dispatch strategies to determine which function, method, or specialization is executed at runtime or compile time.
+These strategies fundamentally influence a language's expressiveness, performance guarantees, and capacity for static reasoning~\cite{Cardelli85,Milner78}.
+Rust integrates several dispatch paradigms to reconcile expressive abstraction with predictable performance, adhering to the principle of \textit{zero-cost abstractions}~\cite{Steele90,Stroustrup05}.
+Most decisions are resolved statically, enabling the compiler to generate optimized machine code without runtime overhead~\cite{Aho06,Cytron91}.
+At the same time, Rust offers controlled forms of dynamic dispatch where late binding is essential, such as trait objects~\cite{Matsakis14}.
+Beyond these core mechanisms, techniques like function cloning, inlining heuristics, and trait-based overloading enable the compiler to further optimize code based on contextual information~\cite{Chang97,Wegman85}.
+Together, Rust's dispatch mechanisms provide a flexible yet robust model that preserves safety, performance, and strong static guarantees.
+
 \paragraph{Monomorphization}
-\lipsum[1-1]
+Monomorphization is the process by which Rust generates concrete, type-specific versions of generic functions, methods, and data structures.
+When a generic function is instantiated with a particular type parameter, the compiler produces a specialized version of the function in the final binary.
+This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling aggressive optimizations such as inlining, constant propagation, and dead-code elimination~\cite{Aho06,Wegman85,Cytron91}.
+Because all type information is known at compile time, monomorphized functions avoid virtual dispatch overhead and allow the compiler to reason precisely about memory layout and aliasing~\cite{Lattner04}.
+The primary trade-off is \textit{code bloat}: large applications with many generic instantiations may experience increased binary size.
+Nevertheless, Rust's monomorphization strategy is central to its performance model, making generic abstractions effectively as fast as handwritten, type-specific code.
+
 \paragraph{Overloading}
-\lipsum[1-1]
+Overloading allows multiple functions or methods to share the same name but differ in parameter types or counts.
+Rust does not support traditional function overloading by parameter types as seen in languages like C++ or Java.
+Instead, it employs a unified mechanism based on \textit{trait resolution} and \textit{associated functions}~\cite{RustBook}.
+Overloading emerges indirectly: different types may provide different implementations of the same trait methods, and users may introduce trait bounds to guide method selection.
+This form of ad hoc polymorphism resembles \textit{type classes} in Haskell~\cite{Wadler88,Hall96}, where method resolution is determined by the combination of the type and the trait.
+Rust enforces coherence to guarantee that the compiler can unambiguously select an implementation at compile time~\cite{Chlipala11,Garrigue98}, preventing conflicts caused by independently defined overlapping instances.
+In addition, traits can define associated functions that behave similarly to static methods, allowing for API designs that mimic overloading while remaining type-safe and deterministic.
+This approach ensures predictable dispatch behavior, maintains clarity in method resolution, and avoids the complexities of multi-parameter or ambiguous overload sets common in other languages~\cite{PeytonJones00}.
+
+\paragraph{Specialization}
+Specialization is an advanced dispatch mechanism that allows more specific trait implementations to refine or override default behavior.
+In Rust, specialization aims to resolve long-standing expressiveness gaps in the trait system by enabling prioritized selection among overlapping implementations.
+This is particularly useful when a general-purpose implementation exists---often expressed as a \textit{default} method in a trait---but certain types require optimized or semantically distinct behavior~\cite{MatsakisRFC1210}.
+The feature builds on Rust's \textit{coherence} and \textit{orphan rules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
+Although specialization remains unstable and experimental, it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits, and fallback-based APIs~\cite{MatsakisRFC1210}.
+The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution.
+
 
 \section{Metaprogramming}\label{sec:metaprogramming}
-\lipsum[1-4]
+Metaprogramming refers to the practice of writing code that generates or manipulates other code, enabling abstraction, automation, and domain-specific optimizations.
+Historically rooted in Lisp's symbolic macro systems~\cite{McCarthy60} and later expanded through compile-time techniques such as C++ templates~\cite{Vandevoorde02}, metaprogramming has evolved into a fundamental paradigm in modern language design.
+Its goals are multifaceted: reducing boilerplate, enforcing structural invariants, encoding repetitive patterns, and enabling compile-time specialization or reasoning that would otherwise be impossible or inefficient at runtime.
+Across programming ecosystems, metaprogramming serves both practical and expressive purposes, ranging from code generation and DSL construction to advanced type-level computation.
+Rust approaches metaprogramming through a powerful and expressive macro system designed to maintain the language's guarantees of safety, determinism, and predictable compilation.
+Rust distinguishes between two primary categories: \textit{declarative macros} and \textit{procedural macros}.
+
+Declarative macros (defined using \inlinerust{macro_rules!}) operate using pattern matching over token streams, allowing developers to define custom syntactic constructs that expand into valid Rust code.
+While reminiscent of Lisp macros in spirit, Rust's declarative macros enforce \textit{hygiene}~\cite{HygienicMacros92,Kohlbecker1986HygienicME,Clinger2020HygienicMT}: macro-generated identifiers cannot inadvertently capture variables or introduce unintended bindings.
+This prevents entire classes of errors common in textual or non-hygienic macro systems.
+
+Procedural macros provide direct access to the compiler's abstract syntax tree (AST) through the \inlinerust{proc_macro} API.
+These macros behave as compiler plugins that transform annotated code items at compile time.
+Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros}, and \textit{derive macros}.
+The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug}, or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic, declarative APIs.
+Attribute macros allow developers to attach custom semantics or transformations to items, fostering the creation of embedded domain-specific languages (DSLs) and compile-time validation tools.
+Because procedural macros operate on structured syntax trees instead of raw text, they can enforce well-formedness and preserve strong static guarantees during expansion.
+
+Rust's macro system integrates deeply with the compiler's type checking and optimization phases.
+Unlike languages where macros expand at a separate preprocessing stage (e.g., the C preprocessor~\cite{Dietrich2021CppSigET}), Rust expands macros as part of the front-end compilation pipeline, ensuring that hygiene, scoping, and type resolution remain consistent.
+This design enables robust static analyses to occur alongside macro expansion and avoids undesired ambiguities or semantic inconsistencies.
+The combination of hygienic rewriting, AST-level transformations, and compile-time type awareness situates Rust's metaprogramming capabilities as both expressive and safe, empowering developers to construct efficient abstractions without compromising reliability.
