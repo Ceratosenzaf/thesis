@@ -1,0 +1,11 @@
+.thesis-cache/*
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.nav
+*.spl
