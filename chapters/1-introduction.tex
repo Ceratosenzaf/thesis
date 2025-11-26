@@ -1,22 +1,46 @@
 \chapter{Introduction}\label{chap:introduction}
 
 \paragraph{Premise}
-\lipsum[1-1]
+Rust is a modern systems programming language designed for safety, concurrency and performance.
+A core tenet of Rust's philosophy is zero-cost abstraction, achieved largely through its sophisticated Trait system.
+Traits enable polymorphism and generic programming without incurring runtime overhead, as the compiler typically performs monomorphization, generating optimized code for each concrete type used.
+This approach ensures high performance across the board.
+However, for maximum efficiency, there are instances where a generic function could benefit significantly from a custom, highly optimized implementation when dealing with specific types (e.g., handling a primitive array versus a complex structure).
+The ability to provide such a conditional, type-specific implementation for a trait method is known as Trait Specialization.
 
 \paragraph{State of the Art}
-\lipsum[1-1]
+Currently, the Rust language provides official support for trait specialization, but this feature is confined to the Nightly channel.
+The unstable nature of specialization allows developers to define a default implementation for a trait method and then override it with a more specific implementation for a certain type, enabling substantial performance gains where applicable.
+Outside of Nightly, the community relies on various complex workarounds, such as using layered traits or complex type-checking mechanisms, which often result in cumbersome code, poor compiler diagnostics, or insufficient optimization compared to true specialization.
 
 \paragraph{Limitations}
-\lipsum[1-1]
+The primary and most critical limitation facing the Rust ecosystem is the Nightly-Stable divide regarding specialization.
+While the feature offers significant potential for optimization and cleaner trait designs, its unstable status prevents its adoption in commercial, production-ready, or long-term supported stable Rust codebases.
+This forces library authors and application developers to make an undesirable trade-off: either forgo the performance and elegance improvements offered by specialization to maintain stability, or commit to the volatile, constantly changing Nightly toolchain.
+This stagnation creates a substantial performance ceiling for zero-cost abstractions that could otherwise be pushed further, limiting the expressiveness of the trait system on the stable channel.
 
 \paragraph{Problem Statement}
-\lipsum[1-1]
+Given the performance mandate of the Rust programming language and the significant utility of trait specialization, the central problem is the lack of a robust, idiomatic and performance-preserving mechanism for implementing trait specialization on the stable Rust channel.
+The instability of the official feature creates a gap between what is theoretically possible for optimization and what is practically available to the vast majority of the Rust community.
+This thesis addresses this problem by investigating how metaprogramming techniques, already powerful components of the stable Rust ecosystem, can be leveraged to bridge this gap and unlock the benefits of specialization without sacrificing code stability.
 
 \paragraph{Proposal}
-\lipsum[1-2]
+This thesis proposes an innovative solution that uses Rust's compile-time procedural macro system to simulate the behavior of trait specialization.
+By utilizing the metaprogramming capabilities of proc macros, we can analyze input tokens and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable Rust code.
+This approach avoids runtime overhead entirely and circumvents the restrictions imposed by the unstable compiler feature.
+The technical realization of this proposal is demonstrated through the creation of a specialization macro tool and a companion analytical tool designed to quantify the potential utility of this approach across existing crates.
 
 \paragraph{Contributions}
-\lipsum[1-1]
+This work provides the following key contributions to the field of systems programming and language design:
+A Novel Stable Specialization Technique: The design and implementation of a new, purely metaprogramming-based approach for achieving trait specialization on the stable Rust channel.
+Implementation of Reusable Tools: The creation of a procedural macro library that provides a drop-in replacement for Nightly specialization syntax and an analysis tool that evaluates public Rust repositories to identify common patterns where this stable specialization mechanism could yield performance benefits.
+Quantification of Ecosystem Impact: An empirical study demonstrating the potential utility and impact of this metaprogramming-based specialization solution on real-world Rust codebases.
 
 \paragraph{Structure}
-\lipsum[1-1]
+The remainder of this thesis is structured as follows.
+Chapter 2 (Background~\ref{chap:background}) provides foundational knowledge on Rust's type system, the trait mechanism and the role of procedural macros in metaprogramming.
+Chapter 3 (Approach~\ref{chap:approach}) details the design principles and the implementation architecture of the specialization macro tool, focusing on the compile-time token manipulation strategy.
+Chapter 4 (Experimentation~\ref{chap:experimentation}) presents the methodology and results of testing the specialization macro and the analysis tool, including performance benchmarks and ecosystem analysis.
+Chapter 5 (Related Work~\ref{chap:related-work}) reviews existing solutions, Nightly specialization and other metaprogramming techniques in Rust and related languages.
+Chapter 6 (Future Work~\ref{chap:future-work}) outlines potential extensions to the metaprogramming technique and further research avenues.
+Finally, Chapter 7 (Conclusions~\ref{chap:conclusions}) summarizes the findings, reiterates the primary contributions and concludes the thesis.

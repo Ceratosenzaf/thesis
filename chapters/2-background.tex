@@ -28,6 +28,15 @@ The inclusion of a feature in a product depends on the evaluation of a \textit{c
 \textit{Cargo}, Rust's package manager, lets developers declare features using \textit{config names} in the \texttt{Cargo.toml} file, combining them with logical operators into \textit{configuration predicates}.
 Feature dependencies, i.e., \textit{cross-tree constraints} of \textit{feature models}~\cite{Kang90,Seidl16,Karatas10}, can also be specified in the same file.
 
+\paragraph{Nightly}\label{par:nightly}
+Rust is distributed through three release channels: \textit{stable}, \textit{beta} and \textit{nightly}.
+These channels differ in maturity guarantees and access to experimental language features~\cite{RustReleaseChannels}.
+The \textit{stable} channel prioritizes reliability and backwards compatibility: only fully tested features are enabled, ensuring that libraries and applications compiled on stable continue to work across future releases.
+The \textit{beta} channel serves as a staging ground for upcoming stable releases, allowing developers to test new features before they reach stable.
+In contrast, the \textit{nightly} channel is updated daily and exposes experimental compiler internals, unstable language constructs and opt-in features guarded by \inlinerust{#![feature(...)]} attributes.
+These features include advanced compiler hooks, low-level intrinsics and incomplete language extensions such as \textit{specialization} and are available exclusively on nightly because their behavior is still under active design and soundness evaluation.
+Although nightly enables powerful experimentation, it provides no stability guarantees: features may change, be redesigned or removed without deprecation.
+For this reason, production-grade Rust codebases overwhelmingly target the stable channel, limiting developers from relying on certain expressive but unstable mechanisms.
 
 \section{Dispatch Mechanisms}\label{sec:dispatch}
 Modern programming languages employ a variety of dispatch strategies at run-time or compile-time to determine which function or method is executed.
@@ -38,7 +47,7 @@ At the same time, Rust offers controlled forms of dynamic dispatch where late bi
 Beyond these core mechanisms, techniques like inlining heuristics~\cite{Cavazos05}, function cloning~\cite{Das03} and trait-based overloading~\cite{Stuckey05} enable the compiler to further optimize code based on contextual information~\cite{Chang97,Wegman85}.
 Together, Rust's dispatch mechanisms provide a flexible yet robust model that preserves safety and performance.
 
-\paragraph{Monomorphization}
+\paragraph{Monomorphization}\label{par:monomorphization}
 Monomorphization is the process by which Rust generates concrete, type-specific versions of generic functions, methods and data structures.
 When a generic function is instantiated with a particular type parameter, the compiler produces a specialized version of the function in the final binary.
 This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling aggressive optimizations such as inlining, constant propagation and dead-code elimination~\cite{Aho06,Wegman85,Cytron91}.
@@ -46,7 +55,7 @@ Because all type information is known at compile time, monomorphized functions a
 The primary trade-off is \textit{code bloat}: large applications with many generic instantiations may experience increased binary size.
 Nevertheless, Rust's monomorphization strategy is central to its performance model, making generic abstractions effectively as fast as handwritten, type-specific code.
 
-\paragraph{Overloading}
+\paragraph{Overloading}\label{par:overloading}
 Overloading allows multiple functions or methods to share the same name but differ in parameter types or counts.
 Rust does not support traditional function overloading by parameter types as seen in languages like C++ or Java.
 Instead, it employs a unified mechanism based on \textit{trait resolution} and \textit{associated functions}~\cite{RustBook}.
@@ -56,7 +65,7 @@ Rust enforces coherence to guarantee that the compiler can unambiguously select 
 In addition, traits can define associated functions that behave similarly to static methods, allowing for API designs that mimic overloading while remaining type-safe and deterministic.
 This approach ensures predictable dispatch behavior, maintains clarity in method resolution and avoids the complexities of multi-parameter or ambiguous overload sets common in other languages~\cite{PeytonJones00}.
 
-\paragraph{Specialization}
+\paragraph{Specialization}\label{par:specialization}
 Specialization is an advanced dispatch mechanism that allows more specific trait implementations to refine or override default behavior.
 In Rust, specialization aims to resolve long-standing expressiveness gaps in the trait system by enabling prioritized selection among overlapping implementations.
 This is particularly useful when a general-purpose implementation exists (often expressed as a \textit{default} method in a trait) but certain types require optimized or semantically distinct behavior~\cite{MatsakisRFC1210}.
