@@ -10,7 +10,6 @@ The ability to provide such a conditional, type-specific implementation for a tr
 \paragraph{State of the Art}
 In 2015, the Rust community introduced an experimental feature called \textit{trait specialization}~\cite{SpecializationRFC}, aiming to allow developers to define default implementations for trait methods and override them with more specific implementations for certain types.
 This feature soon received widespread interest, but up to now, the feature is confined to the \textit{Nightly} channel, after its stabilization attempts stalled due to various design and implementation challenges.
-The unstable version of specialization allows developers to define a default implementation for a trait method and then override it with a more specific implementation for a certain type, possibly enabling substantial performance gains.
 Outside of nightly, the community relies on various complex workarounds (such as using layered traits or complex type-checking mechanisms) which often result in cumbersome code, poor compiler diagnostics or insufficient optimization compared to true specialization.
 
 \paragraph{Limitations}

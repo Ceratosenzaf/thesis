@@ -72,7 +72,7 @@ Rust is distributed through three release channels: \textit{stable}, \textit{bet
 These channels differ in maturity guarantees and access to experimental language features~\cite{RustReleaseChannels}.
 The \textit{stable} channel prioritizes reliability and backwards compatibility: only fully tested features are enabled, ensuring that libraries and applications compiled on stable continue to work across future releases.
 The \textit{beta} channel serves as a staging ground for upcoming stable releases, allowing developers to test new features before they reach stable.
-In contrast, the \textit{nightly} channel is updated daily and exposes experimental compiler internals, unstable language constructs and opt-in features guarded by \inlinerust{#![feature(...)]} attributes.
+In contrast, the \textit{nightly} channel is updated daily and exposes experimental compiler internals, unstable language constructs and opt-in features (guarded by \inlinerust{#![feature(...)]} attributes).
 These features include advanced compiler hooks, low-level intrinsics and incomplete language extensions such as \textit{specialization} and are available exclusively on nightly because their behavior is still under active design and soundness evaluation.
 Although nightly enables powerful experimentation, it provides no stability guarantees: features may change, be redesigned or removed without deprecation.
 For this reason, production-grade Rust codebases overwhelmingly target the stable channel, limiting developers from relying on certain expressive but unstable mechanisms.
@@ -165,8 +165,8 @@ This prevents entire classes of errors common in textual or non-hygienic macro s
 Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,Baxter98}) through the \inlinerust{proc_macro} API.
 These macros behave as compiler plugins that transform annotated code items at compile time.
 Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros} and \textit{derive macros}.
-The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic, declarative APIs.
-Attribute macros allow developers to attach custom semantics or transformations to items, fostering the creation of embedded domain-specific languages (DSLs) and compile-time validation tools.
+The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic declarative APIs.
+Attribute macros allow developers to attach custom semantics or transformations to items, facilitating the creation of embedded domain-specific languages (DSLs) and compile-time validation tools.
 Because procedural macros operate on structured syntax trees instead of raw text, they can enforce well-formedness and preserve strong static guarantees during expansion.
 
 \paragraph{Integration with the Compilation Pipeline}
