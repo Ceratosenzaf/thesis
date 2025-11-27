@@ -21,7 +21,8 @@ Traits (\inlinerust{trait}) define a set of method signatures that types can imp
 Implementation blocks (\inlinerust{impl}) associate specific types with traits, providing concrete method definitions that satisfy the trait's contract.
 Rust also supports \textit{inherent implementations}, where methods are defined directly on a type without requiring a trait, allowing type-specific functionality and constructor-like associated functions.
 By combining \textit{traits}, \textit{trait bounds} and \textit{impl blocks}, Rust achieves ad hoc polymorphism~\cite{Cardelli85,Wadler90} and generic programming~\cite{Musser89,Backhouse99} while preserving static guarantees and enabling the compiler to resolve method calls efficiently at compile time.
-Trait-based design is tightly integrated with Rust's ownership and borrowing model, ensuring that polymorphic abstractions do not compromise memory safety or aliasing rules.
+Trait-based design is tightly integrated with Rust's ownership and borrowing model, ensuring that polymorphic abstractions do not compromise memory safety.
+% TODO: add example code
 
 \paragraph{Software Variability}
 Rust supports software variability through its attribute system, particularly the \inlinerust{cfg} attribute, which allows conditional compilation based on specified configuration predicates
@@ -42,7 +43,7 @@ For this reason, production-grade Rust codebases overwhelmingly target the stabl
 
 
 
-\section{Dispatch Mechanisms}\label{sec:dispatch}
+\section{Dispatch Techniques}\label{sec:dispatch}
 Modern programming languages employ a variety of dispatch strategies at run-time or compile-time to determine which function or method is executed.
 These strategies fundamentally influence a language's expressiveness, performance guarantees and capacity for static reasoning~\cite{Cardelli85,Milner78}.
 Rust integrates several dispatch paradigms to reconcile expressive abstraction with predictable performance, adhering to the principle of \textit{zero-cost abstraction}~\cite{Steele90,Stroustrup05}.
@@ -52,10 +53,25 @@ Beyond these core mechanisms, techniques like inlining heuristics~\cite{Cavazos0
 Together, Rust's dispatch mechanisms provide a flexible yet robust model that preserves safety and performance.
 
 \paragraph{Monomorphization}
-Monomorphization~\cite{Griesemer2020FeatherweightG} is the process by which Rust generates concrete, type-specific versions of generic functions, methods and data structures.
+Monomorphization~\cite{Griesemer2020FeatherweightG} is the process by which the compiler generates concrete, type-specific versions of generic functions, methods and data structures.
 When a generic function is instantiated with a particular type parameter, the compiler produces a specialized version of the function in the final binary.
 This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling aggressive optimizations such as inlining, constant propagation and dead-code elimination~\cite{Aho06,Wegman85,Cytron91}.
-Because all type information is known at compile time, monomorphized functions avoid virtual dispatch overhead and allow the compiler to reason precisely about memory layout and aliasing~\cite{Lattner04}.
+\begin{figure}[htb!]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showcpp[0.98\linewidth]{monomorphization-pre.cpp}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showcpp[0.98\linewidth]{monomorphization-post.cpp}
+	\end{minipage}
+	\caption{Monomorphization process in C++: on the left, a generic function \inlinecpp{add<T>} is defined and instantiated with two different types (\inlinecpp{int} and \inlinecpp{double}); on the right, the compiler generates two specialized versions of the function (\inlinecpp{add_int} and \inlinecpp{add_double}) and uses them accordingly}
+	\label{fig:monomorphization}
+\end{figure}
+
+Because all type information is known at compile time, monomorphized functions avoid virtual dispatch overhead and allow the compiler to reason precisely about memory layout~\cite{Lattner04}.
 The primary trade-off is \textit{code bloat}: large applications with many generic instantiations may experience increased binary size.
 Nevertheless, Rust's monomorphization strategy is central to its performance model, making generic abstractions effectively as fast as handwritten, type-specific code.
 
@@ -76,6 +92,7 @@ This is particularly useful when a general-purpose implementation exists (often 
 The feature builds on Rust's \textit{coherence} and \textit{orphan rules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
 Although as of today specialization remains unstable and experimental, it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
 The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution that have yet to be fully addressed.
+% TODO: add example code
 
 
 
