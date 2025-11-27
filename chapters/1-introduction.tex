@@ -1,7 +1,5 @@
 \chapter{Introduction}\label{chap:introduction}
 
-
-
 \paragraph{Premise}
 Rust is a modern systems programming language designed for safety, concurrency and performance.
 A core principle of Rust's philosophy is zero-cost abstraction, achieved largely through its sophisticated Trait system.
@@ -10,7 +8,8 @@ However, for maximum efficiency, there are instances where a generic function co
 The ability to provide such a conditional, type-specific implementation for a trait method is known as Trait Specialization.
 
 \paragraph{State of the Art}
-Currently, the Rust language provides official support for trait specialization, but this feature is confined to the \textit{Nightly} channel.
+In 2015, the Rust community introduced an experimental feature called \textit{trait specialization}~\cite{SpecializationRFC}, aiming to allow developers to define default implementations for trait methods and override them with more specific implementations for certain types.
+This feature soon received widespread interest, but up to now, the feature is confined to the \textit{Nightly} channel, after its stabilization attempts stalled due to various design and implementation challenges.
 The unstable version of specialization allows developers to define a default implementation for a trait method and then override it with a more specific implementation for a certain type, possibly enabling substantial performance gains.
 Outside of nightly, the community relies on various complex workarounds (such as using layered traits or complex type-checking mechanisms) which often result in cumbersome code, poor compiler diagnostics or insufficient optimization compared to true specialization.
 

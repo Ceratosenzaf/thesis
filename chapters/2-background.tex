@@ -1,6 +1,6 @@
 \chapter{Background}\label{chap:background}
 
-
+% --------------------- Section 1 ---------------------
 
 \section{The Rust Programming Language.}\label{sec:rust}
 Rust is a system programming language that focuses on safety, speed and concurrency.
@@ -77,7 +77,7 @@ These features include advanced compiler hooks, low-level intrinsics and incompl
 Although nightly enables powerful experimentation, it provides no stability guarantees: features may change, be redesigned or removed without deprecation.
 For this reason, production-grade Rust codebases overwhelmingly target the stable channel, limiting developers from relying on certain expressive but unstable mechanisms.
 
-
+% --------------------- Section 2 ---------------------
 
 \section{Dispatch Techniques}\label{sec:dispatch}
 Modern programming languages employ a variety of dispatch strategies at run-time or compile-time to determine which function or method is executed.
@@ -127,11 +127,26 @@ Specialization is an advanced dispatch mechanism that allows more specific trait
 In Rust, specialization aims to resolve long-standing expressiveness gaps in the trait system by enabling prioritized selection among overlapping implementations.
 This is particularly useful when a general-purpose implementation exists (often expressed as a \textit{default} method in a trait) but certain types require optimized or semantically distinct behavior~\cite{MatsakisRFC1210}.
 The feature builds on Rust's \textit{coherence} and \textit{orphan rules}\cite{RustOrphanRules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
-Although as of today specialization remains unstable and experimental, it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
+Although as of today specialization remains unstable and experimental (through the \inlinerust{#![feature(specialization)]} or \inlinerust{#![feature(min_specialization)]} flags~\cite{SpecializationRFC,MinSpecialization}), it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
 The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution that have yet to be fully addressed.
-% TODO: add example code
 
+\begin{figure}[htb!]
+	\centering
+	\showcpp*[0.98\linewidth]{specialization.cpp}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Specialization in C++}
+	\label{fig:cpp-specialization}
+\end{figure}
 
+\begin{figure}[htb!]
+	\centering
+	\showrust*[0.98\linewidth]{specialization.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Specialization in Rust (unstable)}
+	\label{fig:rust-specialization}
+\end{figure}
+
+% --------------------- Section 3 ---------------------
 
 \section{Metaprogramming}\label{sec:metaprogramming}
 Metaprogramming refers to the practice of writing code that generates or manipulates other code, enabling abstraction, automation and domain-specific optimizations.
@@ -147,7 +162,7 @@ While reminiscent of Lisp macros in spirit, Rust's declarative macros enforce \t
 This prevents entire classes of errors common in textual or non-hygienic macro systems.
 
 \paragraph{Procedural Macros}
-Procedural macros provide direct access to the compiler's abstract syntax tree (AST) through the \inlinerust{proc_macro} API.
+Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,Baxter98}) through the \inlinerust{proc_macro} API.
 These macros behave as compiler plugins that transform annotated code items at compile time.
 Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros} and \textit{derive macros}.
 The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic, declarative APIs.
