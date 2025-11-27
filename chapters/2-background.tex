@@ -15,14 +15,50 @@ These constraints, enforced by the compiler through \textit{borrow checking}, gu
 To support low-level operations, Rust provides \inlinerust{unsafe} blocks, where the compiler's safety guarantees are suspended and the burden of avoiding undefined behavior falls on the programmer.
 Outside of these blocks, Rust enforces strict safety, making undefined behavior impossible in safe code.
 
-\paragraph{Traits and Implementations}
+\paragraph{Structs, Traits and Impls}
+Structs (\inlinerust{struct}) and enums (\inlinerust{enum}) are the primary composite data types in Rust, enabling the creation of complex data structures with named fields and variant types, respectively.
+\begin{figure}[htb!]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{struct.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{Example of a Rust struct}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{enum.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{Example of a Rust enum}
+	\end{minipage}
+	\label{fig:structs-enums}
+\end{figure}
+
 Rust's trait system is a central mechanism for expressing polymorphism and shared behavior across types~\cite{RustBook,Matsakis14}.
 Traits (\inlinerust{trait}) define a set of method signatures that types can implement, enabling abstraction over operations without committing to a concrete type.
 Implementation blocks (\inlinerust{impl}) associate specific types with traits, providing concrete method definitions that satisfy the trait's contract.
 Rust also supports \textit{inherent implementations}, where methods are defined directly on a type without requiring a trait, allowing type-specific functionality and constructor-like associated functions.
+\begin{figure}[htb!]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{trait-impl.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{Example of a Rust trait impl}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{inherent-impl.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{Example of a Rust inherent impl}
+	\end{minipage}
+	\label{fig:traits-impls}
+\end{figure}
+
 By combining \textit{traits}, \textit{trait bounds} and \textit{impl blocks}, Rust achieves ad hoc polymorphism~\cite{Cardelli85,Wadler90} and generic programming~\cite{Musser89,Backhouse99} while preserving static guarantees and enabling the compiler to resolve method calls efficiently at compile time.
 Trait-based design is tightly integrated with Rust's ownership and borrowing model, ensuring that polymorphic abstractions do not compromise memory safety.
-% TODO: add example code
 
 \paragraph{Software Variability}
 Rust supports software variability through its attribute system, particularly the \inlinerust{cfg} attribute, which allows conditional compilation based on specified configuration predicates
@@ -67,6 +103,7 @@ This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling 
 		\centering
 		\showcpp[0.98\linewidth]{monomorphization-post.cpp}
 	\end{minipage}
+	\captionsetup{type=listing,skip=2pt}
 	\caption{Monomorphization process in C++: on the left, a generic function \inlinecpp{add<T>} is defined and instantiated with two different types (\inlinecpp{int} and \inlinecpp{double}); on the right, the compiler generates two specialized versions of the function (\inlinecpp{add_int} and \inlinecpp{add_double}) and uses them accordingly}
 	\label{fig:monomorphization}
 \end{figure}
@@ -89,7 +126,7 @@ This approach ensures predictable dispatch behavior, maintains clarity in method
 Specialization is an advanced dispatch mechanism that allows more specific trait implementations to refine or override default behavior.
 In Rust, specialization aims to resolve long-standing expressiveness gaps in the trait system by enabling prioritized selection among overlapping implementations.
 This is particularly useful when a general-purpose implementation exists (often expressed as a \textit{default} method in a trait) but certain types require optimized or semantically distinct behavior~\cite{MatsakisRFC1210}.
-The feature builds on Rust's \textit{coherence} and \textit{orphan rules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
+The feature builds on Rust's \textit{coherence} and \textit{orphan rules}\cite{RustOrphanRules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
 Although as of today specialization remains unstable and experimental, it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
 The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution that have yet to be fully addressed.
 % TODO: add example code
