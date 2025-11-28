@@ -17,6 +17,7 @@ Outside of these blocks, Rust enforces strict safety, making undefined behavior 
 
 \paragraph{Structs, Traits and Impls}
 Structs (\inlinerust{struct}) and enums (\inlinerust{enum}) are the primary composite data types in Rust, enabling the creation of complex data structures with named fields and variant types, respectively.
+
 \begin{figure}[htb!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
@@ -39,6 +40,7 @@ Rust's trait system is a central mechanism for expressing polymorphism and share
 Traits (\inlinerust{trait}) define a set of method signatures that types can implement, enabling abstraction over operations without committing to a concrete type.
 Implementation blocks (\inlinerust{impl}) associate specific types with traits, providing concrete method definitions that satisfy the trait's contract.
 Rust also supports \textit{inherent implementations}, where methods are defined directly on a type without requiring a trait, allowing type-specific functionality and constructor-like associated functions.
+
 \begin{figure}[htb!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
@@ -92,6 +94,7 @@ Together, Rust's dispatch mechanisms provide a flexible yet robust model that pr
 Monomorphization~\cite{Griesemer2020FeatherweightG} is the process by which the compiler generates concrete, type-specific versions of generic functions, methods and data structures.
 When a generic function is instantiated with a particular type parameter, the compiler produces a specialized version of the function in the final binary.
 This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling aggressive optimizations such as inlining, constant propagation and dead-code elimination~\cite{Aho06,Wegman85,Cytron91}.
+
 \begin{figure}[htb!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
@@ -134,15 +137,15 @@ The mechanism is conceptually related to multi-methods and ad hoc polymorphism i
 	\centering
 	\showcpp*[0.98\linewidth]{specialization.cpp}
 	\captionsetup{type=listing,skip=2pt}
-	\caption{Specialization in C++}
+	\caption{Specialization in C++. The code is the equivalent of that in Listing~\ref{fig:monomorphic_specialization_pre}}
 	\label{fig:cpp-specialization}
 \end{figure}
 
 \begin{figure}[htb!]
 	\centering
-	\showrust*[0.98\linewidth]{specialization.rs}
+	\showrust*[0.98\linewidth]{unstable-specialization.rs}
 	\captionsetup{type=listing,skip=2pt}
-	\caption{Specialization in Rust (unstable)}
+	\caption{Specialization in Rust (unstable). The code is the equivalent of that in Listing~\ref{fig:cpp-specialization}}
 	\label{fig:rust-specialization}
 \end{figure}
 

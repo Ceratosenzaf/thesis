@@ -1,0 +1,31 @@
+\chapter{Running Example}\label{chap:running_example}
+
+The simplest form of specialization using the tool is the following.
+
+The default implementation does not need any change compared to standard Rust code.
+The specialized implementation instead, is annotated with the attribute \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
+In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}.
+This will create a specialized version of the \texttt{trait} and of the \texttt{impl} for \texttt{i32} through a process that we are going to call \textit{monomorphic specialization}.
+
+After doing this, we also need to instruct the method calls to use the correct version of the method.
+This is done by using the \inlinerust{spec!} macro, which takes as first argument the method call and as second argument the type to specialize for.
+As better explained in Chapter~\ref{chap:approach}, this is required because in the macro expansion phase the compiler doesn't give us enough information to automatically determine the types of the variables.
+
+The complete code is shown in Listing~\ref{fig:monomorphic_specialization_pre}, where you can see the macros in action.
+As you can probably understand, this approach preserves the soundness of the type system, since after the monomorphization process (see Listing~\ref{fig:monomorphic_specialization_post}) we have two completely separate versions of the trait and its implementation, that the compiler can easily distinguish and type check independently.
+
+\begin{figure}[htb!]
+	\centering
+	\showrust*[0.98\linewidth]{monomorphized-specialization-pre.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the tool usage}
+	\label{fig:monomorphic_specialization_pre}
+\end{figure}
+
+\begin{figure}[htb!]
+	\centering
+	\showrust*[0.98\linewidth]{monomorphized-specialization-post.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the code after our macros' expansion}
+	\label{fig:monomorphic_specialization_post}
+\end{figure}
