@@ -169,7 +169,8 @@ Procedural macros provide direct access to the compiler's abstract syntax tree (
 These macros behave as compiler plugins that transform annotated code items at compile time.
 Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros} and \textit{derive macros}.
 The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic declarative APIs.
-Attribute macros allow developers to attach custom semantics or transformations to items, facilitating the creation of embedded domain-specific languages (DSLs) and compile-time validation tools.
+Attribute macros allow developers to attach custom semantics or transformations to items, facilitating the creation of embedded domain-specific languages (DSLs) and compile-time validation tools; the \inlinerust{#[when(...)]} attribute macro introduced in this thesis is an example of such usage.
+Function-like procedural macros (e.g. the \inlinerust{spec!} macro) enable arbitrary code generation based on input token streams, allowing for complex compile-time computations and code synthesis.
 Because procedural macros operate on structured syntax trees instead of raw text, they can enforce well-formedness and preserve strong static guarantees during expansion.
 
 \paragraph{Integration with the Compilation Pipeline}

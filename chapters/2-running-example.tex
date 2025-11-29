@@ -1,11 +1,12 @@
 \chapter{Running Example}\label{chap:running_example}
 
 The simplest form of specialization using the tool is the following.
+We'll show the example in Rust, but the approach is general and can be applied to other languages with similar features.
 
-The default implementation does not need any change compared to standard Rust code.
-The specialized implementation instead, is annotated with the attribute \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
+The default implementation does not need any change compared to standard code.
+The specialized implementation instead, is annotated with the attribute macro \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
 In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}.
-This will create a specialized version of the \texttt{trait} and of the \texttt{impl} for \texttt{i32} through a process that we are going to call \textit{monomorphic specialization}.
+This will create a specialized version of the \texttt{trait} and of the \texttt{impl}, through a process we'll be calling \textit{monomorphic specialization}.
 
 After doing this, we also need to instruct the method calls to use the correct version of the method.
 This is done by using the \inlinerust{spec!} macro, which takes as first argument the method call and as second argument the type to specialize for.
@@ -29,3 +30,6 @@ As you can probably understand, this approach preserves the soundness of the typ
 	\caption{Example of the code after our macros' expansion}
 	\label{fig:monomorphic_specialization_post}
 \end{figure}
+
+In addition to using the two macros, we need to instruct the compiler to allow us to define and use the macros correctly independently from the order of their definition.
+In Rust this is done with \textit{build scripts}, more specifically by adding the line \inlinerust{spec_trait_order::handle_order();} to the \texttt{build.rs} file.
