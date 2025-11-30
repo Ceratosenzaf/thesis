@@ -4,26 +4,26 @@
 
 \section{Introduction}\label{sec:introduction}
 In Chapter~\ref{chap:running_example}, we presented a practical example showcasing the usage of \mytool{}.
-This chapter dives deeper into the design principles and implementation details of \mytool{}, elucidating the underlying mechanisms that enable stable specialization through metaprogramming.
-The actual implementation is in Rust, but as stated earlier, the concepts can be generalized to other programming languages with similar macro capabilities.
-First, we begin by outlining the core design goals that guided the development of \mytool{}.
+This chapter dives deeper into its design principles and implementation details, elucidating the underlying mechanisms that enable stable specialization through metaprogramming.
+The actual implementation is in Rust, but as stated earlier, the concepts can be generalized to other programming languages with similar capabilities.
+First, we begin by outlining the core design goals that guided the development of the tool.
 
 \paragraph{Design Goals}
 The primary design goals for \mytool{} were centered around achieving effective specialization in stable code while adhering to the principles of safety, usability and performance.
+These goals shaped the tool's architecture, macro design and code generation techniques.
 The key objectives included:
 \begin{itemize}
-	\item \textbf{Stable Compatibility}: Ensure that \mytool{} operates entirely within the confines of stable Rust, avoiding any reliance on nightly features or unstable APIs.
+	\item \textbf{Stable Compatibility}: Ensure that the tool operates entirely within the confines of stable Rust, avoiding any reliance on nightly features or unstable APIs.
 	\item \textbf{Type Safety}: Maintain Rust's strong type safety guarantees, ensuring that specialized implementations are correctly typed and validated at compile time.
 	\item \textbf{Ease of Use}: Provide a straightforward and intuitive interface for developers to define specialized implementations without excessive boilerplate or complexity.
 	\item \textbf{Performance Efficiency}: Generate specialized code that is optimized for performance, minimizing overhead and ensuring that the benefits of specialization are realized in practice.
 \end{itemize}
-These goals shaped the architecture and implementation strategies of \mytool{}, guiding decisions on macro design, code generation techniques and integration with the Rust compiler's type system.
 
 \paragraph{Overview}
 As already seen, \mytool{} leverages the macro system to enable specialization.
 The three primary components needed by the approach are:
 \begin{itemize}
-	\item \textbf{Conditions Definition} A macro that annotates specialized implementations, specifying the conditions under which they should be used.
+	\item \textbf{Conditions Definition} A macro that annotates specialized implementations, specifying the conditions under which they should be used and generates the necessary boilerplate.
 	\item \textbf{Method Wrapping} A second macro that wraps method calls, directing them to the appropriate specialized implementation.
 	\item \textbf{Build Script} A way to analyze the code at compile time and collect the necessary information to facilitate specialization.
 \end{itemize}
@@ -32,11 +32,23 @@ The three primary components needed by the approach are:
 
 \section{Conditions Definition}\label{sec:conditions_definition}
 % #[when(...)] macro with all declinations (any, all, not, type, trait, wildcard)
-\lipsum[1-4]
+The first step to achieve specialization through metaprogramming is to define various specialized implementations that should be applied when certain conditions are met.
+In \mytool{}, this is accomplished using the \texttt{when} attribute macro, which takes as argument the predicate, which is the condition that must be satisfied for the specialized implementation to be selected.
+In our implementation, the macro supports these conditions:
+\begin{itemize}
+	\item \textbf{Type Equality}: Check if a generic type parameter is of a specific type, e.g.\@ \mbox{\texttt{T = i32}}.
+	\item \textbf{Trait Implementation}: Check if a generic type parameter implements a specific trait or multiple traits, e.g.\@ \mbox{\texttt{T:\@ Display}} or \mbox{\texttt{T:\@ Debug + Clone}}.
+	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \inlinerust{all(predicate_1, predicate_2, ...)}.
+	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \inlinerust{any(predicate_1, predicate_2, ...)}.
+	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \texttt{not(predicate)}.
+\end{itemize}
 
 \subsection{Default Implementation}\label{subsec:default_implementation}
 % using #[spec_default] if wanted
-\lipsum[1-4]
+\lipsum[1-1]
+
+\subsection{Macro expansion}\label{subsec:macro_expansion}
+\lipsum[1-2]
 
 % --------------------- Section 3 ---------------------
 
