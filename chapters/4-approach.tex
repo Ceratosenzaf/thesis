@@ -1,7 +1,82 @@
 \chapter{A deep dive into \mytool}\label{chap:approach}
 
+% --------------------- Section 1 ---------------------
+
+\section{Introduction}\label{sec:introduction}
 In Chapter~\ref{chap:running_example}, we presented a practical example showcasing the usage of \mytool{}.
 This chapter dives deeper into the design principles and implementation details of \mytool{}, elucidating the underlying mechanisms that enable stable specialization through metaprogramming.
-We begin by outlining the core design goals that guided the development of \mytool{}.
-Subsequently, we explore the architecture of the procedural macro, detailing how it processes input code, generates specialized implementations, and integrates seamlessly with the Rust compilation process.
-Finally, we discuss the strategies employed to ensure type safety, maintainability, and performance, highlighting the challenges encountered and the solutions devised during the implementation phase.
+The actual implementation is in Rust, but as stated earlier, the concepts can be generalized to other programming languages with similar macro capabilities.
+First, we begin by outlining the core design goals that guided the development of \mytool{}.
+
+\paragraph{Design Goals}
+The primary design goals for \mytool{} were centered around achieving effective specialization in stable code while adhering to the principles of safety, usability and performance.
+The key objectives included:
+\begin{itemize}
+	\item \textbf{Stable Compatibility}: Ensure that \mytool{} operates entirely within the confines of stable Rust, avoiding any reliance on nightly features or unstable APIs.
+	\item \textbf{Type Safety}: Maintain Rust's strong type safety guarantees, ensuring that specialized implementations are correctly typed and validated at compile time.
+	\item \textbf{Ease of Use}: Provide a straightforward and intuitive interface for developers to define specialized implementations without excessive boilerplate or complexity.
+	\item \textbf{Performance Efficiency}: Generate specialized code that is optimized for performance, minimizing overhead and ensuring that the benefits of specialization are realized in practice.
+\end{itemize}
+These goals shaped the architecture and implementation strategies of \mytool{}, guiding decisions on macro design, code generation techniques and integration with the Rust compiler's type system.
+
+\paragraph{Overview}
+As already seen, \mytool{} leverages the macro system to enable specialization.
+The three primary components needed by the approach are:
+\begin{itemize}
+	\item \textbf{Conditions Definition} A macro that annotates specialized implementations, specifying the conditions under which they should be used.
+	\item \textbf{Method Wrapping} A second macro that wraps method calls, directing them to the appropriate specialized implementation.
+	\item \textbf{Build Script} A way to analyze the code at compile time and collect the necessary information to facilitate specialization.
+\end{itemize}
+
+% --------------------- Section 2 ---------------------
+
+\section{Conditions Definition}\label{sec:conditions_definition}
+% #[when(...)] macro with all declinations (any, all, not, type, trait, wildcard)
+\lipsum[1-4]
+
+\subsection{Default Implementation}\label{subsec:default_implementation}
+% using #[spec_default] if wanted
+\lipsum[1-4]
+
+% --------------------- Section 3 ---------------------
+
+\section{Method Wrapping}\label{sec:method_wrapping}
+% spec! macro
+\lipsum[1-4]
+
+
+\subsection{Annotations}\label{subsec:annotations}
+% object type, args types, traits, aliases
+\lipsum[1-4]
+
+\subsection{Multi Method Support}\label{subsec:multi_method_support}
+% specialization with different traits
+\lipsum[1-4]
+
+% --------------------- Section 4 ---------------------
+
+\section{Build Script}\label{sec:build_script}
+% collect traits, default impls, handle order by collecting all first
+\lipsum[1-4]
+
+\subsection{Alternatives}\label{subsec:alternatives}
+% using #[specializable] and #[spec_default]
+% drawback: not handling order
+\lipsum[1-4]
+
+% --------------------- Section 5 ---------------------
+
+\section{Lifetimes}\label{sec:lifetimes}
+% initially not supported, now supported in both #[when] and spec!
+\lipsum[1-4]
+
+% --------------------- Section 6 ---------------------
+
+\section{Overlap}\label{sec:overlap}
+% conditions in dnf, handling overlapping conditions
+\lipsum[1-4]
+
+% --------------------- Section 7 ---------------------
+
+\section{Limitations}\label{sec:limitations}
+\lipsum[1-4]
