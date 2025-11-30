@@ -1,32 +1,32 @@
 \chapter{Introduction}\label{chap:introduction}
 
 \paragraph{Premise}
-A core challenge in high-performance systems programming is achieving zero-cost abstraction through generic programming and polymorphism while allowing type-specific performance optimizations, aka \textit{specialization}.
+A core challenge in high-performance systems programming is achieving zero-cost abstraction through generic programming and polymorphism while allowing type-specific performance optimizations.
+This concept is known as \textit{specialization} and it's a common aspiration in advanced type systems.
 This challenge is particularly acute in Rust, a modern systems programming language designed for safety, concurrency and performance.
 Its trait system enable polymorphism and generic programming without incurring runtime overhead, as the compiler typically performs monomorphization, ensuring high performance across the board.
 However, for maximum efficiency, there are instances where a generic function could benefit significantly from a custom, highly optimized implementation when dealing with specific types / conditions.
 The ability to provide such a conditional, type-specific implementation for a trait method is known as Trait Specialization.
 
 \paragraph{State of the Art}
-The concept of specialization is a common aspiration in advanced type systems.
-Many programming languages have explored various mechanisms to achieve this, with varying degrees of success and complexity.
-Without native support for specialization, the common practice usually relies on various complex workarounds which often result in cumbersome code, poor compiler diagnostics or insufficient optimization compared to true specialization.
+Many programming languages have explored various mechanisms to achieve specialization, with varying degrees of success and complexity.
+Without native support for specialization, in many cases the common practice is to rely on various complex workarounds which often result in cumbersome code, poor compiler diagnostics or insufficient optimization compared to true specialization.
 In 2015, the Rust community introduced an experimental feature called \textit{trait specialization}~\cite{SpecializationRFC}, which soon received widespread interest, but up to now is still confined to the \textit{Nightly} channel, after its stabilization attempts stalled due to various design and implementation challenges.
 
 \paragraph{Limitations}
 A general obstacle for adopting powerful, cutting-edge language features is the tension between innovation and stability, often manifested in experimental versus production-ready compiler versions.
-This is true for specialization as well, which forces library authors and application developers to make an undesirable trade-off: either forgo the performance and elegance improvements offered by specialization to maintain stability or commit to volatile and constantly changing unstable versions.
-The primary and most critical limitation facing the Rust ecosystem is indeed the Nightly-Stable divide regarding specialization (the difference between these channels is explained in Section~\ref{sec:rust}).
+This is true for specialization as well, forcing library authors and application developers to make an undesirable trade-off: either forgo the performance and elegance improvements offered by specialization to maintain stability or commit to volatile and constantly changing unstable versions.
+For example, the primary and most critical limitation facing the Rust ecosystem is indeed the Nightly-Stable divide regarding specialization (the difference between these channels is explained in Section~\ref{sec:rust}).
 While the feature offers significant potential for optimization and cleaner trait designs, its unstable status prevents its adoption in commercial, production-ready or long-term supported codebases.
 
 \paragraph{Problem Statement}
 While the concept of specialization is a crucial tool for optimizing generic code in any performance-oriented language, its practical application is often gated by compiler maturity and stability concerns.
-Given the performance focus of the Rust programming language and the significant utility of trait specialization, the central problem is the lack of a robust, idiomatic and performance-preserving mechanism for implementing trait specialization in stable Rust.
-The instability of the official feature creates a gap between what is theoretically possible for optimization and what is practically available to the vast majority of the community, putting a performance ceiling on stable Rust code.
+The lack or instability of specialization in programming languages creates a gap between what is theoretically possible for optimization and what is practically available to the vast majority of the community, putting a performance ceiling on stable code.
+Specifically for Rust, given its performance focus and the significant utility of trait specialization, the central problem is the lack of a robust, idiomatic and performance-preserving mechanism for implementing trait specialization in stable code.
 
 \paragraph{Proposal}
 To address the general limitations of specialization features in current stable ecosystems, this thesis proposes an innovative approach to the matter by moving the monomorphization and specialization logics to an earlier stage in the compilation process.
-To prove the effectiveness of this approach, we introduce a metaprogramming-based technique to simulate the behavior of specialization.
+To prove the effectiveness of this approach, we introduce a metaprogramming-based technique to simulate the behavior of compiler-implemented specialization.
 By utilizing the metaprogramming capabilities of the language, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code.
 This approach (which can be applied to most languages with metaprogramming support) avoids runtime overhead entirely and circumvents the restrictions imposed by unstable compiler features.
 
@@ -37,10 +37,10 @@ Implementation of Reusable Tools: the creation of a Rust procedural macro librar
 
 \paragraph{Structure}
 The remainder of this thesis is structured as follows.
-Chapter~\ref{chap:running_example} (\nameref{chap:running_example}) shows an example of the tool in action, illustrating its usage and benefits through a concrete scenario.
+Chapter~\ref{chap:running_example} (\nameref{chap:running_example}) illustrates the tool in action through a concrete example.
 Chapter~\ref{chap:background} (\nameref{chap:background}) provides foundational knowledge on Rust, dispatch techniques and metaprogramming.
-Chapter~\ref{chap:approach} (\nameref{chap:approach}) details the design principles and the implementation architecture of the specialization macro tool, focusing on the compile-time token manipulation strategy.
-Chapter~\ref{chap:experimentation} (\nameref{chap:experimentation}) presents the methodology and results collected with the analysis tool, including benchmarks and ecosystem analysis.
-Chapter~\ref{chap:related_work} (\nameref{chap:related_work}) reviews existing solutions, nightly specialization and other techniques used to address the matter in Rust and related languages.
-Chapter~\ref{chap:future_work} (\nameref{chap:future_work}) outlines potential extensions to the metaprogramming technique and further research avenues.
-Finally, Chapter~\ref{chap:conclusions} (\nameref{chap:conclusions}) summarizes the findings, reiterates the primary contributions and concludes the thesis.
+Chapter~\ref{chap:approach} (\nameref{chap:approach}) details the design and architecture of the specialization macro tool.
+Chapter~\ref{chap:experimentation} (\nameref{chap:experimentation}) presents the experimentation methodology and results, including benchmarks and ecosystem analysis.
+Chapter~\ref{chap:related_work} (\nameref{chap:related_work}) reviews existing solutions for specialization in Rust and related languages.
+Chapter~\ref{chap:future_work} (\nameref{chap:future_work}) outlines potential extensions and further research avenues.
+Finally, Chapter~\ref{chap:conclusions} (\nameref{chap:conclusions}) summarizes the findings and concludes the thesis.
