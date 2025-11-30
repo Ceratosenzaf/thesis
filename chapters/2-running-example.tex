@@ -32,7 +32,15 @@ As you can probably understand, this approach preserves the soundness of the typ
 \end{figure}
 
 In addition to using the two macros, we need to instruct the compiler to allow us to define and use the macros correctly independently from the order of their definition.
-In Rust this is done with \textit{build scripts}, more specifically by adding the line \inlinerust{spec_trait_order::handle_order();} to the \texttt{build.rs} file.
+In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:monomorphic_specialization_build_rs}.
+
+\begin{figure}[htb!]
+	\centering
+	\showrust*[0.98\linewidth]{monomorphized-specialization-build-rs.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the minimal content of the \texttt{build.rs} file}
+	\label{fig:monomorphic_specialization_build_rs}
+\end{figure}
 
 With this simple example, we have shown how to use the tool to define a specialized implementation of a trait method for a specific type.
 In the next chapters, we will explore more complex scenarios, including multiple specializations, constraints on generic parameters and how the tool handles these cases internally.
