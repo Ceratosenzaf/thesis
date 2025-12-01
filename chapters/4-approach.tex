@@ -54,7 +54,7 @@ Another useful wildcard condition is \mbox{\texttt{T = \&\_}}, which matches any
 \paragraph{Default Implementation}
 In addition to specialized implementations, \mytool{} supports a default implementation that is used when no other conditions are met.
 These default implementations are picked up by default by the \nameref{sec:build_script} and don't need to be explicitly marked with any macro.
-Optionally, if we wanted to limit the implementations available for specialization, we could use another macro to mark them explicitly, e.g.\@ \inlinerust{#[spec_default]}.
+Optionally, if we wanted to limit the implementations available for specialization, we could use another macro to explicitly mark the default implementations.
 
 \paragraph{Normalization}
 To ensure that the conditions are consistent and can be easily compared, \mytool{} normalizes the conditions.
@@ -67,11 +67,9 @@ For example, the condition \texttt{not(all(\mbox{T:\@ Display}, any(\mbox{T = i3
 
 \paragraph{Macro expansion}
 Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly.
+For example: if we have a type equality condition, the generic parameter is replaced with the specific type; if we have a trait implementation condition, the generic parameter is constrained to implement the specified trait(s).
 Given that all the conditions are normalized, the macro expansion can be greatly optimized: the \texttt{when} macro expands each disjunctive condition into a separate specialized implementation, allowing for efficient resolution of the conditions at compile time.
 This is the reason why we previously defined this approach \textit{monomorphic specialization}.
-
-\paragraph{Examples}
-\lipsum[1-4]
 
 % --------------------- Section 3 ---------------------
 
