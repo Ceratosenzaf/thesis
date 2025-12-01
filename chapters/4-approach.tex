@@ -40,7 +40,7 @@ In our implementation, the macro supports these predicates:
 \begin{itemize}
 	\item \textbf{Type Equality}: Check if a generic type parameter is of a specific type, e.g.\@ \mbox{\texttt{T = i32}}.
 	\item \textbf{Trait Implementation}: Check if a generic type parameter implements a specific trait or multiple traits, e.g.\@ \mbox{\texttt{T:\@ Display}} or \mbox{\texttt{T:\@ Debug + Clone}}.
-	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \mbox{\inlinerust{all(p1, p2, ...)}}.
+	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \mbox{\inlinerust{all(p1, p2, ...)}}. % TODO: fix formatting
 	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \mbox{\inlinerust{any(p1, p2, ...)}}.
 	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \mbox{\inlinerust{not(predicate)}}.
 \end{itemize}
@@ -71,20 +71,67 @@ For example: if we have a type equality condition, the generic parameter is repl
 Given that all the conditions are normalized, the macro expansion can be greatly optimized: the \texttt{when} macro expands each disjunctive condition into a separate specialized implementation, allowing for efficient resolution of the conditions at compile time.
 This is the reason why we previously defined this approach \textit{monomorphic specialization}.
 
+% TODO: fix positioning
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{conditions-definition-pre.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the conditions definition using the macro}
+	\label{fig:conditions-definition-pre}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{conditions-definition-post.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the expansion of the conditions definition defined in Listing \ref{fig:conditions-definition-pre}}
+	\label{fig:conditions-definition-post}
+\end{figure}
+
 % --------------------- Section 3 ---------------------
 
 \section{Method Wrapping}\label{sec:method_wrapping}
-% spec! macro
-\lipsum[1-4]
+To enable the selection of the appropriate specialized implementation at method call sites, we need a second macro, which wraps method calls and directs them to the correct implementation.
+In \mytool{}, this is accomplished using the \inlinerust{spec!} macro, which takes as first arguments the method call itself.
 
+\paragraph{Type Annotations}
+If the language supported reflection or if we had some way to inspect the type of the arguments at compile time, this would have been enough.
+However, Rust does not support such features, so we need to provide additional information to the macro.
+This additional information includes the types of object on which the method is called and the types of the arguments passed to the method, if any.
+\begin{itemize}
+	\item \textbf{Type of the Object}: The type of the object on which the method is called, e.g.\@ if we have \inlinerust{x.fn(arg1, arg2)}, we need to provide the type of \texttt{x}, e.g.\@ \mbox{\texttt{MyType}}.
+	\item \textbf{Types of the Arguments}: A list of the types of the arguments passed to the method, if the method takes no arguments, it can be empty or omitted, e.g.\@ if we have \inlinerust{x.fn(arg1, arg2)}, we need to provide the types of \texttt{arg1} and \texttt{arg2}, e.g.\@ \mbox{\texttt{[Arg1Type, Arg2Type]}}.
+\end{itemize}
+With this information, the tool can solve almost all of the specialization at compile time, generating a direct call to the appropriate specialized implementation.
 
-\subsection{Annotations}\label{subsec:annotations}
-% object type, args types, traits, aliases
-\lipsum[1-4]
+\paragraph{Annotations}
+The \textit{type annotations} defined above are the first two of what we call \textit{annotations}, which are additional pieces of information provided to the macro to help it resolve the specialization.
+In Rust, just like there is no way to inspect the type of a variable at compile time, there is also no way to inspect the traits implemented by a type or to inspect type aliases.
+To overcome these limitations, \mytool{} allows the user to provide additional annotations to the method wrapping macro.
+These additional annotations include:
+\begin{itemize}
+	\item \textbf{Implemented Traits}: A list of traits implemented by each relevant type, e.g.\@ \mbox{\texttt{i32:\@ Display}} or \mbox{\texttt{i32:\@ Debug + Clone}}.
+	\item \textbf{Type Aliases}: A list of type aliases for each relevant type, e.g.\@ \mbox{\texttt{MyInt = i32}}.
+\end{itemize}
+These annotations can be provided as additional arguments to the \inlinerust{spec!} macro (without any particular order), allowing the tool to accurately resolve the specialization even in the presence of type aliases or when traits are involved in the conditions.
+Considering all of this, the full syntax for the \inlinerust{spec!} macro is the following: \inlinerust{spec!{ method_call; var_type; args_types; annotations... }}, where \texttt{method\_call} is the method call, \texttt{var\_type} is the type of the object on which the method is called, \texttt{args\_types} is a list of the types of the arguments passed to the method (if any), and \texttt{annotations} are any additional annotations provided by the user.
+For languages that support class inheritance, additional annotations could be added to reflect parent classes, e.g.\@ \mbox{\texttt{T1 <: T2}}.
 
-\subsection{Multi Method Support}\label{subsec:multi_method_support}
-% specialization with different traits
-\lipsum[1-4]
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{method-wrapping-pre.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of method wrapping, using implementations defined in Listing \ref{fig:conditions-definition-pre}}
+	\label{fig:method-wrapping-pre}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{method-wrapping-post.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of the expansion of method wrapping from Listing \ref{fig:method-wrapping-pre}}
+	\label{fig:method-wrapping-post}
+\end{figure}
 
 % --------------------- Section 4 ---------------------
 
@@ -92,7 +139,7 @@ This is the reason why we previously defined this approach \textit{monomorphic s
 % collect traits, default impls, handle order by collecting all first
 \lipsum[1-4]
 
-\subsection{Alternatives}\label{subsec:alternatives}
+\paragraph{Alternatives}\label{subsec:alternatives}
 % using #[specializable] and #[spec_default]
 % drawback: not handling order
 \lipsum[1-4]

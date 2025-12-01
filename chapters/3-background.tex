@@ -18,7 +18,7 @@ Outside of these blocks, Rust enforces strict safety, making undefined behavior 
 \paragraph{Structs, Traits and Impls}
 Structs (\inlinerust{struct}) and enums (\inlinerust{enum}) are the primary composite data types in Rust, enabling the creation of complex data structures with named fields and variant types, respectively.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
 		\centering
@@ -41,7 +41,7 @@ Traits (\inlinerust{trait}) define a set of method signatures that types can imp
 Implementation blocks (\inlinerust{impl}) associate specific types with traits, providing concrete method definitions that satisfy the trait's contract.
 Rust also supports \textit{inherent implementations}, where methods are defined directly on a type without requiring a trait, allowing type-specific functionality and constructor-like associated functions.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
 		\centering
@@ -95,7 +95,7 @@ Monomorphization~\cite{Griesemer2020FeatherweightG} is the process by which the 
 When a generic function is instantiated with a particular type parameter, the compiler produces a specialized version of the function in the final binary.
 This approach mirrors C++ template instantiation~\cite{Vandevoorde02}, enabling aggressive optimizations such as inlining, constant propagation and dead-code elimination~\cite{Aho06,Wegman85,Cytron91}.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\begin{minipage}{0.49\textwidth}
 		\centering
@@ -133,7 +133,7 @@ The feature builds on Rust's \textit{coherence} and \textit{orphan rules}\cite{R
 Although as of today specialization remains unstable and experimental (through the \inlinerust{#![feature(specialization)]} or \inlinerust{#![feature(min_specialization)]} flags~\cite{SpecializationRFC,MinSpecialization}), it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
 The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution that have yet to be fully addressed.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\showcpp*[0.98\linewidth]{specialization.cpp}
 	\captionsetup{type=listing,skip=2pt}
@@ -141,7 +141,7 @@ The mechanism is conceptually related to multi-methods and ad hoc polymorphism i
 	\label{fig:cpp-specialization}
 \end{figure}
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{unstable-specialization.rs}
 	\captionsetup{type=listing,skip=2pt}

@@ -15,7 +15,7 @@ As better explained in Chapter~\ref{chap:approach}, this is required because in 
 The complete code is shown in Listing~\ref{fig:monomorphic_specialization_pre}, where you can see the macros in action.
 As you can probably understand, this approach preserves the soundness of the type system, since after the monomorphization process (see Listing~\ref{fig:monomorphic_specialization_post}) we have two completely separate versions of the trait and its implementation, that the compiler can easily distinguish and type check independently.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{monomorphized-specialization-pre.rs}
 	\captionsetup{type=listing,skip=2pt}
@@ -23,7 +23,7 @@ As you can probably understand, this approach preserves the soundness of the typ
 	\label{fig:monomorphic_specialization_pre}
 \end{figure}
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{monomorphized-specialization-post.rs}
 	\captionsetup{type=listing,skip=2pt}
@@ -34,7 +34,7 @@ As you can probably understand, this approach preserves the soundness of the typ
 In addition to using the two macros, we need to instruct the compiler to allow us to define and use the macros correctly independently from the order of their definition.
 In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:monomorphic_specialization_build_rs}.
 
-\begin{figure}[htb!]
+\begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{monomorphized-specialization-build-rs.rs}
 	\captionsetup{type=listing,skip=2pt}
