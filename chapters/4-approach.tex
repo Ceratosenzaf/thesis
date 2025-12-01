@@ -23,32 +23,55 @@ The key objectives included:
 As already seen, \mytool{} leverages the macro system to enable specialization.
 The three primary components needed by the approach are:
 \begin{itemize}
-	\item \textbf{Conditions Definition} A macro that annotates specialized implementations, specifying the conditions under which they should be used and generates the necessary boilerplate.
-	\item \textbf{Method Wrapping} A second macro that wraps method calls, directing them to the appropriate specialized implementation.
-	\item \textbf{Build Script} A way to analyze the code at compile time and collect the necessary information to facilitate specialization.
+	\item \textbf{\nameref{sec:conditions_definition}}: A macro that annotates specialized implementations, specifying the conditions under which they should be used and generates the necessary boilerplate.
+	\item \textbf{\nameref{sec:method_wrapping}}: A second macro that wraps method calls, directing them to the appropriate specialized implementation.
+	\item \textbf{\nameref{sec:build_script}}: A way to analyze the code at compile time and collect the necessary information to facilitate specialization.
 \end{itemize}
 
 % --------------------- Section 2 ---------------------
 
 \section{Conditions Definition}\label{sec:conditions_definition}
-% #[when(...)] macro with all declinations (any, all, not, type, trait, wildcard)
 The first step to achieve specialization through metaprogramming is to define various specialized implementations that should be applied when certain conditions are met.
-In \mytool{}, this is accomplished using the \texttt{when} attribute macro, which takes as argument the predicate, which is the condition that must be satisfied for the specialized implementation to be selected.
-In our implementation, the macro supports these conditions:
+In \mytool{}, this is accomplished using the \inlinerust{#[when(predicate)]} attribute macro, which takes as argument the predicate, which is the condition that must be satisfied for the specialized implementation to be selected.
+Please note that if we wanted a simpler drop-in replacement for the unstable specialization feature, we could edit the tool to avoid passing the predicate altogether and just use normal rust syntax for implementations, but we still would need to mark the implementation with some kind of macro to generate the necessary boilerplate.
+
+\paragraph{Predicates}
+In our implementation, the macro supports these predicates:
 \begin{itemize}
 	\item \textbf{Type Equality}: Check if a generic type parameter is of a specific type, e.g.\@ \mbox{\texttt{T = i32}}.
 	\item \textbf{Trait Implementation}: Check if a generic type parameter implements a specific trait or multiple traits, e.g.\@ \mbox{\texttt{T:\@ Display}} or \mbox{\texttt{T:\@ Debug + Clone}}.
-	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \inlinerust{all(predicate_1, predicate_2, ...)}.
-	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \inlinerust{any(predicate_1, predicate_2, ...)}.
-	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \texttt{not(predicate)}.
+	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \mbox{\inlinerust{all(p1, p2, ...)}}.
+	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \mbox{\inlinerust{any(p1, p2, ...)}}.
+	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \mbox{\inlinerust{not(predicate)}}.
 \end{itemize}
+These predicates can be combined to form complex conditions, allowing for flexible and powerful specialization rules.
 
-\subsection{Default Implementation}\label{subsec:default_implementation}
-% using #[spec_default] if wanted
-\lipsum[1-1]
+\paragraph{Wildcards}
+In addition to the specific predicates, \mytool{} supports a wildcard condition that matches any type.
+For instance, the condition \mbox{\texttt{T = Vec<\_>}} matches any vector type, regardless of its element type.
+Another useful wildcard condition is \mbox{\texttt{T = \&\_}}, which matches any reference type.
 
-\subsection{Macro expansion}\label{subsec:macro_expansion}
-\lipsum[1-2]
+\paragraph{Default Implementation}
+In addition to specialized implementations, \mytool{} supports a default implementation that is used when no other conditions are met.
+These default implementations are picked up by default by the \nameref{sec:build_script} and don't need to be explicitly marked with any macro.
+Optionally, if we wanted to limit the implementations available for specialization, we could use another macro to mark them explicitly, e.g.\@ \inlinerust{#[spec_default]}.
+
+\paragraph{Normalization}
+To ensure that the conditions are consistent and can be easily compared, \mytool{} normalizes the conditions.
+This normalization process involves transforming the conditions into a canonical form, which allows for easier comparison and resolution of overlapping conditions.
+The normal form chosen is a disjunctive normal form (DNF~\cite{DNFPost21}), where each condition is represented as a conjunction of predicates.
+This means that each condition is a logical OR of one or more predicates, and each predicate is a logical AND of one or more atomic conditions.
+The normalization process also involves applying De Morgan's laws~\cite{DeMorgan} to push negations down to the atomic conditions, ensuring that the conditions are expressed in a consistent manner.
+This representation allows for efficient checking of whether a condition is satisfied, because we can easily check each disjunctive clause separately.
+For example, the condition \texttt{not(all(\mbox{T:\@ Display}, any(\mbox{T = i32}, \mbox{T = f64})))} is normalized to \texttt{any(not(\mbox{T:\@ Display}), all(not(\mbox{T = i32}), not(\mbox{T = f64})))}.
+
+\paragraph{Macro expansion}
+Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly.
+Given that all the conditions are normalized, the macro expansion can be greatly optimized: the \texttt{when} macro expands each disjunctive condition into a separate specialized implementation, allowing for efficient resolution of the conditions at compile time.
+This is the reason why we previously defined this approach \textit{monomorphic specialization}.
+
+\paragraph{Examples}
+\lipsum[1-4]
 
 % --------------------- Section 3 ---------------------
 
