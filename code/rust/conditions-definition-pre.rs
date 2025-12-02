@@ -1,9 +1,3 @@
-struct MyType;
-
-trait Foo<T> {
-    fn foo(&self, x: T);
-}
-
 // Default implementation
 impl<T> Foo<T> for MyType {
     fn foo(&self, x: T) {

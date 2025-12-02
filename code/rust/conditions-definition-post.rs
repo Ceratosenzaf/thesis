@@ -1,9 +1,3 @@
-struct MyType;
-
-trait Foo<T> {
-    fn foo(&self, x: T);
-}
-
 // Default implementation
 impl<T> Foo<T> for ZST {
     fn foo(&self, x: T) {
@@ -44,7 +38,7 @@ impl<T> FooNotVec<T> for ZST {
     }
 }
 
-// Specialized implementation for i8 or &u8
+// Specialized implementation for MyI8 or &u8
 type MyI8 = i8;
 
 trait FooMyI8 {
