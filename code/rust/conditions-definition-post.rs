@@ -1,5 +1,5 @@
 // Default implementation
-impl<T> Foo<T> for ZST {
+impl<T> Foo<T> for MyType {
     fn foo(&self, x: T) {
         println!("Default Foo for MyType");
     }
@@ -10,7 +10,7 @@ trait FooDisplay {
     fn foo(&self, x: String);
 }
 
-impl<T: Display> FooDisplay<T> for ZST {
+impl<T: Display> FooDisplay<T> for MyType {
     fn foo(&self, x: T) {
         println!("Foo for MyType where T implements Display");
     }
@@ -21,7 +21,7 @@ trait FooSlice<T> {
     fn foo(&self, x: &[T]);
 }
 
-impl<T> FooSlice<T> for ZST {
+impl<T> FooSlice<T> for MyType {
     fn foo(&self, x: &[T]) {
         println!("Foo for MyType where T is &[_]");
     }
@@ -32,7 +32,7 @@ trait FooNotVec<T> {
     fn foo(&self, x: T);
 }
 
-impl<T> FooNotVec<T> for ZST {
+impl<T> FooNotVec<T> for MyType {
     fn foo(&self, x: T) {
         println!("Foo for MyType where T is not Vec<_>");
     }
@@ -45,7 +45,7 @@ trait FooMyI8 {
     fn foo(&self, x: MyI8);
 }
 
-impl FooMyI8 for ZST {
+impl FooMyI8 for MyType {
     fn foo(&self, x: MyI8) {
         println!("Foo for MyType where T is MyI8 or &u8");
     }
@@ -55,7 +55,7 @@ trait FooRefU8 {
     fn foo(&self, x: &u8);
 }
 
-impl FooRefU8 for ZST {
+impl FooRefU8 for MyType {
     fn foo(&self, x: &u8) {
         println!("Foo for MyType where T is MyI8 or &u8");
     }
