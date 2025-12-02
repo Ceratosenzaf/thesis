@@ -40,9 +40,9 @@ In our implementation, the macro supports these predicates:
 \begin{itemize}
 	\item \textbf{Type Equality}: Check if a generic type parameter is of a specific type, e.g.\@ \mbox{\texttt{T = i32}}.
 	\item \textbf{Trait Implementation}: Check if a generic type parameter implements a specific trait or multiple traits, e.g.\@ \mbox{\texttt{T:\@ Display}} or \mbox{\texttt{T:\@ Debug + Clone}}.
-	\item \textbf{Logical And}: Check if all the provided predicates are satisfied, e.g.\@ \mbox{\inlinerust{all(p1, p2, ...)}}. % TODO: fix formatting
-	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \mbox{\inlinerust{any(p1, p2, ...)}}.
-	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \mbox{\inlinerust{not(predicate)}}.
+	\item \textbf{Logical And}: Check if all the inner predicates are satisfied, e.g.\@ \inlinerust{all(predicate1, predicate2, ...)}.
+	\item \textbf{Logical Or}: Check if at least one of the provided predicates is satisfied, e.g.\@ \inlinerust{any(predicate1, predicate2, ...)}.
+	\item \textbf{Logical Not}: Check if the provided predicate is not satisfied, e.g.\@ \inlinerust{not(predicate)}.
 \end{itemize}
 These predicates can be combined to form complex conditions, allowing for flexible and powerful specialization rules.
 
@@ -136,13 +136,18 @@ For languages that support class inheritance, additional annotations could be ad
 % --------------------- Section 4 ---------------------
 
 \section{Build Script}\label{sec:build_script}
-% collect traits, default impls, handle order by collecting all first
-\lipsum[1-4]
+The final step is to correctly handle specialization no matter the order in which the various components are defined.
+Without this step, if a specialized implementation is defined after a method call site that should use it, the macro would not be able to resolve the specialization correctly.
+To solve this issue, \mytool{} uses a build script that analyzes the code at compile time and collects all the necessary information to handle specialization correctly.
+This build script scans the code for all the \inlinerust{#[when(predicate)]} attributes and collects the specialized implementations, as well as the default implementations and the traits implemented by each relevant type.
+With this information, the build script generates a metadata file that is later used by the macros to resolve the method calls correctly.
 
 \paragraph{Alternatives}\label{subsec:alternatives}
-% using #[specializable] and #[spec_default]
-% drawback: not handling order
-\lipsum[1-4]
+If the language didn't support build scripts or similar mechanisms, an alternative approach could be to use some additional macros to mark the default implementations and the traits explicitly.
+The first is required to identify the default implementations, while the second is needed because the trait's body is used to generate the monomorphized versions of the specialized implementations.
+To handle the order of definitions without a build script or similar mechanism, the easiest way would be to have a two-pass compilation process, where the first pass collects all the necessary information and the second pass generates the specialized code.
+However, this approach would be less efficient and more complex to implement, as it would require significant changes to the compilation process.
+Another way would be to wrap everything in a macro that collects all the necessary information, but this would be cumbersome and would not scale well for larger codebases.
 
 % --------------------- Section 5 ---------------------
 
