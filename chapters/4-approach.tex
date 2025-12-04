@@ -212,7 +212,38 @@ It was indeed due to these challenges that specialization got stalled for a long
 When designing \mytool{}, we had to carefully consider how to handle the matter.
 
 \paragraph{Soundness Concerns}
-\lipsum[1-1]
+The main soundness concern with lifetimes and specialization arises when a specialized implementation has different lifetime requirements than the default implementation.
+For example, if a specialized implementation returns a reference with a shorter lifetime than the default implementation, it could lead to dangling references or other unsafe behavior.
+That's not the only issue though: another common problem is when a specialized implementation requires, implicitly or explicitly, additional lifetime constraints that are not present in the default implementation.
+The core problem is that at code generation time (the phase where MIR is lowered to LLVM IR and then to machine code) the compiler doesn't know about lifetimes (since it has already erased all lifetime information) and so it can't use them to choose which implementation should apply.
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{soundness-lifetimes-explicit.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of a soundness issue with lifetimes in specialization, where the specialized implementation requires an explicit 'static lifetime constraint}
+	\label{fig:soundness-lifetimes-explicit}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{soundness-lifetimes-implicit.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of a soundness issue with lifetimes in specialization, where the specialized implementation implicitly requires a 'static lifetime constraint}
+	\label{fig:soundness-lifetimes-implicit}
+\end{figure}
+
+\paragraph{Workarounds}
+This soundness issue was reported shortly after the specialization proposal~\cite{SpecializationSoundness} and stalled its progress for a long time.
+To mitigate the issue, the Rust team proposed a workaround that allows sound specialization for a subset of use cases~\cite{MinSpecialization}.
+This solution, called \inlinerust{min_specialization}, is unfortunately a breaking change from current Rust code and that's one of the reasons why it didn't get stabilized.
+
+\paragraph{Our Approach}
+As stated earlier, the fundamental problem is that the compiler doesn't know about lifetimes at code generation time even though they can affect which implementation should be selected.
+The most sensible solution to this would be in our opinion to make the compiler "smarter" by simply retaining lifetime information until code generation time, even though this would require significant changes to the compiler.
+This ides has already been brought up in the past but it was discarded as it was considered to have a "high cost"~\cite{SpecializationSoundness}.
+The only other accusation against it is that it would be harder to reason about lifetimes if they could influence code selection, but we believe that this is not a strong argument against it, given that many modern programming languages have already accustomed us to using generic programming features without significant issues.
+Hence, in \mytool{} we decided to simulate the information that the "smarter" compiler would have about lifetimes by allowing specialization based on lifetimes in \textit{conditions definition} and providing lifetime annotations in \textit{method wrapping}.
 
 \paragraph{Conditions Definition}
 \lipsum[1-1]
