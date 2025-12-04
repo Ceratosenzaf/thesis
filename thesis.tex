@@ -8,15 +8,17 @@
 \usepackage{caption}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{fvextra}
+\usepackage{minted}
+\usepackage{xcolor}
 
 \newcommand{\cwcomment}[1]{\profcomment[Walter]{#1}}
 \newcommand{\evcomment}[1]{\studcomment[Edo]{#1}}
 
 \setminted{style=default, fontfamily=cmtt}
 \setmintedinline{style=default, fontfamily=cmtt}
-%\setminted{bgcolor=white}
 
-
+\providecommand{\defaultshellfontsize}{\scriptsize}
 \newcommand{\mytool}{\textsc{MyTool}\xspace}
 % \newcommand{\slr}[1]{{\color{MidnightBlue}#1}}
 

@@ -111,7 +111,7 @@ To enable the selection of the appropriate specialized implementation at method 
 In \mytool{}, this is accomplished using the \inlinerust{spec!} macro, which takes as first arguments the method call itself.
 
 \paragraph{Type Annotations}
-If the language supported reflection or if we had some way to inspect the type of the arguments at compile time, this would have been enough.
+If the language supported reflection, if we had some way to inspect the type of the arguments at compile time or if this was implemented directly in the compiler, the method call alone would have been enough.
 However, Rust does not support such features, so we need to provide additional information to the macro.
 This additional information includes the types of object on which the method is called and the types of the arguments passed to the method, if any.
 \begin{itemize}
@@ -123,7 +123,7 @@ With this information, the tool can solve almost all of the specialization at co
 \paragraph{Annotations}
 The \textit{type annotations} defined above are the first two of what we call \textit{annotations}, which are additional pieces of information provided to the macro to help it resolve the specialization.
 In Rust, just like there is no way to inspect the type of a variable at compile time, there is also no way to inspect the traits implemented by a type or to inspect type aliases.
-To overcome these limitations, \mytool{} allows the user to provide additional annotations to the method wrapping macro.
+To overcome these limitations, \mytool{} allows the user to provide additional annotations to the method wrapping macro (once again notice that if the language supported reflection or similar features this would not be necessary, even more so if specialization was implemented directly in the compiler).
 These additional annotations include:
 \begin{itemize}
 	\item \textbf{Implemented Traits}: A list of traits implemented by each relevant type, e.g.\@ \mbox{\texttt{i32:\@ Display}} or \mbox{\texttt{i32:\@ Debug + Clone}}.
@@ -151,7 +151,7 @@ The chain of priority used in \mytool{} is as follows:
 \end{enumerate}
 \begin{figure}[htbp!]
 	\centering
-	\showrust*[0.98\linewidth]{conditions-ordering.rs}
+	\showbashcon[0.98\linewidth]{conditions-ordering.sh}
 	\captionsetup{type=listing,skip=2pt}
 	\caption{Example of priority ordering of conditions, highest to lowest. U is a generic type parameter and hence overlaps with the wildcard unless it is constrained in some other conditions}
 	\label{fig:conditions-ordering}
@@ -180,7 +180,7 @@ The examples use the specialized implementations defined in Listings \ref{fig:co
 
 \begin{figure}[htbp!]
 	\centering
-	\showrust*[0.98\linewidth]{method-wrapping-output.rs}
+	\showbashcon*[0.98\linewidth]{method-wrapping-output.sh}
 	\captionsetup{type=listing,skip=2pt}
 	\caption{Example of the output printed by the program from Listing \ref{fig:method-wrapping-pre}}
 	\label{fig:method-wrapping-output}

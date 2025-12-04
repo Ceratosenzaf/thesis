@@ -27,8 +27,8 @@ Specifically for Rust, given its performance focus and the significant utility o
 \paragraph{Proposal}
 To address the general limitations of specialization features in current stable ecosystems, this thesis proposes an innovative approach to the matter by moving the monomorphization and specialization logics to an earlier stage in the compilation process.
 To prove the effectiveness of this approach, we introduce a metaprogramming-based technique to simulate the behavior of compiler-implemented specialization.
-By utilizing the metaprogramming capabilities of the language, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code.
-This approach (which can be applied to most languages with metaprogramming support) avoids runtime overhead entirely and circumvents the restrictions imposed by unstable compiler features.
+By utilizing the metaprogramming capabilities of the language, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code, avoiding runtime overhead entirely and circumventing the restrictions imposed by unstable compiler features.
+This approach can be applied to most languages with metaprogramming support and even directly into the compiler frontend of modern languages, as the compiler can simply replicate our approach internally.
 
 \paragraph{Contributions}
 This work provides the following key contributions.

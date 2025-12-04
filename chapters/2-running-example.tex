@@ -3,7 +3,18 @@
 The simplest form of specialization using the tool is the following.
 We'll show the example in Rust, but the approach is general and can be applied to other languages with similar features.
 
-The default implementation does not need any change compared to standard code.
+Let's consider a trait \texttt{MyTrait} with a method \texttt{my\_method}, and we want to have a generic implementation as well as provide a specialized implementation for the type \texttt{i32}.
+In standard Rust this would look something like Listing~\ref{fig:monomorphic_specialization_problem}, but unfortunately this code would not compile due to the lack of stable specialization features.
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{monomorphized-specialization-problem.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of how specialization should work}
+	\label{fig:monomorphic_specialization_problem}
+\end{figure}
+
+To apply our tool to this problem, the default implementation does not need any change compared to standard code.
 The specialized implementation instead, is annotated with the attribute macro \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
 In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}.
 This will create a specialized version of the \texttt{trait} and of the \texttt{impl}, through a process we'll be calling \textit{monomorphic specialization}.
