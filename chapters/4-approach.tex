@@ -66,10 +66,12 @@ This representation allows for efficient checking of whether a condition is sati
 For example, the condition \texttt{not(all(\mbox{T:\@ Display}, any(\mbox{T = i32}, \mbox{T = f64})))} is normalized to \texttt{any(not(\mbox{T:\@ Display}), all(not(\mbox{T = i32}), not(\mbox{T = f64})))}, so we know that that specific specialized implementation should be applied either if \texttt{T} does not implement \texttt{Display} or if \texttt{T} is neither \texttt{i32} nor \texttt{f64}.
 
 \paragraph{Macro expansion}
-Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly.
+Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly in all occurrences.
 For example: if we have a type equality condition, the generic parameter is replaced with the specific type; if we have a trait implementation condition, the generic parameter is constrained to implement the specified trait(s).
-Given that all the conditions are normalized, the macro expansion can be greatly optimized: the \texttt{when} macro expands each disjunctive condition into a separate specialized implementation, allowing for efficient resolution of the conditions at compile time.
+Given that all the conditions are normalized, the macro expansion can be greatly optimized, allowing for efficient resolution of the conditions at compile time.
+Each disjunct condition is expanded into its own \inlinerust{trait} and \inlinerust{impl} couple, where the new trait's name is originated by appending the conditions hash to the original trait name.
 This is the reason why we previously defined this approach \textit{monomorphic specialization}.
+For ease of read, in this thesis we will give each specialized trait a name that represents the underlying conditions, instead of the actual names the tool would output.
 
 \paragraph{Nested Conditions}
 The macro also supports nested conditions, allowing for more complex specialization rules.
@@ -258,6 +260,7 @@ Other predicates could be combined with these to form more complex conditions:
 	\item \textbf{Lifetime Equality}: Check if a lifetime parameter is equal to a specific lifetime, e.g.\@ \mbox{\texttt{'a = 'static}}.
 	\item \textbf{Lifetime Outlives}: Check if a lifetime parameter outlives another lifetime, e.g.\@ \mbox{\texttt{'a:\@ 'b}}.
 \end{itemize}
+Just like for the other conditions defined earlier, also these new conditions generate explicit constraints in the expanded implementations.
 
 \paragraph{Method Wrapping}
 To provide the necessary lifetime information to the method wrapping macro, we extended the \inlinerust{spec!} macro to accept lifetime annotations.
@@ -271,9 +274,24 @@ Furthermore, we could add a new type of annotation to specify lifetime relations
 	\item \textbf{Lifetime Relationships}: Specify lifetimes equality or outlives relationships, e.g.\@ \mbox{\texttt{'a:\@ 'b}} or \mbox{\texttt{'a = 'static}}.
 \end{itemize}
 
-% TODO: code examples?
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{lifetimes-pre.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of specialization using lifetimes}
+	\label{fig:lifetimes-specialization-pre}
+\end{figure}
 
 % --------------------- Section 6 ---------------------
 
 \section{Limitations}\label{sec:limitations}
-\lipsum[1-4]
+While \mytool{} provides a powerful mechanism for stable specialization, it does have some limitations that should be considered:
+\begin{itemize}
+	\item \textbf{Boilerplate}: The need for additional annotations in method wrapping can introduce some boilerplate, especially in complex scenarios with many types and traits involved.
+	\item \textbf{Compile-Time Overhead}: The use of macros and build scripts can introduce some compile-time overhead, especially in large codebases with many specialized implementations.
+	\item \textbf{Lifetimes Complexity}: While the tool provides mechanisms to handle lifetimes, the added complexity may lead to confusion or misuse if not properly understood by the user.
+	\item \textbf{Trait Bounds}: Since the tool generates a monomorphic version of each trait involved, the ability to involve those traits in trait bounds elsewhere in the code is lost.
+	\item \textbf{Limited Predicate Support}: The current set of supported predicates may not cover all language feature (e.g.\@ \texttt{dyn Trait}), potentially limiting the tool's applicability in certain cases.
+\end{itemize}
+Despite these limitations, \mytool{} represents a significant step forward in enabling stable specialization through metaprogramming, providing developers with a powerful tool to optimize their code while adhering to Rust's safety guarantees.
+More generally, the concepts presented in this chapter can be adapted to other programming languages with similar capabilities, broadening the applicability of the approach beyond Rust.
