@@ -194,6 +194,7 @@ Without this step, if a specialized implementation is defined after a method cal
 As seen in Listing~\ref{fig:monomorphic_specialization_build_rs}, to solve this issue with our implementation of \mytool{} we simply need to add one line to the \texttt{build.rs} file.
 With that, the build script analyzes the code at compile time and collects all the necessary information to handle specialization correctly.
 This build script scans the code for all the \inlinerust{#[when(predicate)]} attributes and collects the specialized implementations, as well as the default implementations and the traits implemented by each relevant type.
+We've also implemented a mechanism to find the \textit{conditions definition} macros even if they are imported with a different name, by analyzing the macro definitions in the code, e.g.\@ \inlinerust{use mytool::when as my_when;}.
 With this information, the build script generates a metadata file that is later used by the macros to resolve the method calls correctly.
 
 \paragraph{Alternatives}\label{subsec:alternatives}
@@ -212,16 +213,15 @@ It was indeed due to these challenges that specialization got stalled for a long
 When designing \mytool{}, we had to carefully consider how to handle the matter.
 
 \paragraph{Soundness Concerns}
-The main soundness concern with lifetimes and specialization arises when a specialized implementation has different lifetime requirements than the default implementation.
+The main soundness concern with lifetimes and specialization arises when a specialized implementation requires, implicitly or explicitly, different lifetime constraints than those present in the default implementation.
 For example, if a specialized implementation returns a reference with a shorter lifetime than the default implementation, it could lead to dangling references or other unsafe behavior.
-That's not the only issue though: another common problem is when a specialized implementation requires, implicitly or explicitly, additional lifetime constraints that are not present in the default implementation.
 The core problem is that at code generation time (the phase where MIR is lowered to LLVM IR and then to machine code) the compiler doesn't know about lifetimes (since it has already erased all lifetime information) and so it can't use them to choose which implementation should apply.
-
+This code (as shown in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit}) would compile with \inlinerust{#![feature(specialization)]} but lead to unsound behavior.
 \begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{soundness-lifetimes-explicit.rs}
 	\captionsetup{type=listing,skip=2pt}
-	\caption{Example of a soundness issue with lifetimes in specialization, where the specialized implementation requires an explicit 'static lifetime constraint}
+	\caption{Example of a soundness issue with explicit lifetime constraint}
 	\label{fig:soundness-lifetimes-explicit}
 \end{figure}
 
@@ -229,7 +229,7 @@ The core problem is that at code generation time (the phase where MIR is lowered
 	\centering
 	\showrust*[0.98\linewidth]{soundness-lifetimes-implicit.rs}
 	\captionsetup{type=listing,skip=2pt}
-	\caption{Example of a soundness issue with lifetimes in specialization, where the specialized implementation implicitly requires a 'static lifetime constraint}
+	\caption{Example of a soundness issue with implicit lifetime constraint}
 	\label{fig:soundness-lifetimes-implicit}
 \end{figure}
 
@@ -237,6 +237,7 @@ The core problem is that at code generation time (the phase where MIR is lowered
 This soundness issue was reported shortly after the specialization proposal~\cite{SpecializationSoundness} and stalled its progress for a long time.
 To mitigate the issue, the Rust team proposed a workaround that allows sound specialization for a subset of use cases~\cite{MinSpecialization}.
 This solution, called \inlinerust{min_specialization}, is unfortunately a breaking change from current Rust code and that's one of the reasons why it didn't get stabilized.
+For example, the code in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit} would not compile with \inlinerust{#![feature(min_specialization)]}.
 
 \paragraph{Our Approach}
 As stated earlier, the fundamental problem is that the compiler doesn't know about lifetimes at code generation time even though they can affect which implementation should be selected.
@@ -246,11 +247,31 @@ The only other accusation against it is that it would be harder to reason about 
 Hence, in \mytool{} we decided to simulate the information that the "smarter" compiler would have about lifetimes by allowing specialization based on lifetimes in \textit{conditions definition} and providing lifetime annotations in \textit{method wrapping}.
 
 \paragraph{Conditions Definition}
-\lipsum[1-1]
+To allow the user to define specialized implementations based on lifetimes, we extended the \inlinerust{#[when(predicate)]} macro to support lifetime predicates.
+These predicates include:
+\begin{itemize}
+	\item \textbf{Type Equality}: When defining a type equality with a reference type, we can also specify lifetime constraints, e.g.\@ \mbox{\texttt{T = \&'a i32}}.
+	\item \textbf{Lifetime Bound}: Check if a generic type parameter has a specific lifetime, e.g.\@ \mbox{\texttt{T:\@ 'b}}.
+\end{itemize}
+Other predicates could be combined with these to form more complex conditions:
+\begin{itemize}
+	\item \textbf{Lifetime Equality}: Check if a lifetime parameter is equal to a specific lifetime, e.g.\@ \mbox{\texttt{'a = 'static}}.
+	\item \textbf{Lifetime Outlives}: Check if a lifetime parameter outlives another lifetime, e.g.\@ \mbox{\texttt{'a:\@ 'b}}.
+\end{itemize}
 
 \paragraph{Method Wrapping}
-\lipsum[1-1]
+To provide the necessary lifetime information to the method wrapping macro, we extended the \inlinerust{spec!} macro to accept lifetime annotations.
+First of all, in \textit{type annotations} reference types can now include lifetime information, e.g.\@ \mbox{\texttt{\&'a i32}}.
+Additionally, we added a new type of annotation to specify the lifetimes of each relevant type:
+\begin{itemize}
+	\item \textbf{Lifetime Bound}: The lifetimes of each relevant type, e.g.\@ \mbox{\texttt{T:\@ 'a}}.
+\end{itemize}
+Furthermore, we could add a new type of annotation to specify lifetime relationships:
+\begin{itemize}
+	\item \textbf{Lifetime Relationships}: Specify lifetimes equality or outlives relationships, e.g.\@ \mbox{\texttt{'a:\@ 'b}} or \mbox{\texttt{'a = 'static}}.
+\end{itemize}
 
+% TODO: code examples?
 
 % --------------------- Section 6 ---------------------
 

@@ -2,7 +2,7 @@ trait MyTrait {
     fn my_method(&self);
 }
 impl<T> MyTrait for T {
-    fn my_method(&self) {
+    default fn my_method(&self) {
         println!("Generic implementation");
     }
 }
