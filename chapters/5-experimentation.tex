@@ -1,3 +1,47 @@
 \chapter{Experimentation}\label{chap:experimentation}
 
-\lipsum[1-4]
+% --------------------- Section 1 ---------------------
+
+\section{Introduction}\label{sec:experimentation-introduction}
+To validate the utility of stable specialization, we conducted a series of experiments focusing on ecosystem analysis.
+These experiments aimed to identify real-world scenarios where stable specialization could provide significant benefits, particularly in terms of performance and code maintainability.
+The experiments were designed to analyze a diverse set of public Rust codebases, examining their use of traits and generic programming patterns.
+By applying our specialization technique to these codebases, we sought to demonstrate its practical applicability and effectiveness in real-world scenarios.
+
+\paragraph{Project Selection}
+The first step to conduct this research was to select a set of representative Rust projects from the open-source ecosystem.
+For this purpose, we selected some of the most downloaded crates from \texttt{crates.io} as well as some popular projects and other less known ones.
+
+\paragraph{Pattern Identification}
+To keep the analysis focused and feasible, we concentrated on identifying specific patterns that are likely to benefit from stable specialization.
+These patterns include:
+\begin{itemize}
+	\item \textbf{Manual Dispatch}: In the trait we have a version of the function for each type we want to support and in the implementation we manually dispatch to the correct version based on the type of the input.
+	\item \textbf{Monomorphized Traits}: A trait is defined for each type we want to support and each implementation provides a monomorphized version of the function.
+	\item \textbf{Standalone Functions}: A standalone function is defined for each type we want to support and the caller is responsible for calling the correct version based on the type of the input.
+	\item \textbf{Inherent Impls}: A struct has inherent implementations for each type we want to support, providing specialized versions of the function.
+\end{itemize}
+Other than these, we've also pointed out some additional patterns that we did not include in the analysis due to time constraints.
+These other patterns include:
+\begin{itemize}
+	\item \textbf{Type Level Dispatch}: A type-level mechanism is used to select the appropriate implementation at compile time.
+	\item \textbf{Layered Traits}: Multiple traits are layered to provide specialized implementations.
+	\item \textbf{Traits Default Implementations}: Traits provide default implementations that can be overridden for specific types.
+	\item \textbf{Macros}: Macros are used to generate specialized implementations based on the input type.
+	\item \textbf{Pattern matching blocks}: Pattern matching is used to select the appropriate implementation based on the type of the input.
+	\item \textbf{If blocks}: Conditional statements are used to select the appropriate implementation based on the type of the input.
+\end{itemize}
+Many of these patterns can be seen in the code examples in Listing (....).
+Each pattern represents a different approach to achieving specialization in Rust and our analysis aimed to determine how stable specialization could enhance these patterns.
+It's important to note that even though each of these patterns could be implemented using stable specialization, some patterns are more likely to benefit from it than others.
+Anyways, we believe that stable specialization could provide significant benefits across all these patterns by reducing boilerplate code, improving performance and enhancing code readability and maintainability.
+Furthermore, many of these patterns do not support certain specialization features, like specialization based purely on trait bounds or default implementations.
+By leveraging stable specialization, developers can achieve more efficient and maintainable code across a variety of programming patterns.
+
+% TODO: add code examples for each pattern
+
+\paragraph{Limitations}
+It's important to note that our analysis was based on heuristics to identify the relevant patterns within the selected codebases.
+As such, there is a possibility that some patterns were overlooked or misclassified, which could affect the comprehensiveness of our findings.
+
+% As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
