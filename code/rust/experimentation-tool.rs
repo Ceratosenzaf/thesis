@@ -13,9 +13,3 @@ impl<T> Foo<T> for MyType {
         println!("v is i32");
     }
 }
-#[when(T = u32)]
-impl<T> Foo<T> for MyType {
-    fn foo(&self, v: T) {
-        println!("v is u32");
-    }
-}

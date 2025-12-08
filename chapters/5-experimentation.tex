@@ -21,24 +21,88 @@ These patterns include:
 	\item \textbf{Standalone Functions}: A standalone function is defined for each type we want to support and the caller is responsible for calling the correct version based on the type of the input.
 	\item \textbf{Inherent Impls}: A struct has inherent implementations for each type we want to support, providing specialized versions of the function.
 \end{itemize}
-Other than these, we've also pointed out some additional patterns that we did not include in the analysis due to time constraints.
+Other than these, we've also pointed out some additional patterns that we did not include in the analysis because they were less common or harder to analyze in a systematic way.
 These other patterns include:
 \begin{itemize}
-	\item \textbf{Type Level Dispatch}: A type-level mechanism is used to select the appropriate implementation at compile time.
-	\item \textbf{Layered Traits}: Multiple traits are layered to provide specialized implementations.
-	\item \textbf{Traits Default Implementations}: Traits provide default implementations that can be overridden for specific types.
-	\item \textbf{Macros}: Macros are used to generate specialized implementations based on the input type.
+	\item \textbf{Type Level Dispatch}: A type-level mechanism is used to select the appropriate implementation at compile time, this does not support default implementations.
+	\item \textbf{Macros}: Macros are used to generate specialized implementations based on the input type, this reduces boilerplate but does not support default implementations.
 	\item \textbf{Pattern matching blocks}: Pattern matching is used to select the appropriate implementation based on the type of the input.
 	\item \textbf{If blocks}: Conditional statements are used to select the appropriate implementation based on the type of the input.
 \end{itemize}
-Many of these patterns can be seen in the code examples in Listing (....).
+Many of these patterns can be seen in the code examples in Listings~\ref{fig:standalone-functions} to~\ref{fig:type-level-dispatch} and the baseline implementations using unstable specialization and \mytool{} specialization can be seen in Listings~\ref{fig:unstable-specialization} and ~\ref{fig:tool-specialization} respectively.
 Each pattern represents a different approach to achieving specialization in Rust and our analysis aimed to determine how stable specialization could enhance these patterns.
 It's important to note that even though each of these patterns could be implemented using stable specialization, some patterns are more likely to benefit from it than others.
 Anyways, we believe that stable specialization could provide significant benefits across all these patterns by reducing boilerplate code, improving performance and enhancing code readability and maintainability.
 Furthermore, many of these patterns do not support certain specialization features, like specialization based purely on trait bounds or default implementations.
 By leveraging stable specialization, developers can achieve more efficient and maintainable code across a variety of programming patterns.
 
-% TODO: add code examples for each pattern
+\begin{figure}[htbp!]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{experimentation-unstable.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{Unstable Specialization}
+		\label{fig:unstable-specialization}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\showrust[0.98\linewidth]{experimentation-tool.rs}
+		\captionsetup{type=listing,skip=2pt}
+		\caption{\mytool{} Specialization}
+		\label{fig:tool-specialization}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[p!]
+	\centering
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\begin{minipage}{\linewidth}
+			\centering
+			\showrust[0.98\linewidth]{experimentation-standalone-functions.rs}
+			\captionsetup{type=listing,skip=2pt}
+			\caption{Standalone Functions}
+			\label{fig:standalone-functions}
+		\end{minipage}
+		\vspace{1em}
+		\begin{minipage}{\linewidth}
+			\centering
+			\showrust[0.98\linewidth]{experimentation-inherent-impls.rs}
+			\captionsetup{type=listing,skip=2pt}
+			\caption{Inherent Impls}
+			\label{fig:inherent-impls}
+		\end{minipage}
+		\vspace{1em}
+		\begin{minipage}{\linewidth}
+			\centering
+			\showrust[0.98\linewidth]{experimentation-manual-dispatch.rs}
+			\captionsetup{type=listing,skip=2pt}
+			\caption{Manual Dispatch}
+			\label{fig:manual-dispatch}
+		\end{minipage}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\begin{minipage}{\linewidth}
+			\centering
+			\showrust[0.98\linewidth]{experimentation-monomorphized-traits.rs}
+			\captionsetup{type=listing,skip=2pt}
+			\caption{Monomorphized Traits}
+			\label{fig:monomorphized-traits}
+		\end{minipage}
+		\vspace{1em}
+		\begin{minipage}{\linewidth}
+			\centering
+			\showrust[0.98\linewidth]{experimentation-type-level-dispatch.rs}
+			\captionsetup{type=listing,skip=2pt}
+			\caption{Type Level Dispatch}
+			\label{fig:type-level-dispatch}
+		\end{minipage}
+	\end{minipage}
+\end{figure}
 
 \paragraph{Limitations}
 It's important to note that our analysis was based on heuristics to identify the relevant patterns within the selected codebases.

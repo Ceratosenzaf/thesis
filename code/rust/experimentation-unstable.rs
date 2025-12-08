@@ -13,8 +13,3 @@ impl Foo<i32> for MyType {
         println!("v is i32");
     }
 }
-impl Foo<u32> for MyType {
-    fn foo(&self, v: u32) {
-        println!("v is u32");
-    }
-}

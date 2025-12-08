@@ -5,9 +5,6 @@ trait FooDefault<T> {
 trait FooI32 {
     fn foo(&self, v: i32);
 }
-trait FooU32 {
-    fn foo(&self, v: u32);
-}
 impl FooDefault for MyType {
     fn foo(&self, v: T) {
         println!("default");
@@ -16,10 +13,5 @@ impl FooDefault for MyType {
 impl FooI32 for MyType {
     fn foo(&self, v: i32) {
         println!("v is i32");
-    }
-}
-impl FooU32 for MyType {
-    fn foo(&self, v: u32) {
-        println!("v is u32");
     }
 }
