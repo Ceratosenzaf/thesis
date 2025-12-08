@@ -1,5 +1,6 @@
 struct MyType {}
 struct MyTypeWithV<T> {
+    my_type: MyType,
     v: T,
 }
 trait Foo {
