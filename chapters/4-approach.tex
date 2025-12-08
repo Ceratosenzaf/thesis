@@ -109,13 +109,13 @@ The examples generate specializations for a struct \inlinerust{MyType} and a tra
 % --------------------- Section 3 ---------------------
 
 \section{Method Wrapping}\label{sec:method_wrapping}
-To enable the selection of the appropriate specialized implementation at method call sites, we need a second macro, which wraps method calls and directs them to the correct implementation.
+To enable the selection of the appropriate specialized implementation, we need a second macro that wraps method calls.
 In \mytool{}, this is accomplished using the \inlinerust{spec!} macro, which takes as first arguments the method call itself.
 
 \paragraph{Type Annotations}
 If the language supported reflection, if we had some way to inspect the type of the arguments at compile time or if this was implemented directly in the compiler, the method call alone would have been enough.
-However, Rust does not support such features, so we need to provide additional information to the macro.
-This additional information includes the types of object on which the method is called and the types of the arguments passed to the method, if any.
+That not being the case for Rust, we need to provide additional information to the macro.
+This additional pieces of information include the types of object on which the method is called and the types of the arguments passed to the method, if any.
 \begin{itemize}
 	\item \textbf{Type of the Object}: The type of the object on which the method is called, e.g.\@ if we have \inlinerust{x.fn(arg1, arg2)}, we need to provide the type of \texttt{x}, e.g.\@ \mbox{\texttt{MyType}}.
 	\item \textbf{Types of the Arguments}: A list of the types of the arguments passed to the method, if the method takes no arguments, it can be empty or omitted, e.g.\@ if we have \inlinerust{x.fn(arg1, arg2)}, we need to provide the types of \texttt{arg1} and \texttt{arg2}, e.g.\@ \mbox{\texttt{[Arg1Type, Arg2Type]}}.
@@ -124,16 +124,16 @@ With this information, the tool can solve almost all of the specialization at co
 
 \paragraph{Annotations}
 The \textit{type annotations} defined above are the first two of what we call \textit{annotations}, which are additional pieces of information provided to the macro to help it resolve the specialization.
-In Rust, just like there is no way to inspect the type of a variable at compile time, there is also no way to inspect the traits implemented by a type or to inspect type aliases.
+In Rust, just like we can't inspect the type of a variable at compile time, there is also no way to inspect the traits implemented by a type or to know type aliases.
 To overcome these limitations, \mytool{} allows the user to provide additional annotations to the method wrapping macro (once again notice that if the language supported reflection or similar features this would not be necessary, even more so if specialization was implemented directly in the compiler).
 These additional annotations include:
 \begin{itemize}
 	\item \textbf{Implemented Traits}: A list of traits implemented by each relevant type, e.g.\@ \mbox{\texttt{i32:\@ Display}} or \mbox{\texttt{i32:\@ Debug + Clone}}.
 	\item \textbf{Type Aliases}: A list of type aliases for each relevant type, e.g.\@ \mbox{\texttt{MyInt = i32}}.
 \end{itemize}
-These annotations can be provided as additional arguments to the \inlinerust{spec!} macro (without any particular order), allowing the tool to accurately resolve the specialization even in the presence of type aliases or when traits are involved in the conditions.
+These annotations can be provided as additional arguments to the \inlinerust{spec!} macro, allowing the tool to accurately resolve the specialization even in the presence of type aliases or trait bounds in the conditions.
 Considering all of this, the full syntax for the \inlinerust{spec!} macro is the following: \inlinerust{spec!{ method_call; var_type; args_types; annotations... }}, where \texttt{method\_call} is the method call, \texttt{var\_type} is the type of the object on which the method is called, \texttt{args\_types} is a list of the types of the arguments passed to the method (if any) and \texttt{annotations} are any additional annotations provided by the user.
-Additionally, for languages that support class inheritance, another annotations could be added to reflect parent classes, e.g.\@ \mbox{\texttt{T1 <:\@ T2}}.
+Additionally, for languages that support class inheritance, other annotations could be added to reflect hierarchy, e.g.\@ \mbox{\texttt{T1 <:\@ T2}}.
 
 \paragraph{Overlap}
 An important aspect to consider when implementing specialization is the possibility of overlapping conditions.
@@ -143,7 +143,7 @@ For example, a condition that checks for type equality (e.g.\@ \mbox{\texttt{T =
 In \mytool{}, this is effectively how overlaps are resolved, just like in Rust's unstable specialization feature.
 When multiple conditions of the same priority level overlap, the tool raises a compile-time error, prompting the user to resolve the ambiguity by refining the conditions.
 A more general and broader mechanism is the \textit{lattice} rule defined in Rust original specialization RFC~\cite{SpecializationRFC}, which instead of requiring a strict priority system, allows partial ordering given that there is also an additional implementation that covers precisely the area of overlap.
-Though this approach is more flexible, it is also more complex to implement and reason about, so since this is not the main priority of this thesis, we opted for the simpler priority system.
+Though this approach is more flexible, it is also more complex to implement and since this is not the main priority of this thesis, we opted for the simpler priority system.
 The chain of priority used in \mytool{} is as follows:
 \begin{enumerate}
 	\item Type Equality
@@ -151,14 +151,17 @@ The chain of priority used in \mytool{} is as follows:
 	\item Not Type Equality
 	\item Not Trait Implementation
 \end{enumerate}
+
 \begin{figure}[htbp!]
 	\centering
-	\showbashcon[0.98\linewidth]{conditions-ordering.sh}
+	\begin{flalign*}
+		 & \text{T = \&i32} > \text{T = \&U} \ge \text{T = \&\_} > \text{T: Display + Debug} > \text{T: Display} > \text{not(T = \&i32)} > \\
+		 & \text{not(T = \&U)} \ge \text{not(T = \&\_)} > \text{not(T: Display + Debug)} > \text{not(T: Display)}
+	\end{flalign*}
 	\captionsetup{type=listing,skip=2pt}
 	\caption{Example of priority ordering of conditions, highest to lowest. U is a generic type parameter and hence overlaps with the wildcard unless it is constrained in some other conditions}
 	\label{fig:conditions-ordering}
 \end{figure}
-
 
 \paragraph{Examples}
 Listings \ref{fig:method-wrapping-pre} and \ref{fig:method-wrapping-post} show an example of how to wrap method calls using the \inlinerust{spec!} macro and the corresponding expansion generated by the macro.

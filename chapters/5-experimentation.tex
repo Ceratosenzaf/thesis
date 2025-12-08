@@ -20,10 +20,10 @@ We also split the functions based on their origin (bare function, trait items, i
 Once we had these groups, we calculated the tree edit distance of each function in the group to one another.
 This was done using the ZSS algorithm~\cite{ZSSTreeEditDistance89}, which computes the minimum number of edit operations required to transform one tree into another, allowing us to quantify the structural similarity between functions' ASTs.
 By analyzing these distances, we could identify groups of functions that were structurally similar enough to be considered for specialization using our stable specialization technique.
-After calculating the edit distance, we got the similarity by using this formula $$1.0 - \frac{\text{dist}}{\text{max\_size}}$$ where \texttt{dist} is the tree edit distance between the two functions and \texttt{max\_size} is the size of the largest AST between the two.
+After calculating the edit distance, we got the similarity by using this formula $$1 - \frac{\text{dist}}{\text{max\_size}}$$ where \texttt{dist} is the tree edit distance between the two functions and \texttt{max\_size} is the size of the largest AST between the two.
 
 Finally, we filtered out groups that had an average similarity lower than a certain threshold to focus on the most promising candidates for specialization.
-We also made sure to add a further optimization to avoid analyzing trees that had way too different sizes, as they would mathematically never reach a good similarity score, using the following formula $$\frac{\text{min\_size}}{\text{max\_size}} < \text{threshold}$$ where \texttt{min\_size} is the size of the smallest AST between the two and \texttt{threshold} is the similarity threshold set for the analysis.
+We also made sure to add a further optimization to avoid analyzing trees that had way too different sizes, as they would mathematically never reach a good enough similarity score, using the following formula $$\frac{\text{min\_size}}{\text{max\_size}} < \text{threshold}$$ where \texttt{min\_size} is the size of the smallest AST between the two and \texttt{threshold} is the similarity threshold set for the analysis.
 
 This approach allowed us to systematically identify potential specialization opportunities across a wide range of Rust codebases, providing a solid foundation for evaluating the effectiveness of stable specialization in real-world scenarios.
 It's important to note that our analysis was based on heuristics to identify the relevant patterns and the specialization opportunities within the selected codebases.
@@ -31,11 +31,12 @@ As such, there is a possibility that some patterns were overlooked or misclassif
 It's also important to note that not all instances where specialization is possible it should be applied, e.g.\@ if the specialized versions do not provide significant performance improvements or if they complicate the code unnecessarily, like adding more boilerplate than they would reduce.
 
 \paragraph{Project Selection}
-The first step to conduct this research was to select a set of representative Rust projects from the open-source ecosystem.
-For this purpose, we selected some of the most downloaded crates from \texttt{crates.io} as well as some popular projects and other less known ones.
+An important step to conduct this research was to select a set of representative Rust projects from the open-source ecosystem.
+For this purpose, we selected some of the most downloaded crates from \texttt{crates.io} as well as some popular projects and other less known ones, ranging from code editors to broadly used libraries.
+The selected projects (over 50 in total) cover a wide range of domains and use cases, ensuring that our analysis captures a diverse set of programming patterns and practices.
 
 \paragraph{Pattern Identification}
-To keep the analysis focused and feasible, we concentrated on identifying specific patterns that are likely to benefit from stable specialization.
+To keep the analysis focused and feasible and to ensure that we could draw meaningful conclusions from the results, we concentrated on identifying specific patterns that are likely to benefit from stable specialization.
 These patterns include:
 \begin{itemize}
 	\item \textbf{Manual Dispatch}: In the trait we have a version of the function for each type we want to support and in the implementation we manually dispatch to the correct version based on the type of the input.
