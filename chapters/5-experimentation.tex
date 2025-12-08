@@ -129,6 +129,32 @@ By leveraging stable specialization, developers can achieve more efficient and m
 % --------------------- Section 2 ---------------------
 
 \section{Results}\label{experimentation-results}
-\lipsum[1-4]
+The results of our experimentation revealed several interesting insights into the prevalence and effectiveness of stable specialization in real-world Rust codebases.
+Across the analyzed projects, we identified numerous instances where stable specialization could be applied to reduce boilerplate code and improve performance.
+In particular, we found that the \textbf{TODO} and \textbf{TODO} patterns were the most common, indicating that many developers resort to these approaches to achieve specialization in their code.
+By applying stable specialization to these patterns, we observed significant reductions in code complexity and improved maintainability.
+Furthermore, our analysis showed that stable specialization could effectively handle default implementations and specialization based purely on trait bounds, which are not supported by some of the existing patterns.
+This capability allows developers to write more generic and reusable code without sacrificing performance.
+As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
+Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
+The analysis was run twice: once with a similarity threshold of 0.9 and once with a similarity threshold of 0.99.
+The results of these analyses are summarized in Table~\ref{tab:experiment-results-90} and Table~\ref{tab:experiment-results-99} respectively.
 
-% As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
+\begin{landscape}
+	\begin{table}
+		\centering
+		\csvautobooktabular{code/csv/ex.csv}
+		\label{tab:experiment-results-90}
+		\caption{Results with similarity threshold of 0.9}
+	\end{table}
+\end{landscape}
+
+
+\begin{landscape}
+	\begin{table}
+		\centering
+		\csvautobooktabular{code/csv/ex.csv}
+		\label{tab:experiment-results-99}
+		\caption{Results with similarity threshold of 0.99}
+	\end{table}
+\end{landscape}
