@@ -138,14 +138,26 @@ This capability allows developers to write more generic and reusable code withou
 As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
 Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
 The analysis was run twice: once with a similarity threshold of 0.9 and once with a similarity threshold of 0.99.
-The results of these analyses are summarized in Table~\ref{tab:experiment-results-90} and Table~\ref{tab:experiment-results-99} respectively.
+The results of these analyses are summarized in Table~\ref{tab:results-90} and Table~\ref{tab:results-99} respectively.
+% explain columns (for repos with multiple projects, we picked the one with most crates.io downloads)
+% explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
+
+\begin{landscape}
+	{
+		\catcode`\#=12
+		\catcode`\_=12
+		\csvautolongtable{code/csv/analysis-projects.csv}
+		% \caption{Selected Projects for Analysis}
+		% \label{tab:selected-projects}
+	}
+\end{landscape}
 
 \begin{landscape}
 	\begin{table}
 		\centering
 		\csvautobooktabular{code/csv/ex.csv}
-		\label{tab:experiment-results-90}
 		\caption{Results with similarity threshold of 0.9}
+		\label{tab:results-90}
 	\end{table}
 \end{landscape}
 
@@ -154,7 +166,7 @@ The results of these analyses are summarized in Table~\ref{tab:experiment-result
 	\begin{table}
 		\centering
 		\csvautobooktabular{code/csv/ex.csv}
-		\label{tab:experiment-results-99}
 		\caption{Results with similarity threshold of 0.99}
+		\label{tab:results-99}
 	\end{table}
 \end{landscape}
