@@ -245,7 +245,7 @@ This solution, called \inlinerust{min_specialization}, is unfortunately a breaki
 For example, the code in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit} would not compile with \inlinerust{#![feature(min_specialization)]}.
 
 \paragraph{Our Approach}
-As stated earlier, the fundamental problem is that the compiler doesn't know about lifetimes at code generation time even though they can affect which implementation should be selected.
+As stated earlier, the fundamental problem is that the compiler doesn't know about lifetimes at code generation time even though they could affect which implementation should be selected.
 The most sensible solution to this would be in our opinion to make the compiler "smarter" by simply retaining lifetime information until code generation time, even though this would require significant changes to the compiler.
 This ides has already been brought up in the past but it was discarded as it was considered to have a "high cost"~\cite{SpecializationSoundness}.
 The only other accusation against it is that it would be harder to reason about lifetimes if they could influence code selection, but we believe that this is not a strong argument against it, given that many modern programming languages have already accustomed us to using generic programming features without significant issues.

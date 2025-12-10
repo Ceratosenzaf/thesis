@@ -44,13 +44,13 @@
 43,gitoxide,GitoxideLabs/gitoxide,10519,0,104688,7148,484
 44,tauri,tauri-apps/tauri,98798,326,8149533,4898,196
 45,alacritty,alacritty/alacritty,61003,0,242002,2710,72
-46,zed,zed-industries/zed,69551,-,-,54980,1674
+46,zed,zed-industries/zed,69551,N/A,N/A,54980,1674
 47,ripgrep,BurntSushi/ripgrep,57234,1,1279887,2096,66
 48,typst,typst/typst,47949,71,311285,7260,233
 49,helix,helix-editor/helix,41235,0,117928,3080,116
-50,ruff,charliermarsh/ruff,43777,-,-,25887,640
-51,lapce,lapce/lapce,37601,-,-,1797,62
-52,nushell,nushell/nushell,37226,-,-,10592,330
+50,ruff,charliermarsh/ruff,43777,N/A,N/A,25887,640
+51,lapce,lapce/lapce,37601,N/A,N/A,1797,62
+52,nushell,nushell/nushell,37226,N/A,N/A,10592,330
 53,polars,pola-rs/polars,36050,368,6552820,43805,1476
 54,influxdb,influxdata/influxdb,30797,25,443557,3547,212
 55,texture-synthesis,EmbarkStudios/texture-synthesis,1793,1,69074,166,10
@@ -58,7 +58,7 @@
 57,sendme,n0-computer/sendme,832,0,31181,74,7
 58,quiche,cloudflare/quiche,10869,21,1239916,2607,110
 59,union,unionlabs/union,74491,1,16742,29581,1050
-60,hyperswitch,juspay/hyperswitch,39130,-,-,32172,826
+60,hyperswitch,juspay/hyperswitch,39130,N/A,N/A,32172,826
 61,pueue,Nukesor/pueue,5903,0,106705,389,24
 62,toml,toml-rs/toml,930,7698,419494766,2233,122
 63,glob,rust-lang/glob,564,2294,298438955,32,7

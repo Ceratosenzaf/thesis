@@ -129,7 +129,9 @@ By leveraging stable specialization, developers can achieve more efficient and m
 % --------------------- Section 2 ---------------------
 
 \section{Results}\label{experimentation-results}
-The results of our experimentation revealed several interesting insights into the prevalence and effectiveness of stable specialization in real-world Rust codebases.
+The analysis was run twice: once with a similarity threshold of 0.90 and once with a similarity threshold of 0.99.
+The results of these analyses are summarized in Table~\ref{tab:results-90} and Table~\ref{tab:results-99} respectively.
+The findings of our experimentation revealed several interesting insights into the prevalence and effectiveness of stable specialization in real-world Rust codebases.
 Across the analyzed projects, we identified numerous instances where stable specialization could be applied to reduce boilerplate code and improve performance.
 In particular, we found that the \textbf{TODO} and \textbf{TODO} patterns were the most common, indicating that many developers resort to these approaches to achieve specialization in their code.
 By applying stable specialization to these patterns, we observed significant reductions in code complexity and improved maintainability.
@@ -137,36 +139,16 @@ Furthermore, our analysis showed that stable specialization could effectively ha
 This capability allows developers to write more generic and reusable code without sacrificing performance.
 As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
 Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
-The analysis was run twice: once with a similarity threshold of 0.9 and once with a similarity threshold of 0.99.
-The results of these analyses are summarized in Table~\ref{tab:results-90} and Table~\ref{tab:results-99} respectively.
-% explain columns (for repos with multiple projects, we picked the one with most crates.io downloads)
 % explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
 
-\begin{landscape}
-	{
-		\catcode`\#=12
-		\catcode`\_=12
-		\csvautolongtable{code/csv/analysis-projects.csv}
-		% \caption{Selected Projects for Analysis}
-		% \label{tab:selected-projects}
-	}
-\end{landscape}
+\mycsvtable{code/csv/analysis-projects.csv}{Analysis Projects}{
+	Selected Projects for Analysis.
+	For each project, we report its name, github repo path (https://github.com/...), github stars, crates.io dependents and downloads.
+	We also reported the total number of functions and traits found while analyzing the projects.
+	The projects that are not available on crates.io (because they are not a library, but rather more complex pieces of software) have N/A in the dependents and downloads columns.
+	The rows are sorted by TODO
+}{\label{tab:analysis-projects}}
 
-\begin{landscape}
-	\begin{table}
-		\centering
-		\csvautobooktabular{code/csv/ex.csv}
-		\caption{Results with similarity threshold of 0.9}
-		\label{tab:results-90}
-	\end{table}
-\end{landscape}
+\mycsvtable{code/csv/analysis-projects.csv}{Analysis Results at 90\% Similarity}{Results with similarity threshold of 0.90}{\label{tab:results-90}}
 
-
-\begin{landscape}
-	\begin{table}
-		\centering
-		\csvautobooktabular{code/csv/ex.csv}
-		\caption{Results with similarity threshold of 0.99}
-		\label{tab:results-99}
-	\end{table}
-\end{landscape}
+\mycsvtable{code/csv/analysis-projects.csv}{Analysis Results at 99\% Similarity}{Results with similarity threshold of 0.99}{\label{tab:results-99}}
