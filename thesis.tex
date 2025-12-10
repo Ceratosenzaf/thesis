@@ -27,17 +27,16 @@
 \providecommand{\defaultshellfontsize}{\scriptsize}
 \newcommand{\mytool}{\textsc{MyTool}\xspace}
 \newcommand{\mycsvtable}[4]{
-  \begin{landscape}
-    \centering
-    { \Large\bfseries\textsf{#2} }
-    {
-      \catcode`\#=12
-      \catcode`\_=12
-      \csvautolongtable{#1}
-      \captionof{table}{#3}
-      #4
-    }
-  \end{landscape}
+  \clearpage
+  \centering
+  { \large\bfseries\textsf{#2} }
+  {
+    \catcode`\#=12
+    \catcode`\_=12
+    \csvautolongtable{#1}
+    \captionof{table}{#3}
+    #4
+  }
 }
 
 \begin{document}

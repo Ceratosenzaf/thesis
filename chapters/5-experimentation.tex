@@ -139,16 +139,30 @@ Furthermore, our analysis showed that stable specialization could effectively ha
 This capability allows developers to write more generic and reusable code without sacrificing performance.
 As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
 Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
-% explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
+% TODO: explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
+% TODO: explain when the analysis was run and with what hw
+% TODO: explain computational complexity of the analysis
 
 \mycsvtable{code/csv/analysis-projects.csv}{Analysis Projects}{
 	Selected Projects for Analysis.
-	For each project, we report its name, github repo path (https://github.com/...), github stars, crates.io dependents and downloads.
+	For each project, we report its name, github stars, crates.io dependents and downloads.
 	We also reported the total number of functions and traits found while analyzing the projects.
 	The projects that are not available on crates.io (because they are not a library, but rather more complex pieces of software) have N/A in the dependents and downloads columns.
-	The rows are sorted by TODO
+	The rows are sorted by downloads and then by stars % TODO
 }{\label{tab:analysis-projects}}
 
-\mycsvtable{code/csv/analysis-projects.csv}{Analysis Results at 90\% Similarity}{Results with similarity threshold of 0.90}{\label{tab:results-90}}
+\mycsvtable{code/csv/analysis-90.csv}{Analysis Results at 90\% Similarity}{
+	Results with similarity threshold of 0.90.
+	For each analysed project, we reported its analysis time in seconds and peak RSS in MB.
+	The following columns are the number of functions that are specializable between one another, of which is also reported the number of single specializable functions.
+	The same is then done for trait pairs and single traits.
+	The rows use the same sorting from Table~\ref{tab:analysis-projects}
+}{\label{tab:results-90}}
 
-\mycsvtable{code/csv/analysis-projects.csv}{Analysis Results at 99\% Similarity}{Results with similarity threshold of 0.99}{\label{tab:results-99}}
+\mycsvtable{code/csv/analysis-99.csv}{Analysis Results at 99\% Similarity}{
+	Results with similarity threshold of 0.99.
+	For each analysed project, we reported its analysis time in seconds and peak RSS in MB.
+	The following columns are the number of functions that are specializable between one another, of which is also reported the number of single specializable functions.
+	The same is then done for trait pairs and single traits.
+	The rows use the same sorting from Table~\ref{tab:analysis-projects}
+}{\label{tab:results-99}}
