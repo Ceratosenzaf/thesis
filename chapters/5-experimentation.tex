@@ -131,6 +131,7 @@ By leveraging stable specialization, developers can achieve more efficient and m
 \section{Results}\label{experimentation-results}
 The analysis was run once with a similarity threshold of 0.90 and then with a threshold of 0.99.
 The results of these analyses are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
+
 \begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
 	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.png}
@@ -162,9 +163,10 @@ We also found that as the number of functions and traits in a project increases,
 \end{wrapfigure}
 We then also set to understand the impact of a full stable specialization implementation versus the current subset of non-overlapping specialization that Rust offers.
 To do so, we identified already specializable functions as functions that satisfy our specializability heuristic defined earlier and that have a permutation of their type parameters that makes them non-overlapping.
-Newly specializable functions are instead functions that satisfy our heuristic but do not have any permutation of their type parameters that makes them non-overlapping (complementary to the already specializable ones).
+Newly specializable functions are instead functions that satisfy our heuristic but do not have any permutation of their type parameters that makes them non-overlapping and thus could only be specialized using a full stable specialization implementation.
 Overlap can be caused by multiple factors, such as the presence of generic type parameters, trait bounds that are not mutually exclusive or more simply equal types used in different functions.
-As shown in Figure~\ref{fig:specializable-functions-already-vs-newly}, in both analysis we found that a full stable specialization implementation could on average triple the number of functions available for specialization compared to the current Rust specialization capabilities.
+As shown in Figure~\ref{fig:specializable-functions-already-vs-newly}, in both analysis we found that a full stable specialization implementation could on average triple the number of functions available for specialization compared to the current Rust specialization capabilities, highlighting the significant potential of specialization.
+In particular, at 90\% similarity threshold, we found that on average around 67\% of specializable functions were newly specializable using stable specialization, while at 99\% similarity threshold, this proportion was around 73\%.
 
 \begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
@@ -178,7 +180,7 @@ To do this, we first divided the functions into four distinct categories based o
 As shown in Figure~\ref{fig:functions-by-kind}, we found that the majority of functions in the analyzed codebases were trait impl functions, followed by inherent impl functions and bare functions, with trait functions being by far the least common.
 As Figure~\ref{fig:distribution-function-kinds} shows, we found that the group with the majority of specializable functions were trait impl functions, indicating that these functions were not only the most common but also the most likely to benefit from stable specialization.
 In particular, the most common patterns associated to trait impls are the \textbf{Monomorphized Traits} and \textbf{Manual Dispatch} patterns, hinting that many developers resort to these approaches to achieve specialization in their code.
-By applying stable specialization to these patterns, we could achieve significant reductions in code complexity and improved maintainability.
+By applying stable specialization, we could achieve significant reductions in code complexity and improved maintainability.
 \begin{figure}[htbp!]
 	\centering
 	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.png}
