@@ -129,17 +129,69 @@ By leveraging stable specialization, developers can achieve more efficient and m
 % --------------------- Section 2 ---------------------
 
 \section{Results}\label{experimentation-results}
-The analysis was run twice: once with a similarity threshold of 0.90 and once with a similarity threshold of 0.99.
-The results of these analyses are summarized in Table~\ref{tab:results-90} and Table~\ref{tab:results-99} respectively.
+The analysis was run once with a similarity threshold of 0.90 and then with a threshold of 0.99.
+The results of these analyses are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
+\begin{wrapfigure}{r}{0.4\linewidth}
+	\centering
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.png}
+	\captionsetup{type=figure,skip=2pt}
+	\caption{Distribution of Spec. Fns}
+	\label{fig:distribution-specializable-functions}
+\end{wrapfigure}
 The findings of our experimentation revealed several interesting insights into the prevalence and effectiveness of stable specialization in real-world Rust codebases.
 Across the analyzed projects, we identified numerous instances where stable specialization could be applied to reduce boilerplate code and improve performance.
-In particular, we found that the \textbf{TODO} and \textbf{TODO} patterns were the most common, indicating that many developers resort to these approaches to achieve specialization in their code.
-By applying stable specialization to these patterns, we observed significant reductions in code complexity and improved maintainability.
-Furthermore, our analysis showed that stable specialization could effectively handle default implementations and specialization based purely on trait bounds, which are not supported by some of the existing patterns.
+As shown in Figure~\ref{fig:distribution-specializable-functions}, an average of more than 20\% of functions in the analyzed codebases were found to be specializable using our stable specialization technique at 90\% similarity threshold, with some projects exhibiting even higher proportions.
+At 99\% similarity threshold, the average proportion of specializable functions was around 10\%, indicating that even with a stricter similarity requirement, a significant number of functions could still benefit from specialization.
+
+As expected, the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
+We also found that as the number of functions and traits in a project increases, so does the percentage of specializable instances, indicating that larger codebases stand to benefit significantly from stable specialization, as we can see in Figure~\ref{fig:correlation-functions-specializable}.
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figs/proportion_specializable_functions.png}
+	\captionsetup{type=figure,skip=2pt}
+	\caption{Correlation between Number of Functions and Spec. Functions}
+	\label{fig:correlation-functions-specializable}
+\end{figure}
+
+\begin{wrapfigure}{l}{0.4\linewidth}
+	\centering
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_bar_chart.png}
+	\captionsetup{type=figure,skip=2pt}
+	\caption{Types of Spec. Fns}
+	\label{fig:specializable-functions-already-vs-newly}
+\end{wrapfigure}
+We then also set to understand the impact of a full stable specialization implementation versus the current subset of non-overlapping specialization that Rust offers.
+To do so, we identified already specializable functions as functions that satisfy our specializability heuristic defined earlier and that have a permutation of their type parameters that makes them non-overlapping.
+Newly specializable functions are instead functions that satisfy our heuristic but do not have any permutation of their type parameters that makes them non-overlapping (complementary to the already specializable ones).
+Overlap can be caused by multiple factors, such as the presence of generic type parameters, trait bounds that are not mutually exclusive or more simply equal types used in different functions.
+As shown in Figure~\ref{fig:specializable-functions-already-vs-newly}, in both analysis we found that a full stable specialization implementation could on average triple the number of functions available for specialization compared to the current Rust specialization capabilities.
+
+\begin{wrapfigure}{r}{0.4\linewidth}
+	\centering
+	\includegraphics[width=0.38\textwidth]{figs/functions_kind_pie.png}
+	\captionsetup{type=figure,skip=2pt}
+	\caption{Types of Fns}
+	\label{fig:functions-by-kind}
+\end{wrapfigure}
+Afterwards, we also tried to understand which of the patterns we identified earlier were the most common in the analyzed codebases.
+To do this, we first divided the functions into four distinct categories based on their structure: bare functions (not associated with any trait or impl), trait functions (defined within a trait), trait impl functions (defined within a trait impl block) and inherent impl functions (defined within an inherent impl block).
+As shown in Figure~\ref{fig:functions-by-kind}, we found that the majority of functions in the analyzed codebases were trait impl functions, followed by inherent impl functions and bare functions, with trait functions being by far the least common.
+As Figure~\ref{fig:distribution-function-kinds} shows, we found that the group with the majority of specializable functions were trait impl functions, indicating that these functions were not only the most common but also the most likely to benefit from stable specialization.
+In particular, the most common patterns associated to trait impls are the \textbf{Monomorphized Traits} and \textbf{Manual Dispatch} patterns, hinting that many developers resort to these approaches to achieve specialization in their code.
+By applying stable specialization to these patterns, we could achieve significant reductions in code complexity and improved maintainability.
+\begin{figure}[htbp!]
+	\centering
+	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.png}
+	\captionsetup{type=figure,skip=2pt}
+	\caption{Distribution of Spec. Functions by Kind}
+	\label{fig:distribution-function-kinds}
+\end{figure}
+
+Furthermore, stable specialization could effectively handle default implementations and specialization based purely on trait bounds, which are not supported by many of the existing patterns.
 This capability allows developers to write more generic and reusable code without sacrificing performance.
-As expected the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
+
 Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
-% TODO: explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
+
 % TODO: explain when the analysis was run and with what hw
 % TODO: explain computational complexity of the analysis
 
@@ -148,7 +200,7 @@ Overall, our experimentation demonstrated that stable specialization is a valuab
 	For each project, we report its name, github stars, crates.io dependents and downloads.
 	We also reported the total number of functions and traits found while analyzing the projects.
 	The projects that are not available on crates.io (because they are not a library, but rather more complex pieces of software) have N/A in the dependents and downloads columns.
-	The rows are sorted by downloads and then by stars % TODO
+	The rows are sorted by downloads and then by stars
 }{\label{tab:analysis-projects}}
 
 \mycsvtable{code/csv/analysis-90.csv}{Analysis Results at 90\% Similarity}{
@@ -166,3 +218,8 @@ Overall, our experimentation demonstrated that stable specialization is a valuab
 	The same is then done for trait pairs and single traits.
 	The rows use the same sorting from Table~\ref{tab:analysis-projects}
 }{\label{tab:results-99}}
+
+% --------------------- Section 3 ---------------------
+
+\section{Considerations}\label{sec:experimentation-considerations}
+% TODO: explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
