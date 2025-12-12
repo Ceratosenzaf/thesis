@@ -19,7 +19,7 @@ We also split the functions based on their origin (bare function, trait items, i
 
 Once we had these groups, we calculated the tree edit distance of each function in the group to one another.
 This was done using the ZSS algorithm~\cite{ZSSTreeEditDistance89}, which computes the minimum number of edit operations required to transform one tree into another, allowing us to quantify the structural similarity between functions' ASTs.
-By analyzing these distances, we could identify groups of functions that were structurally similar enough to be considered for specialization using our stable specialization technique.
+The ZSS algorithm has a worst-case computational complexity of \(O(n^4)\), where \(n\) is the number of nodes in the larger tree, which makes it suitable for our analysis of function ASTs, but also computationally intensive for larger trees, which explains some of the longer analysis times we had in our results.
 After calculating the edit distance, we got the similarity by using this formula $$1 - \frac{\text{dist}}{\text{max\_size}}$$ where \texttt{dist} is the tree edit distance between the two functions and \texttt{max\_size} is the size of the largest AST between the two.
 
 Finally, we filtered out groups that had an average similarity lower than a certain threshold to focus on the most promising candidates for specialization.
@@ -194,8 +194,28 @@ This capability allows developers to write more generic and reusable code withou
 
 Overall, our experimentation demonstrated that stable specialization is a valuable tool for Rust developers, offering a practical solution to common challenges associated with generic programming and code specialization.
 
-% TODO: explain when the analysis was run and with what hw
-% TODO: explain computational complexity of the analysis
+% --------------------- Section 3 ---------------------
+
+\section{Considerations}\label{sec:experimentation-considerations}
+While our experimentation has yielded promising results regarding the potential benefits of stable specialization in Rust codebases, there are several important considerations to keep in mind when interpreting these findings.
+
+Firstly, it's crucial to recognize that not all instances of specializable functions necessarily warrant specialization.
+The decision to specialize a function should be based on a careful evaluation of the trade-offs involved, including potential performance gains, code complexity and maintainability.
+In some cases, the overhead of specialization may outweigh the benefits, particularly if the specialized versions do not provide significant performance improvements or if they complicate the code unnecessarily.
+Therefore, developers should exercise discretion when applying stable specialization, ensuring that it aligns with the specific needs and goals of their projects.
+
+Secondly, our analysis was based on heuristics to identify specializable functions and patterns within the selected codebases.
+As such, there is a possibility that some patterns were overlooked or misclassified, which could affect the comprehensiveness of our findings, potentially yielding false positives or negatives.
+Future work could involve refining these heuristics or employing more sophisticated analysis techniques to enhance the accuracy of the identification process.
+
+One could also argue that this analysis shows the poor quality of some Rust codebases, as they resort to patterns that introduce boilerplate and complexity.
+While this may be true in some cases, it's important to note that as shown in Figure~\ref{fig:specializable-functions-already-vs-newly} the majority of the identified specializable functions could not be specialized using current Rust capabilities due to overlapping implementations.
+This indicates that even well-written codebases could benefit from stable specialization, as it provides a more flexible and powerful mechanism for achieving specialization without the limitations imposed by the current model.
+Stable specialization provides a valuable tool for developers to write more efficient and maintainable code, ultimately contributing to the overall improvement of the Rust ecosystem.
+
+To wrap up, it's important to consider the broader implications of specialization on the ecosystem: by enabling more efficient and maintainable specialization, this feature has the potential to enhance the overall quality and performance of Rust applications across various domains.
+
+% --------------------- Section 4 ---------------------
 
 \mycsvtable{code/csv/analysis-projects.csv}{Analysis Projects}{
 	Selected Projects for Analysis.
@@ -220,8 +240,3 @@ Overall, our experimentation demonstrated that stable specialization is a valuab
 	The same is then done for trait pairs and single traits.
 	The rows use the same sorting from Table~\ref{tab:analysis-projects}
 }{\label{tab:results-99}}
-
-% --------------------- Section 3 ---------------------
-
-\section{Considerations}\label{sec:experimentation-considerations}
-% TODO: explain (with example) that not always specializable = should be specialized (e.g. no performance gain, more boilerplate than reduced, etc.)
