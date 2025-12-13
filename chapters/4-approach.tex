@@ -34,6 +34,7 @@ The three primary components needed by the approach are:
 The first step to achieve specialization through metaprogramming is to define various specialized implementations that should be applied when certain conditions are met.
 In \mytool{}, this is accomplished using the \inlinerust{#[when(predicate)]} attribute macro, which takes as argument the predicate, which is the condition that must be satisfied for the specialized implementation to be selected.
 Please note that if we wanted a simpler drop-in replacement for the unstable specialization feature, we could edit the tool to avoid passing the predicate altogether and just use normal rust syntax for implementations, but we still would need to mark the implementation with some kind of macro to generate the necessary boilerplate.
+However, we believe that our approach of using a predicate provides more flexibility and control over the specialization process, allowing for more fine-grained optimizations and better integration with existing codebases.
 
 \paragraph{Predicates}
 In our implementation, the macro supports these predicates:
@@ -50,6 +51,13 @@ These predicates can be combined to form complex conditions, allowing for flexib
 In addition to the specific predicates, \mytool{} supports a wildcard condition that matches any type.
 For instance, the condition \mbox{\texttt{T = Vec<\_>}} matches any vector type, regardless of its element type.
 Another useful wildcard condition is \mbox{\texttt{T = \&\_}}, which matches any reference type.
+Wildcards are not allowed in trait implementation predicates, as from our point of view they would not provide any useful functionality, for example knowing that a type implements any trait without specifying which one doesn't help much in specializing code.
+
+\paragraph{Nested Conditions}
+The macro also supports nested conditions, allowing for more complex specialization rules.
+For example, we can have a condition that checks if a type is a vector of types that implement a specific trait, e.g.\@ \texttt{all(T = Vec<U>, U:\@ Display)}, where both \texttt{T} and \texttt{U} are generic type parameters.
+Or we could have a condition that checks if a type is a reference to a type that is either \texttt{i32} or another reference to any other type, e.g.\@ \texttt{T = \&U, any(U = i32, U = \&\_)}, and so on.
+All the predicates and wildcards defined earlier can be nested within each other to form more complex conditions and allow for fine-grained control over specialization.
 
 \paragraph{Default Implementation}
 In addition to specialized implementations, \mytool{} supports a default implementation that is used when no other conditions are met.
@@ -64,19 +72,16 @@ This means that each condition is a logical OR of one or more predicatesand each
 The normalization process also involves applying De Morgan's laws~\cite{DeMorgan} to push negations down to the atomic conditions, ensuring that the conditions are expressed in a consistent manner.
 This representation allows for efficient checking of whether a condition is satisfied, because we can easily check each disjunctive clause separately.
 For example, the condition \texttt{not(all(\mbox{T:\@ Display}, any(\mbox{T = i32}, \mbox{T = f64})))} is normalized to \texttt{any(not(\mbox{T:\@ Display}), all(not(\mbox{T = i32}), not(\mbox{T = f64})))}, so we know that that specific specialized implementation should be applied either if \texttt{T} does not implement \texttt{Display} or if \texttt{T} is neither \texttt{i32} nor \texttt{f64}.
+Some particular cases could also be completely flattened during normalization, e.g.\@ \texttt{all(T = Vec<U>, any(U = i32, U = f64))} would be flattened to \texttt{any(T = Vec<i32>, T = Vec<f64>)} and hence an implementation would be generated for each of the two cases, as explained in the following paragraph.
 
 \paragraph{Macro expansion}
 Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly in all occurrences.
-For example: if we have a type equality condition, the generic parameter is replaced with the specific type; if we have a trait implementation condition, the generic parameter is constrained to implement the specified trait(s).
+For example: if we have a type equality condition, the generic parameter is replaced with the specific type in all its occurrencies; if we have a trait implementation condition, the generic parameter is constrained to implement the specified trait(s).
 Given that all the conditions are normalized, the macro expansion can be greatly optimized, allowing for efficient resolution of the conditions at compile time.
 Each disjunct condition is expanded into its own \inlinerust{trait} and \inlinerust{impl} couple, where the new trait's name is originated by appending the conditions hash to the original trait name.
 This is the reason why we previously defined this approach \textit{monomorphic specialization}.
 For ease of read, in this thesis we will give each specialized trait a name that represents the underlying conditions, instead of the actual names the tool would output.
-
-\paragraph{Nested Conditions}
-The macro also supports nested conditions, allowing for more complex specialization rules.
-For example, we can have a condition that checks if a type is a vector of types that implement a specific trait, e.g.\@ \texttt{all(T = Vec<U>, U:\@ Display)}.
-Some particular cases could also be completely flattened during normalization, e.g.\@ \texttt{all(T = Vec<U>, any(U = i32, U = f64))} would be flattened to \texttt{any(T = Vec<i32>, T = Vec<f64>)} and hence an implementation would be generated for each of the two cases.
+An example of this expansion is the "Specialized implementation for MyI8 or \&u8" shown in Listings~\ref{fig:conditions-definition-pre} and~\ref{fig:conditions-definition-post}.
 
 \paragraph{Examples}
 Listings \ref{fig:conditions-definition-pre} and \ref{fig:conditions-definition-post} show an example of how to define specialized implementations using the \inlinerust{#[when(predicate)]} macro and the corresponding expansion generated by the macro.
@@ -205,8 +210,8 @@ With this information, the build script generates a metadata file that is later 
 \paragraph{Alternatives}\label{subsec:alternatives}
 If the language didn't support build scripts or similar mechanisms, an alternative approach could be to use some additional macros to mark the default implementations and the traits explicitly.
 The first is required to identify the default implementations, while the second is needed because the trait's body is used to generate the monomorphized versions of the specialized implementations.
-To handle the order of definitions without a build script or similar mechanism, the easiest way would be to have a two-pass compilation process, where the first pass collects all the necessary information and the second pass generates the specialized code.
-However, this approach would be less efficient and more complex to implement, as it would require significant changes to the compilation process.
+To handle the order of definitions without a build script or similar mechanism, the easiest way would be to have a two-pass compilation process, where the first pass collects all the necessary information and the second one generates the specialized code.
+However, this approach would be less efficient and more complex to implement.
 Another way would be to wrap everything in a macro that collects all the necessary information, but this would be cumbersome and would not scale well for larger codebases.
 
 % --------------------- Section 5 ---------------------
@@ -220,8 +225,10 @@ When designing \mytool{}, we had to carefully consider how to handle the matter.
 \paragraph{Soundness Concerns}
 The main soundness concern with lifetimes and specialization arises when a specialized implementation requires, implicitly or explicitly, different lifetime constraints than those present in the default implementation.
 For example, if a specialized implementation returns a reference with a shorter lifetime than the default implementation, it could lead to dangling references or other unsafe behavior.
+
 The core problem is that at code generation time (the phase where MIR is lowered to LLVM IR and then to machine code) the compiler doesn't know about lifetimes (since it has already erased all lifetime information) and so it can't use them to choose which implementation should apply.
-This code (as shown in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit}) would compile with \inlinerust{#![feature(specialization)]} but lead to unsound behavior.
+For example, the code shown in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit} would compile with \inlinerust{#![feature(specialization)]} but lead to unsound behavior, since typecheck (another compilation phase, which is at higher level and hence still has all lifetimes information) and code-gen would disagree about which implementation should be called by \inlinerust{x.my_method()}.
+Another clear case of unsoundness of specialization with lifetimes could be if the lifetime-specialized implementation returns a different type than the default implementation, causing type-check and code-gen to disagree about the type of the returned value, leading to undefined behavior.
 \begin{figure}[htbp!]
 	\centering
 	\showrust*[0.98\linewidth]{soundness-lifetimes-explicit.rs}
@@ -243,11 +250,11 @@ This soundness issue was reported shortly after the specialization proposal~\cit
 To mitigate the issue, the Rust team proposed a workaround that allows sound specialization for a subset of use cases~\cite{MinSpecialization}.
 This solution, called \inlinerust{min_specialization}, is unfortunately a breaking change from current Rust code and that's one of the reasons why it didn't get stabilized.
 For example, the code in Listings~\ref{fig:soundness-lifetimes-explicit} and \ref{fig:soundness-lifetimes-implicit} would not compile with \inlinerust{#![feature(min_specialization)]}.
+That is because the first (the explicit one) violates the second condition of the proposal ("it is fully generic with respect to lifetimes") by adding the \texttt{T:\@ 'static} constraint, while the second (implicit one) violates the first condition ("it relies only on implied bounds") by adding the \texttt{T:\@ MyOtherTrait} bound.
 
-\paragraph{Our Approach}
 As stated earlier, the fundamental problem is that the compiler doesn't know about lifetimes at code generation time even though they could affect which implementation should be selected.
-The most sensible solution to this would be in our opinion to make the compiler "smarter" by simply retaining lifetime information until code generation time, even though this would require significant changes to the compiler.
-This ides has already been brought up in the past but it was discarded as it was considered to have a "high cost"~\cite{SpecializationSoundness}.
+The most sensible solution to this would be in our opinion to make the compiler "smarter" by simply retaining lifetime information until code generation time (even though this would require significant changes to the compiler) or at least until monomorphization, so that lifetimes could be used to select the appropriate implementation.
+This ides has already been brought up in the past but it was discarded as it was considered to have a "high cost" of implementation~\cite{SpecializationSoundness}.
 The only other accusation against it is that it would be harder to reason about lifetimes if they could influence code selection, but we believe that this is not a strong argument against it, given that many modern programming languages have already accustomed us to using generic programming features without significant issues.
 Hence, in \mytool{} we decided to simulate the information that the "smarter" compiler would have about lifetimes by allowing specialization based on lifetimes in \textit{conditions definition} and providing lifetime annotations in \textit{method wrapping}.
 
@@ -294,7 +301,7 @@ While \mytool{} provides a powerful mechanism for stable specialization, it does
 	\item \textbf{Compile-Time Overhead}: The use of macros and build scripts can introduce some compile-time overhead, especially in large codebases with many specialized implementations.
 	\item \textbf{Lifetimes Complexity}: While the tool provides mechanisms to handle lifetimes, the added complexity may lead to confusion or misuse if not properly understood by the user.
 	\item \textbf{Trait Bounds}: Since the tool generates a monomorphic version of each trait involved, the ability to involve those traits in trait bounds elsewhere in the code is lost.
-	\item \textbf{Limited Predicate Support}: The current set of supported predicates may not cover all language feature (e.g.\@ \texttt{dyn Trait}), potentially limiting the tool's applicability in certain cases.
+	\item \textbf{Limited Predicate Support}: Although the tool supports a variety of predicates for specialization, the current set of supported predicates may not cover all language feature (e.g.\@ \texttt{dyn Trait} or mutable references), potentially limiting the tool's applicability in certain cases.
 \end{itemize}
 Despite these limitations, \mytool{} represents a significant step forward in enabling stable specialization through metaprogramming, providing developers with a powerful tool to optimize their code while adhering to Rust's safety guarantees.
 More generally, the concepts presented in this chapter can be adapted to other programming languages with similar capabilities, broadening the applicability of the approach beyond Rust.

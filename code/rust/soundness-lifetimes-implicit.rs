@@ -14,3 +14,7 @@ impl<T: MyOtherTrait> MyTrait for T {
         println!("Specialized for 'static");
     }
 }
+fn main() {
+    let x = "test"; // &str implements MyOtherTrait because it is 'static
+    x.my_method();  // should call specialized impl but calls the generic one
+}

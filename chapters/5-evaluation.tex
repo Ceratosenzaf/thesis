@@ -1,8 +1,8 @@
-\chapter{Experimentation}\label{chap:experimentation}
+\chapter{Evaluation}\label{chap:evaluation}
 
 % --------------------- Section 1 ---------------------
 
-\section{Introduction}\label{sec:experimentation-introduction}
+\section{Introduction}\label{sec:evaluation-introduction}
 To validate the utility of stable specialization, we conducted a series of experiments focusing on ecosystem analysis.
 These experiments aimed to identify real-world scenarios where stable specialization could provide significant benefits, particularly in terms of performance and code maintainability.
 The experiments were designed to analyze a diverse set of public Rust codebases, examining their use of traits and generic programming patterns.
@@ -128,7 +128,7 @@ By leveraging stable specialization, developers can achieve more efficient and m
 
 % --------------------- Section 2 ---------------------
 
-\section{Results}\label{experimentation-results}
+\section{Results}\label{evaluation-results}
 The analysis was run once with a similarity threshold of 0.90 and then with a threshold of 0.99.
 The results of these analyses are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
 
@@ -196,8 +196,8 @@ Overall, our experimentation demonstrated that stable specialization is a valuab
 
 % --------------------- Section 3 ---------------------
 
-\section{Considerations}\label{sec:experimentation-considerations}
-While our experimentation has yielded promising results regarding the potential benefits of stable specialization in Rust codebases, there are several important considerations to keep in mind when interpreting these findings.
+\section{Considerations}\label{sec:evaluation-considerations}
+While our evaluation has yielded promising results regarding the potential benefits of stable specialization in Rust codebases, there are several important considerations to keep in mind when interpreting these findings.
 
 Firstly, it's crucial to recognize that not all instances of specializable functions necessarily warrant specialization.
 The decision to specialize a function should be based on a careful evaluation of the trade-offs involved, including potential performance gains, code complexity and maintainability.
