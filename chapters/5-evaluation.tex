@@ -76,9 +76,9 @@ For Listing~\ref{fig:type-level-dispatch}, the default implementation is not sup
 
 Each pattern represents a different approach to achieving specialization in Rust and our analysis aimed to determine how stable specialization could enhance each of these approaches.
 It's important to note that even though each of these patterns could be implemented using stable specialization, some patterns are more likely to benefit from it than others.
-Firstly, for all patterns stable specialization would completely remove the method call boilerplate needed to select the correct specialized version.
+Firstly, for all patterns stable specialization would completely remove the method call boilerplate needed to select the correct specialized version, which as we've seen in Listing~\ref{fig:call-check-type} can be quite verbose and error-prone.
 Secondly, some patterns inherently introduce more complexity and boilerplate than others, making them more suitable candidates for stable specialization, like the \textbf{Monomorphized Traits} and \textbf{Manual Dispatch} patterns, which would also benefit from the removal of a whole trait and trait fn respectively.
-Anyways, we believe that stable specialization could provide significant benefits across all these patterns by reducing boilerplate, improving performance and enhancing code readability and maintainability.
+Anyways, we believe that stable specialization could provide significant benefits across all these patterns by reducing boilerplate (as we've just discussed), improving performance and enhancing code readability and maintainability.
 Furthermore, many of these patterns do not support certain specialization features, like specialization based purely on trait bounds or default implementations.
 By leveraging stable specialization, developers can achieve more efficient and maintainable code across a variety of programming patterns.
 
