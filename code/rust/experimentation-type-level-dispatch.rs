@@ -1,18 +1,24 @@
 struct MyType {}
-struct MyTypeWithV<T> {
-    my_type: MyType,
+struct MyTypeWithV<'a, T> {
+    my_type: &'a MyType,
     v: T,
 }
 trait Foo {
     fn foo(&self);
 }
-impl Foo for MyTypeWithV<i32> {
+impl<'a> Foo for MyTypeWithV<'a, i32> {
     fn foo(&self) {
         println!("v is i32");
     }
 }
-impl Foo for MyTypeWithV<u32> {
+impl<'a> Foo for MyTypeWithV<'a, u32> {
     fn foo(&self) {
         println!("v is u32");
     }
+}
+fn call<'a, T>(my_type: &'a MyType, v: T)
+where
+    MyTypeWithV<'a, T>: Foo,
+{
+    MyTypeWithV { my_type, v }.foo();
 }

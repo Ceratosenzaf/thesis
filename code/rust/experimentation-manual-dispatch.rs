@@ -11,3 +11,6 @@ impl<T> Foo<T> for MyType {
         println!("v is i32");
     }
 }
+fn call<T>(my_type: &MyType, v: T) {
+    my_type.foo_default(v);
+}
