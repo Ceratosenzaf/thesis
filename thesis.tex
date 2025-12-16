@@ -29,17 +29,37 @@
 
 \providecommand{\defaultshellfontsize}{\scriptsize}
 \newcommand{\mytool}{\textsc{MyTool}\xspace}
-\newcommand{\mycsvtable}[4]{
+\newcommand{\mycsvtable}[6]{
   \clearpage
-  \centering
-  { \large\bfseries\textsf{#2} }
-  {
-    \catcode`\#=12
-    \catcode`\_=12
-    \csvautolongtable{#1}
-    \captionof{table}{#3}
-    #4
-  }
+  \begin{longtable}{#3}
+    % header for the first page
+    \multicolumn{#2}{c}{\tablename\ \thetable\ -- #1}                                                                         \\
+    \hline
+    #4 \\
+    \hline
+    \endfirsthead
+
+    % header for all pages except the first one
+    \multicolumn{#2}{c}{\tablename\ \thetable\ -- Continued from previous page}                                                                 \\
+    \hline
+    #4 \\
+    \hline
+    \endhead
+
+    % footer for all pages except the last one
+    \hline
+    \multicolumn{#2}{|r|}{Continued on next page}                                                                                               \\
+    \hline
+    \endfoot
+
+    % footer for the last page
+    \hline
+    #5
+    \endlastfoot
+
+    % table body
+    #6
+  \end{longtable}
 }
 
 \begin{document}
