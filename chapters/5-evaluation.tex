@@ -33,7 +33,7 @@ It's also important to note that not all instances where specialization is possi
 \paragraph{Analysis Setup}
 The analysis was performed on a machine with an Intel Core i7-8565U 4-Core 8-Thread Processor and 16 GB of RAM, running Ubuntu 24.04 LTS.
 The Rust toolchain used for the analysis was  nightly-2025-11-17, with our static analysis tool integrated into the compiler as a custom pass.
-The analysis was executed with two different similarity thresholds:
+The analysis was executed starting from November 17, 2025 and to ensure a comprehensive evaluation, it got run with two different similarity thresholds:
 \begin{itemize}
 	\item \textbf{90\% Similarity Threshold}: This threshold was chosen to capture a broader range of specialization opportunities, allowing for more structural differences between functions while still identifying meaningful similarities.
 	\item \textbf{99\% Similarity Threshold}: This higher threshold was selected to focus on functions that are nearly identical in structure, ensuring that only the most closely related functions were considered for specialization.
@@ -153,12 +153,13 @@ By leveraging stable specialization, developers can achieve more efficient and m
 % --------------------- Section 2 ---------------------
 
 \section{Results}\label{evaluation-results}
-The analysis was run once with a similarity threshold of 0.90 and then with a threshold of 0.99.
-The results of these analyses are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
+The analyzed projects are listed in Table~\ref{tab:analysis-projects}, with some metadata such as their GitHub stars, \texttt{crates.io} dependents and downloads and the total number of functions and traits.
+The analysis was run once with a similarity threshold of 90\% and once with a similarity threshold of 99\% and the results are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
+For each project and threshold, we reported its analysis time in seconds, peak RSS in MB, number of functions that are specializable between one another, from which is extracted the number of unique specializable functions and the same is then done for trait pairs and unique traits.
 
-\begin{wrapfigure}{r}{0.4\linewidth}
+\begin{wrapfigure}{r}{0.35\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.png}
+	\includegraphics[width=0.33\textwidth]{figs/specializable_functions_distribution_box_plot.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Fns}
 	\label{fig:distribution-specializable-functions}
@@ -172,15 +173,15 @@ As expected, the major results are in projects that heavily utilize traits and g
 We also found that as the number of functions and traits in a project increases, so does the percentage of specializable instances, indicating that larger codebases stand to benefit significantly from stable specialization, as we can see in Figure~\ref{fig:correlation-functions-specializable}.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figs/proportion_specializable_functions.png}
+	\includegraphics[width=0.8\textwidth]{figs/proportion_specializable_functions.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Correlation between Number of Functions and Spec. Functions}
 	\label{fig:correlation-functions-specializable}
 \end{figure}
 
-\begin{wrapfigure}{l}{0.4\linewidth}
+\begin{wrapfigure}{l}{0.33\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_bar_chart.png}
+	\includegraphics[width=0.3\textwidth]{figs/specializable_functions_bar_chart.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Spec. Fns}
 	\label{fig:specializable-functions-already-vs-newly}
@@ -192,9 +193,9 @@ Overlap can be caused by multiple factors, such as the presence of generic type 
 As shown in Figure~\ref{fig:specializable-functions-already-vs-newly}, in both analysis we found that a full stable specialization implementation could on average triple the number of functions available for specialization compared to the current Rust specialization capabilities, highlighting the significant potential of specialization.
 In particular, at 90\% similarity threshold, we found that on average around 67\% of specializable functions were newly specializable using stable specialization, while at 99\% similarity threshold, this proportion was around 73\%.
 
-\begin{wrapfigure}{r}{0.4\linewidth}
+\begin{wrapfigure}{r}{0.33\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/functions_kind_pie.png}
+	\includegraphics[width=0.3\textwidth]{figs/functions_kind_pie.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Fns}
 	\label{fig:functions-by-kind}
@@ -204,10 +205,11 @@ To do this, we first divided the functions into four distinct categories based o
 As shown in Figure~\ref{fig:functions-by-kind}, we found that the majority of functions in the analyzed codebases were trait impl functions, followed by inherent impl functions and bare functions, with trait functions being by far the least common.
 As Figure~\ref{fig:distribution-function-kinds} shows, we found that the group with the majority of specializable functions were trait impl functions, indicating that these functions were not only the most common but also the most likely to benefit from stable specialization.
 In particular, the most common patterns associated to trait impls are the \textbf{Monomorphized Traits} and \textbf{Manual Dispatch} patterns, hinting that many developers resort to these approaches to achieve specialization in their code.
+These two patterns, as seen earlier, are also the ones that would benefit the most from stable specialization, as they would both see a significant reduction in boilerplate code and complexity, even more so than other patterns.
 By applying stable specialization, we could achieve significant reductions in code complexity and improved maintainability.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.png}
+	\includegraphics[width=0.8\textwidth]{figs/specializable_functions_box_plot.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Functions by Kind}
 	\label{fig:distribution-function-kinds}
