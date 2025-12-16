@@ -17,12 +17,15 @@
 \usepackage{csvsimple}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{siunitx}
+
 
 \newcommand{\cwcomment}[1]{\profcomment[Walter]{#1}}
 \newcommand{\evcomment}[1]{\studcomment[Edo]{#1}}
 
 \setminted{style=default, fontfamily=cmtt}
 \setmintedinline{style=default, fontfamily=cmtt}
+\sisetup{group-separator={\;}, group-four-digits=true}
 
 \providecommand{\defaultshellfontsize}{\scriptsize}
 \newcommand{\mytool}{\textsc{MyTool}\xspace}
