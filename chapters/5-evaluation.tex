@@ -4,7 +4,7 @@
 
 \section{Introduction}\label{sec:evaluation-introduction}
 To validate the utility of stable specialization, we conducted a series of experiments focusing on ecosystem analysis.
-These experiments aimed to identify real-world scenarios where stable specialization could provide significant benefits, particularly in terms of performance and code maintainability.
+These evaluations aimed to identify real-world scenarios where stable specialization could provide significant benefits, particularly in terms of code maintainability.
 The experiments were designed to analyze a diverse set of public Rust codebases, examining their use of traits and generic programming patterns.
 By applying our specialization technique to these codebases, we sought to demonstrate its practical applicability and effectiveness in real-world scenarios.
 
@@ -18,8 +18,8 @@ For example, if we had a function named \texttt{process\_int} taking an \texttt{
 We also split the functions based on their origin (bare function, trait items, impl items) and if they were associated with a trait, we used another similar heuristic for the two traits.
 
 Once we had these groups, we calculated the tree edit distance of each function in the group to one another.
-This was done using the ZSS algorithm~\cite{ZSSTreeEditDistance89}, which computes the minimum number of edit operations required to transform one tree into another, allowing us to quantify the structural similarity between functions' ASTs.
-The ZSS algorithm has a worst-case computational complexity of \(O(n^4)\), where \(n\) is the number of nodes in the larger tree, which makes it suitable for our analysis of function ASTs, but also computationally intensive for larger trees, which explains some of the longer analysis times we had in our results.
+This was done using the ZSS algorithm~\cite{ZSSTreeEditDistance89}, which computes the minimum number of operations required to transform one tree into another, allowing us to quantify the structural similarity between functions' ASTs.
+The ZSS algorithm has a worst-case complexity of \(O(n^4)\), where \(n\) is the number of nodes in the larger tree, which makes it suitable for our analysis of function ASTs, but also computationally intensive for larger trees, which explains some of the longer analysis times we had.
 After calculating the edit distance, we got the similarity by using this formula $$1 - \frac{\text{dist}}{\text{max\_size}}$$ where \texttt{dist} is the tree edit distance between the two functions and \texttt{max\_size} is the size of the largest AST between the two.
 
 Finally, we filtered out groups that had an average similarity lower than a certain threshold to focus on the most promising candidates for specialization.
@@ -42,8 +42,8 @@ These thresholds allowed us to evaluate the effectiveness of stable specializati
 
 \paragraph{Project Selection}
 An important step to conduct this research was to select a set of representative Rust projects from the open-source ecosystem.
-For this purpose, we selected some of the most downloaded crates from \texttt{crates.io} as well as some popular projects and other less known ones, ranging from code editors to broadly used libraries.
-The selected projects (over 50 in total) cover a wide range of domains and use cases, ensuring that our analysis captures a diverse set of programming patterns and practices.
+For this purpose, we selected some of the most downloaded crates from \texttt{crates.io} as well as some popular projects and other less known ones, ranging from code editors to broadly used libraries, ensuring that our analysis captures a diverse set of programming patterns and practices.
+The analyzed projects are listed in Table~\ref{tab:analysis-projects}, along with some relevant metadata such as their GitHub stars, \texttt{crates.io} dependents and downloads and the total number of functions and traits found while analyzing the projects.
 
 \paragraph{Pattern Identification}
 To keep the analysis focused and feasible and to ensure that we could draw meaningful conclusions from the results, we concentrated on identifying specific patterns that are likely to benefit from stable specialization.
@@ -153,35 +153,34 @@ By leveraging stable specialization, developers can achieve more efficient and m
 % --------------------- Section 2 ---------------------
 
 \section{Results}\label{evaluation-results}
-The analyzed projects are listed in Table~\ref{tab:analysis-projects}, with some metadata such as their GitHub stars, \texttt{crates.io} dependents and downloads and the total number of functions and traits.
-The analysis was run once with a similarity threshold of 90\% and once with a similarity threshold of 99\% and the results are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
-For each project and threshold, we reported its analysis time in seconds, peak RSS in MB, number of functions that are specializable between one another, from which is extracted the number of unique specializable functions and the same is then done for trait pairs and unique traits.
+The analysis was run with a similarity threshold of 90\% and 99\% and the results for the two are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
+For each project and threshold, we reported its analysis time in seconds, peak RSS in MB, number of functions specializable between one another, from which is extracted the number of unique specializable functions and the same is then done for trait pairs and unique traits.
 
-\begin{wrapfigure}{r}{0.35\linewidth}
+\begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.33\textwidth]{figs/specializable_functions_distribution_box_plot.png}
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Fns}
 	\label{fig:distribution-specializable-functions}
 \end{wrapfigure}
 The findings of our experimentation revealed several interesting insights into the prevalence and effectiveness of stable specialization in real-world Rust codebases.
 Across the analyzed projects, we identified numerous instances where stable specialization could be applied to reduce boilerplate code and improve performance.
-As shown in Figure~\ref{fig:distribution-specializable-functions}, an average of more than 20\% of functions in the analyzed codebases were found to be specializable using our stable specialization technique at 90\% similarity threshold, with some projects exhibiting even higher proportions.
-At 99\% similarity threshold, the average proportion of specializable functions was around 10\%, indicating that even with a stricter similarity requirement, a significant number of functions could still benefit from specialization.
+As shown in Figure~\ref{fig:distribution-specializable-functions}, an average of more than 20\% of functions in the analyzed codebases were found to be specializable at 90\% similarity threshold, with some projects exhibiting even higher proportions.
+At 99\% similarity threshold, the average was around 10\%, indicating that even with stricter similarity requirements a significant number of functions could benefit from specialization.
 
-As expected, the major results are in projects that heavily utilize traits and generics, as these are the areas where stable specialization is expected to have the most impact.
+As expected based on our initial hypotheses, the major results are in projects that heavily utilize traits and generics.
 We also found that as the number of functions and traits in a project increases, so does the percentage of specializable instances, indicating that larger codebases stand to benefit significantly from stable specialization, as we can see in Figure~\ref{fig:correlation-functions-specializable}.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figs/proportion_specializable_functions.png}
+	\includegraphics[width=0.75\textwidth]{figs/proportion_specializable_functions.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Correlation between Number of Functions and Spec. Functions}
 	\label{fig:correlation-functions-specializable}
 \end{figure}
 
-\begin{wrapfigure}{l}{0.33\linewidth}
+\begin{wrapfigure}{l}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.3\textwidth]{figs/specializable_functions_bar_chart.png}
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_bar_chart.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Spec. Fns}
 	\label{fig:specializable-functions-already-vs-newly}
@@ -193,9 +192,9 @@ Overlap can be caused by multiple factors, such as the presence of generic type 
 As shown in Figure~\ref{fig:specializable-functions-already-vs-newly}, in both analysis we found that a full stable specialization implementation could on average triple the number of functions available for specialization compared to the current Rust specialization capabilities, highlighting the significant potential of specialization.
 In particular, at 90\% similarity threshold, we found that on average around 67\% of specializable functions were newly specializable using stable specialization, while at 99\% similarity threshold, this proportion was around 73\%.
 
-\begin{wrapfigure}{r}{0.33\linewidth}
+\begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.3\textwidth]{figs/functions_kind_pie.png}
+	\includegraphics[width=0.38\textwidth]{figs/functions_kind_pie.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Fns}
 	\label{fig:functions-by-kind}
@@ -209,7 +208,7 @@ These two patterns, as seen earlier, are also the ones that would benefit the mo
 By applying stable specialization, we could achieve significant reductions in code complexity and improved maintainability.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.8\textwidth]{figs/specializable_functions_box_plot.png}
+	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.png}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Functions by Kind}
 	\label{fig:distribution-function-kinds}
