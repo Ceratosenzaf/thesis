@@ -1,0 +1,19 @@
+\chapter{Future Work}\label{chap:future_work}
+
+This thesis has laid the groundwork for further exploration into the optimization of specialization mechanisms in Rust. Several avenues for future research and development present themselves:
+\begin{itemize}
+	\item \textbf{Predicate Support}: As discussed in Section~\ref{sec:limitations}, extending \mytool to support more predicates could enhance its expressiveness and utility.
+
+	\item \textbf{Compiler Integration:} Further work could focus on integrating the specialization techniques directly into the Rust compiler, allowing for full stable support and wider adoption within the Rust ecosystem.
+	      Once integrated, it would be interesting to explore optimizations that could be applied to the standard library and other widely used crates.
+
+	\item \textbf{Performance Benchmarking:} While this thesis has provided initial benchmarks, a more extensive suite of tests across diverse real-world applications could yield deeper insights into the performance characteristics of the proposed optimizations.
+
+	\item \textbf{Overlapping Implementations:} Investigating strategies to handle overlapping implementations more effectively could further enhance the robustness and applicability of the specialization mechanism, like the \textit{lattice} approach mentioned in section \ref{sec:method_wrapping}.
+
+	\item \textbf{Broader Language Support:} The techniques developed in this thesis could be adapted for use in other programming languages that support macros, bringing the benefits of specialization to a wider audience.
+
+	\item \textbf{User Studies:} Conducting user studies to assess the usability and developer experience when employing \mytool in real-world coding scenarios could provide valuable feedback for refinement.
+\end{itemize}
+
+By pursuing these directions, future work can build upon the foundation established in this thesis, advancing the state of specialization in Rust and potentially influencing other programming languages as well.
