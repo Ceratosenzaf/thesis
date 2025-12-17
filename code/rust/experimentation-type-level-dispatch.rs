@@ -1,4 +1,4 @@
-struct MyType {}
+struct MyType;
 struct MyTypeWithV<'a, T> {
     my_type: &'a MyType,
     v: T,

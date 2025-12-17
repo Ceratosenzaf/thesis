@@ -103,47 +103,53 @@ By leveraging stable specialization, developers can achieve more efficient and m
 
 \begin{figure}[p!]
 	\centering
-	\begin{minipage}{0.49\textwidth}
+	\begin{minipage}{0.48\textwidth}
 		\centering
 		\begin{minipage}{\linewidth}
 			\centering
 			\showrust[0.98\linewidth]{experimentation-standalone-functions.rs}
-			\captionsetup{type=listing,skip=2pt}
+			\captionsetup{type=listing,skip=5pt}
 			\caption{Standalone Functions}
 			\label{fig:standalone-functions}
 		\end{minipage}
-		\vspace{1em}
+
+		\vspace{2em}
+
 		\begin{minipage}{\linewidth}
 			\centering
 			\showrust[0.98\linewidth]{experimentation-inherent-impls.rs}
-			\captionsetup{type=listing,skip=2pt}
+			\captionsetup{type=listing,skip=5pt}
 			\caption{Inherent Impls}
 			\label{fig:inherent-impls}
 		\end{minipage}
-		\vspace{1em}
+
+		\vspace{2em}
+
 		\begin{minipage}{\linewidth}
 			\centering
 			\showrust[0.98\linewidth]{experimentation-manual-dispatch.rs}
-			\captionsetup{type=listing,skip=2pt}
+			\captionsetup{type=listing,skip=5pt}
 			\caption{Manual Dispatch}
 			\label{fig:manual-dispatch}
 		\end{minipage}
 	\end{minipage}
 	\hfill
-	\begin{minipage}{0.49\textwidth}
+	\begin{minipage}{0.48\textwidth}
 		\centering
 		\begin{minipage}{\linewidth}
 			\centering
 			\showrust[0.98\linewidth]{experimentation-monomorphized-traits.rs}
-			\captionsetup{type=listing,skip=2pt}
+			\captionsetup{type=listing,skip=5pt}
 			\caption{Monomorphized Traits}
 			\label{fig:monomorphized-traits}
 		\end{minipage}
-		\vspace{1em}
+
+		\vspace{2em}
+
 		\begin{minipage}{\linewidth}
 			\centering
 			\showrust[0.98\linewidth]{experimentation-type-level-dispatch.rs}
-			\captionsetup{type=listing,skip=2pt}
+			\captionsetup{type=listing,skip=5pt}
 			\caption{Type Level Dispatch}
 			\label{fig:type-level-dispatch}
 		\end{minipage}
@@ -154,7 +160,7 @@ By leveraging stable specialization, developers can achieve more efficient and m
 
 \section{Results}\label{evaluation-results}
 The analysis was run with a similarity threshold of 90\% and 99\% and the results for the two are reported in Tables~\ref{tab:results-90} and~\ref{tab:results-99} respectively.
-For each project and threshold, we reported its analysis time in seconds, peak RSS in MB, number of functions specializable between one another, from which is extracted the number of unique specializable functions and the same is then done for trait pairs and unique traits.
+For each project and threshold, we reported its analysis time in seconds, peak RSS in MB, number of functions specializable between one another, from which is also extracted the number of unique specializable functions and the same is then done for trait pairs and unique traits.
 
 \begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
@@ -241,6 +247,8 @@ Stable specialization provides a valuable tool for developers to write more effi
 To wrap up, it's important to consider the broader implications of specialization on the ecosystem: by enabling more efficient and maintainable specialization, this feature has the potential to enhance the overall quality and performance of Rust applications across various domains.
 
 % --------------------- Section 4 ---------------------
+\clearpage
+\section{Data}\label{sec:evaluation-data}
 
 \mycsvtable{Analysis Projects}{7}
 {|c|l|S[table-format=5.0]|S[table-format=5.0]|S[table-format=10.0]|S[table-format=5.0]|S[table-format=4.0]|}
@@ -320,6 +328,8 @@ To wrap up, it's important to consider the broader implications of specializatio
 65     & \href{https://github.com/nushell/nushell}{nushell}                           & 37226   & N/A    & N/A         & 10592    & 330      \\
 }
 
+\clearpage
+
 \mycsvtable{Analysis Results at 90\% Similarity}{8}
 {|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=6.0]|S[table-format=5.0]|S[table-format=5.0]|S[table-format=3.0]|}
 {	{\#} & {Name}                                                                       & {Time (s)} & {Mem (MB)} & {Fn pr \#} & {Fns \#} & {Tr pr \#} & {Trs \#}}
@@ -397,6 +407,8 @@ To wrap up, it's important to consider the broader implications of specializatio
 64     & \href{https://github.com/lapce/lapce}{lapce}                                 & 114.66     & 380        & 149        & 176      & 11         & 11 \\
 65     & \href{https://github.com/nushell/nushell}{nushell}                           & 1155.87    & 2716       & 8226       & 1783     & 355        & 61 \\
 }
+
+\clearpage
 
 \mycsvtable{Analysis Results at 99\% Similarity}{8}
 {|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=6.0]|S[table-format=5.0]|S[table-format=5.0]|S[table-format=3.0]|}
