@@ -331,159 +331,159 @@ To wrap up, it's important to consider the broader implications of specializatio
 \clearpage
 
 \mycsvtable{Analysis Results at 90\% Similarity}{8}
-{|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=6.0]|S[table-format=5.0]|S[table-format=5.0]|S[table-format=3.0]|}
-{	{\#} & {Name}                                                                       & {Time (s)} & {Mem (MB)} & {Fn pr \#} & {Fns \#} & {Tr pr \#} & {Trs \#}}
+{|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=5.0]|S[table-format=2.1]|S[table-format=3.0]|S[table-format=2.1]|}
+{	{\#} & {Name}                                                                       & {Time (s)} & {Mem (MB)} & {Fns \#} & {Fns \%} & {Trs \#} & {Trs \%} }
 {\caption{
-	Results with similarity threshold of 0.90.
+	Results with similarity threshold of 0.99.
 	For each analysed project, we reported its analysis time in seconds and peak RSS in MB.
-	The following columns are the number of functions that are specializable between one another, of which is also reported the number of single specializable functions.
-	The same is then done for trait pairs and single traits.
+	The following columns are built taking the number of functions that are specializable between one another and extracting the number of unique specializable functions, of which is also reported the percentage from the total number of functions in the project.
+	The same is then done for unique traits and relative percentage.
 	The rows use the same sorting from Table~\ref{tab:analysis-projects}
 }\label{tab:results-90}}
 {
-1      & \href{https://github.com/dtolnay/syn}{syn}                                   & 167.12     & 200        & 43364      & 2394     & 942        & 36 \\
-2      & \href{https://github.com/rust-lang/hashbrown}{hashbrown}                     & 0.77       & 106        & 129        & 172      & 80         & 10 \\
-3      & \href{https://github.com/bitflags/bitflags}{bitflags}                        & 0.06       & 90         & 28         & 40       & 17         & 16 \\
-4      & \href{https://github.com/dtolnay/proc-macro2}{proc-macro2}                   & 3.20       & 96         & 178        & 63       & 0          & 0 \\
-5      & \href{https://github.com/dtolnay/quote}{quote}                               & 3.56       & 89         & 884        & 142      & 10         & 4 \\
-6      & \href{https://github.com/marshallpierce/rust-base64}{base64}                 & 0.04       & 88         & 0          & 0        & 0          & 0 \\
-7      & \href{https://github.com/rust-lang/libc}{libc}                               & 208.20     & 108        & 286        & 125      & 0          & 0 \\
-8      & \href{https://github.com/rust-random/getrandom}{getrandom}                   & 0.13       & 88         & 4          & 8        & 0          & 0 \\
-9      & \href{https://github.com/rust-random/rand}{rand}                             & 12.25      & 121        & 862        & 317      & 23         & 15 \\
-10     & \href{https://github.com/indexmap-rs/indexmap}{indexmap}                     & 2.43       & 111        & 518        & 390      & 138        & 20 \\
-11     & \href{https://github.com/rust-lang/cfg-if}{cfg-if}                           & 0.00       & 51         & 0          & 0        & 0          & 0 \\
-12     & \href{https://github.com/serde-rs/serde}{serde}                              & 574.35     & 329        & 70542      & 1648     & 65         & 27 \\
-13     & \href{https://github.com/rust-itertools/itertools}{itertools}                & 17.54      & 140        & 275        & 159      & 6          & 3 \\
-14     & \href{https://github.com/cuviper/autocfg}{autocfg}                           & 0.10       & 82         & 10         & 16       & 0          & 0 \\
-15     & \href{https://github.com/BurntSushi/memchr}{memchr}                          & 6.15       & 101        & 171        & 108      & 14         & 2 \\
-16     & \href{https://github.com/dtolnay/itoa}{itoa}                                 & 0.02       & 76         & 0          & 0        & 0          & 0 \\
-17     & \href{https://github.com/serde-rs/json}{json}                                & 10.18      & 119        & 3879       & 706      & 16         & 13 \\
-18     & \href{https://github.com/dtolnay/thiserror}{thiserror}                       & 0.22       & 96         & 9          & 18       & 1          & 1 \\
-19     & \href{https://github.com/dtolnay/unicode-ident}{unicode-ident}               & 0.05       & 83         & 1          & 2        & 0          & 0 \\
-20     & \href{https://github.com/matklad/once_cell}{once\_cell}                      & 0.17       & 88         & 26         & 41       & 9          & 5 \\
-21     & \href{https://github.com/rust-lang/log}{log}                                 & 0.03       & 76         & 8          & 16       & 3          & 3 \\
-22     & \href{https://github.com/withoutboats/heck}{heck}                            & 0.03       & 75         & 7          & 6        & 7          & 1 \\
-23     & \href{https://github.com/rust-lang/cc-rs}{cc}                                & 0.78       & 99         & 24         & 30       & 0          & 0 \\
-24     & \href{https://github.com/rust-lang/regex}{regex}                             & 150.15     & 177        & 697        & 843      & 49         & 26 \\
-25     & \href{https://github.com/dtolnay/ryu}{ryu}                                   & 0.41       & 78         & 1          & 2        & 0          & 0 \\
-26     & \href{https://github.com/clap-rs/clap}{clap}                                 & 22.69      & 157        & 211        & 229      & 42         & 11 \\
-27     & \href{https://github.com/aho-corasick}{aho-corasick}                         & 21.76      & 160        & 165        & 174      & 14         & 8 \\
-28     & \href{https://github.com/servo/rust-smallvec}{smallvec}                      & 0.32       & 95         & 24         & 27       & 5          & 5 \\
-29     & \href{https://github.com/rapidfuzz/strsim-rs}{strsim}                        & 0.03       & 83         & 2          & 4        & 0          & 0 \\
-30     & \href{https://github.com/Amanieu/parking_lot}{parking\_lot}                  & 0.88       & 90         & 112        & 113      & 36         & 8 \\
-31     & \href{https://github.com/rust-lang-nursery/lazy-static.rs}{lazy\_static}     & 0.00       & 58         & 0          & 0        & 0          & 0 \\
-32     & \href{https://github.com/rust-num/num-traits}{num-traits}                    & 53.28      & 139        & 11470      & 1496     & 129        & 10 \\
-33     & \href{https://github.com/rust-lang/socket2}{socket2}                         & 0.95       & 94         & 27         & 48       & 2          & 1 \\
-34     & \href{https://github.com/dtolnay/semver}{semver}                             & 0.38       & 90         & 4          & 8        & 1          & 1 \\
-35     & \href{https://github.com/RustCrypto/traits}{digest}                          & 170.80     & 108        & 16541      & 536      & 61         & 43 \\
-36     & \href{https://github.com/rayon-rs/either}{either}                            & 0.22       & 98         & 46         & 28       & 3          & 3 \\
-37     & \href{https://github.com/SergioBenitez/version_check}{version\_check}        & 0.03       & 82         & 8          & 8        & 0          & 0 \\
-38     & \href{https://github.com/bytecodealliance/rustix}{rustix}                    & 6.64       & 329        & 173        & 196      & 18         & 7 \\
-39     & \href{https://github.com/tokio-rs/bytes}{bytes}                              & 9.64       & 102        & 569        & 186      & 26         & 14 \\
-40     & \href{https://github.com/time-rs/time}{time}                                 & 123.95     & 139        & 775        & 486      & 37         & 19 \\
-41     & \href{https://github.com/servo/rust-url}{url}                                & 0.88       & 110        & 4          & 8        & 0          & 0 \\
-42     & \href{https://github.com/toml-rs/toml}{toml}                                 & 26.16      & 110        & 8773       & 826      & 121        & 27 \\
-43     & \href{https://github.com/rust-lang/futures-rs}{futures}                      & 14.52      & 158        & 2371       & 741      & 129        & 37 \\
-44     & \href{https://github.com/rust-lang/glob}{glob}                               & 0.04       & 84         & 0          & 0        & 0          & 0 \\
-45     & \href{https://github.com/quickwit-oss/tantivy}{tantivy}                      & 521.35     & 253        & 581        & 445      & 59         & 24 \\
-46     & \href{https://github.com/tauri-apps/tauri}{tauri}                            & 469.72     & 350        & 3357       & 1097     & 103        & 34 \\
-47     & \href{https://github.com/pola-rs/polars}{polars}                             & 9965.49    & 1458       & 53917      & 14356    & 1550       & 388 \\
-48     & \href{https://github.com/rust-lang/cargo}{cargo}                             & 234.72     & 413        & 829        & 427      & 28         & 18 \\
-49     & \href{https://github.com/sharkdp/bat}{bat}                                   & 0.24       & 142        & 3          & 6        & 0          & 0 \\
-50     & \href{https://github.com/BurntSushi/ripgrep}{ripgrep}                        & 8.37       & 116        & 222        & 234      & 1          & 1 \\
-51     & \href{https://github.com/cloudflare/quiche}{quiche}                          & 32.61      & 172        & 246        & 291      & 18         & 16 \\
-52     & \href{https://github.com/influxdata/influxdb}{influxdb}                      & 2430.47    & 602        & 2817       & 1385     & 223        & 56 \\
-53     & \href{https://github.com/typst/typst}{typst}                                 & 197.16     & 376        & 9503       & 1293     & 401        & 55 \\
-54     & \href{https://github.com/alacritty/alacritty}{alacritty}                     & 801.49     & 310        & 1111       & 227      & 20         & 11 \\
-55     & \href{https://github.com/helix-editor/helix}{helix}                          & 36.18      & 292        & 224        & 240      & 30         & 5 \\
-56     & \href{https://github.com/Nukesor/pueue}{pueue}                               & 655.46     & 1403       & 46         & 58       & 12         & 5 \\
-57     & \href{https://github.com/GitoxideLabs/gitoxide}{gitoxide}                    & 617.86     & 352        & 2946       & 1245     & 82         & 36 \\
-58     & \href{https://github.com/EmbarkStudios/texture-synthesis}{texture-synthesis} & 0.19       & 95         & 1          & 2        & 0          & 0 \\
-59     & \href{https://github.com/n0-computer/sendme}{sendme}                         & 2.80       & 211        & 32         & 29       & 10         & 3 \\
-60     & \href{https://github.com/unionlabs/union}{union}                             & 13764.80   & 854        & 159547     & 15570    & 56973      & 176 \\
-61     & \href{https://github.com/zed-industries/zed}{zed}                            & 6594.13    & 1317       & 848181     & 21034    & 1403       & 256 \\
-62     & \href{https://github.com/charliermarsh/ruff}{ruff}                           & 1022.12    & 1075       & 40779      & 5833     & 3222       & 127 \\
-63     & \href{https://github.com/juspay/hyperswitch}{hyperswitch}                    & 19738.40   & 2635       & 250275     & 16947    & 16362      & 231 \\
-64     & \href{https://github.com/lapce/lapce}{lapce}                                 & 114.66     & 380        & 149        & 176      & 11         & 11 \\
-65     & \href{https://github.com/nushell/nushell}{nushell}                           & 1155.87    & 2716       & 8226       & 1783     & 355        & 61 \\
+1      & \href{https://github.com/dtolnay/syn}{syn}                                   & 167.12     & 200        & 2394     & 21.5\%   & 36       & 27.9\% 		\\
+2      & \href{https://github.com/rust-lang/hashbrown}{hashbrown}                     & 0.77       & 106        & 172      & 23.7\%   & 10       & 29.4\% 		\\
+3      & \href{https://github.com/bitflags/bitflags}{bitflags}                        & 0.06       & 90         & 40       & 24.8\%   & 16       & 61.5\% 		\\
+4      & \href{https://github.com/dtolnay/proc-macro2}{proc-macro2}                   & 3.20       & 96         & 63       & 13.7\%   & 0        & 0.0\%  		\\
+5      & \href{https://github.com/dtolnay/quote}{quote}                               & 3.56       & 89         & 142      & 35.9\%   & 4        & 12.5\% 		\\
+6      & \href{https://github.com/marshallpierce/rust-base64}{base64}                 & 0.04       & 88         & 0        & 0.0\%    & 0        & 0.0\%  		\\
+7      & \href{https://github.com/rust-lang/libc}{libc}                               & 208.20     & 108        & 125      & 21.4\%   & 0        & 0.0\%  		\\
+8      & \href{https://github.com/rust-random/getrandom}{getrandom}                   & 0.13       & 88         & 8        & 21.1\%   & 0        & 0.0\%  		\\
+9      & \href{https://github.com/rust-random/rand}{rand}                             & 12.25      & 121        & 317      & 53.0\%   & 15       & 30.0\% 		\\
+10     & \href{https://github.com/indexmap-rs/indexmap}{indexmap}                     & 2.43       & 111        & 390      & 41.9\%   & 20       & 47.6\% 		\\
+11     & \href{https://github.com/rust-lang/cfg-if}{cfg-if}                           & 0.00       & 51         & 0        & N/A      & 0        & N/A    		\\
+12     & \href{https://github.com/serde-rs/serde}{serde}                              & 574.35     & 329        & 1648     & 52.5\%   & 27       & 38.0\% 		\\
+13     & \href{https://github.com/rust-itertools/itertools}{itertools}                & 17.54      & 140        & 159      & 18.4\%   & 3        & 9.1\% 			\\
+14     & \href{https://github.com/cuviper/autocfg}{autocfg}                           & 0.10       & 82         & 16       & 32.0\%   & 0        & 0.0\% 			\\
+15     & \href{https://github.com/BurntSushi/memchr}{memchr}                          & 6.15       & 101        & 108      & 29.4\%   & 2        & 22.2\% 		\\
+16     & \href{https://github.com/dtolnay/itoa}{itoa}                                 & 0.02       & 76         & 0        & 0.0\%    & 0        & 0.0\% 			\\
+17     & \href{https://github.com/serde-rs/json}{json}                                & 10.18      & 119        & 706      & 49.3\%   & 13       & 26.5\% 		\\
+18     & \href{https://github.com/dtolnay/thiserror}{thiserror}                       & 0.22       & 96         & 18       & 9.6\%    & 1        & 4.8\% 			\\
+19     & \href{https://github.com/dtolnay/unicode-ident}{unicode-ident}               & 0.05       & 83         & 2        & 13.3\%   & 0        & 0.0\% 			\\
+20     & \href{https://github.com/matklad/once_cell}{once\_cell}                      & 0.17       & 88         & 41       & 38.7\%   & 5        & 62.5\% 		\\
+21     & \href{https://github.com/rust-lang/log}{log}                                 & 0.03       & 76         & 16       & 20.8\%   & 3        & 42.9\% 		\\
+22     & \href{https://github.com/withoutboats/heck}{heck}                            & 0.03       & 75         & 6        & 26.1\%   & 1        & 8.3\% 	 	 	\\
+23     & \href{https://github.com/rust-lang/cc-rs}{cc}                                & 0.78       & 99         & 30       & 5.8\%    & 0        & 0.0\% 	  	\\
+24     & \href{https://github.com/rust-lang/regex}{regex}                             & 150.15     & 177        & 843      & 23.4\%   & 26       & 29.2\% 		\\
+25     & \href{https://github.com/dtolnay/ryu}{ryu}                                   & 0.41       & 78         & 2        & 4.7\%    & 0        & 0.0\% 		  \\
+26     & \href{https://github.com/clap-rs/clap}{clap}                                 & 22.69      & 157        & 229      & 13.2\%   & 11       & 15.1\% 		\\
+27     & \href{https://github.com/aho-corasick}{aho-corasick}                         & 21.76      & 160        & 174      & 24.9\%   & 8        & 30.8\% 		\\
+28     & \href{https://github.com/servo/rust-smallvec}{smallvec}                      & 0.32       & 95         & 27       & 15.5\%   & 5        & 14.3\% 		\\
+29     & \href{https://github.com/rapidfuzz/strsim-rs}{strsim}                        & 0.03       & 83         & 4        & 13.8\%   & 0        & 0.0\% 		  \\
+30     & \href{https://github.com/Amanieu/parking_lot}{parking\_lot}                  & 0.88       & 90         & 113      & 31.1\%   & 8        & 22.9\% 		\\
+31     & \href{https://github.com/rust-lang-nursery/lazy-static.rs}{lazy\_static}     & 0.00       & 58         & 0        & 0.0\%    & 0        & N/A    		\\
+32     & \href{https://github.com/rust-num/num-traits}{num-traits}                    & 53.28      & 139        & 1496     & 57.9\%   & 10       & 21.3\%			\\
+33     & \href{https://github.com/rust-lang/socket2}{socket2}                         & 0.95       & 94         & 48       & 13.7\%   & 1        & 8.3\%			\\
+34     & \href{https://github.com/dtolnay/semver}{semver}                             & 0.38       & 90         & 8        & 9.2\%    & 1        & 7.1\%			\\
+35     & \href{https://github.com/RustCrypto/traits}{digest}                          & 170.80     & 108        & 536      & 46.9\%   & 43       & 26.2\%			\\
+36     & \href{https://github.com/rayon-rs/either}{either}                            & 0.22       & 98         & 28       & 21.2\%   & 3        & 15.8\%			\\
+37     & \href{https://github.com/SergioBenitez/version_check}{version\_check}        & 0.03       & 82         & 8        & 21.1\%   & 0        & 0.0\%			\\
+38     & \href{https://github.com/bytecodealliance/rustix}{rustix}                    & 6.64       & 329        & 196      & 10.8\%   & 7        & 17.9\%			\\
+39     & \href{https://github.com/tokio-rs/bytes}{bytes}                              & 9.64       & 102        & 186      & 26.8\%   & 14       & 41.2\%			\\
+40     & \href{https://github.com/time-rs/time}{time}                                 & 123.95     & 139        & 486      & 31.2\%   & 19       & 31.7\%			\\
+41     & \href{https://github.com/servo/rust-url}{url}                                & 0.88       & 110        & 8        & 2.2\%    & 0        & 0.0\%			\\
+42     & \href{https://github.com/toml-rs/toml}{toml}                                 & 26.16      & 110        & 826      & 37.0\%   & 27       & 22.1\%			\\
+43     & \href{https://github.com/rust-lang/futures-rs}{futures}                      & 14.52      & 158        & 741      & 32.0\%   & 37       & 29.4\%			\\
+44     & \href{https://github.com/rust-lang/glob}{glob}                               & 0.04       & 84         & 0        & 0.0\%    & 0        & 0.0\%			\\
+45     & \href{https://github.com/quickwit-oss/tantivy}{tantivy}                      & 521.35     & 253        & 445      & 11.5\%   & 24       & 16.0\%			\\
+46     & \href{https://github.com/tauri-apps/tauri}{tauri}                            & 469.72     & 350        & 1097     & 22.4\%   & 34       & 17.3\%			\\
+47     & \href{https://github.com/pola-rs/polars}{polars}                             & 9965.49    & 1458       & 14356    & 32.8\%   & 388      & 26.3\%			\\
+48     & \href{https://github.com/rust-lang/cargo}{cargo}                             & 234.72     & 413        & 427      & 9.6\%    & 18       & 16.7\%			\\
+49     & \href{https://github.com/sharkdp/bat}{bat}                                   & 0.24       & 142        & 6        & 1.7\%    & 0        & 0.0\%			\\
+50     & \href{https://github.com/BurntSushi/ripgrep}{ripgrep}                        & 8.37       & 116        & 234      & 11.2\%   & 1        & 1.5\%			\\
+51     & \href{https://github.com/cloudflare/quiche}{quiche}                          & 32.61      & 172        & 291      & 11.2\%   & 16       & 14.5\%			\\
+52     & \href{https://github.com/influxdata/influxdb}{influxdb}                      & 2430.47    & 602        & 1385     & 39.0\%   & 56       & 26.4\%			\\
+53     & \href{https://github.com/typst/typst}{typst}                                 & 197.16     & 376        & 1293     & 17.8\%   & 55       & 23.6\%			\\
+54     & \href{https://github.com/alacritty/alacritty}{alacritty}                     & 801.49     & 310        & 227      & 8.4\%    & 11       & 15.3\%			\\
+55     & \href{https://github.com/helix-editor/helix}{helix}                          & 36.18      & 292        & 240      & 7.8\%    & 5        & 4.3\%			\\
+56     & \href{https://github.com/Nukesor/pueue}{pueue}                               & 655.46     & 1403       & 58       & 14.9\%   & 5        & 20.8\%			\\
+57     & \href{https://github.com/GitoxideLabs/gitoxide}{gitoxide}                    & 617.86     & 352        & 1245     & 17.4\%   & 36       & 7.4\%			\\
+58     & \href{https://github.com/EmbarkStudios/texture-synthesis}{texture-synthesis} & 0.19       & 95         & 2        & 1.2\%    & 0        & 0.0\%			\\
+59     & \href{https://github.com/n0-computer/sendme}{sendme}                         & 2.80       & 211        & 29       & 39.2\%   & 3        & 42.9\%			\\
+60     & \href{https://github.com/unionlabs/union}{union}                             & 13764.80   & 854        & 15570    & 52.6\%   & 176      & 16.8\%			\\
+61     & \href{https://github.com/zed-industries/zed}{zed}                            & 6594.13    & 1317       & 21034    & 38.3\%   & 256      & 15.3\%			\\
+62     & \href{https://github.com/charliermarsh/ruff}{ruff}                           & 1022.12    & 1075       & 5833     & 22.5\%   & 127      & 19.8\%			\\
+63     & \href{https://github.com/juspay/hyperswitch}{hyperswitch}                    & 19738.40   & 2635       & 16947    & 52.7\%   & 231      & 28.0\%			\\
+64     & \href{https://github.com/lapce/lapce}{lapce}                                 & 114.66     & 380        & 176      & 9.8\%    & 11       & 17.7\%			\\
+65     & \href{https://github.com/nushell/nushell}{nushell}                           & 1155.87    & 2716       & 1783     & 16.8\%   & 61       & 18.5\%			\\
 }
 
 \clearpage
 
 \mycsvtable{Analysis Results at 99\% Similarity}{8}
-{|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=6.0]|S[table-format=5.0]|S[table-format=5.0]|S[table-format=3.0]|}
-{	{\#} & {Name}                                                                       & {Time (s)} & {Mem (MB)} & {Fn pr \#} & {Fns \#} & {Tr pr \#} & {Trs \#}}
+{|c|l|S[table-format=5.2]|S[table-format=4.0]|S[table-format=5.0]|S[table-format=2.1]|S[table-format=3.0]|S[table-format=2.1]|}
+{	{\#} & {Name}                                                                       & {Time (s)} & {Mem (MB)} & {Fns \#} & {Fns \%} & {Trs \#} & {Trs \%} }
 {\caption{
 	Results with similarity threshold of 0.99.
 	For each analysed project, we reported its analysis time in seconds and peak RSS in MB.
-	The following columns are the number of functions that are specializable between one another, of which is also reported the number of single specializable functions.
-	The same is then done for trait pairs and single traits.
+	The following columns are built taking the number of functions that are specializable between one another and extracting the number of unique specializable functions, of which is also reported the percentage from the total number of functions in the project.
+	The same is then done for unique traits and relative percentage.
 	The rows use the same sorting from Table~\ref{tab:analysis-projects}
 }\label{tab:results-99}}
 {
-1      & \href{https://github.com/dtolnay/syn}{syn}                                   & 200.97     & 181        & 33787      & 1313     & 297        & 30 \\
-2      & \href{https://github.com/rust-lang/hashbrown}{hashbrown}                     & 1.12       & 106        & 91         & 122      & 58         & 9 \\
-3      & \href{https://github.com/bitflags/bitflags}{bitflags}                        & 0.11       & 90         & 17         & 34       & 15         & 15 \\
-4      & \href{https://github.com/dtolnay/proc-macro2}{proc-macro2}                   & 1.24       & 94         & 75         & 30       & 0          & 0 \\
-5      & \href{https://github.com/dtolnay/quote}{quote}                               & 5.27       & 89         & 14         & 12       & 10         & 4 \\
-6      & \href{https://github.com/marshallpierce/rust-base64}{base64}                 & 0.06       & 89         & 0          & 0        & 0          & 0 \\
-7      & \href{https://github.com/rust-lang/libc}{libc}                               & 293.78     & 108        & 1          & 2        & 0          & 0 \\
-8      & \href{https://github.com/rust-random/getrandom}{getrandom}                   & 0.04       & 88         & 3          & 6        & 0          & 0 \\
-9      & \href{https://github.com/rust-random/rand}{rand}                             & 18.10      & 121        & 540        & 215      & 12         & 11 \\
-10     & \href{https://github.com/indexmap-rs/indexmap}{indexmap}                     & 1.96       & 110        & 331        & 230      & 74         & 17 \\
-11     & \href{https://github.com/rust-lang/cfg-if}{cfg-if}                           & 0.00       & 51         & 0          & 0        & 0          & 0 \\
-12     & \href{https://github.com/serde-rs/serde}{serde}                              & 293.97     & 284        & 69168      & 1374     & 40         & 20 \\
-13     & \href{https://github.com/rust-itertools/itertools}{itertools}                & 2.53       & 115        & 120        & 36       & 3          & 2 \\
-14     & \href{https://github.com/cuviper/autocfg}{autocfg}                           & 0.13       & 83         & 0          & 0        & 0          & 0 \\
-15     & \href{https://github.com/BurntSushi/memchr}{memchr}                          & 8.64       & 101        & 150        & 75       & 14         & 2 \\
-16     & \href{https://github.com/dtolnay/itoa}{itoa}                                 & 0.02       & 76         & 0          & 0        & 0          & 0 \\
-17     & \href{https://github.com/serde-rs/json}{json}                                & 11.31      & 119        & 3130       & 533      & 11         & 10 \\
-18     & \href{https://github.com/dtolnay/thiserror}{thiserror}                       & 0.32       & 96         & 9          & 18       & 1          & 1 \\
-19     & \href{https://github.com/dtolnay/unicode-ident}{unicode-ident}               & 0.08       & 83         & 0          & 0        & 0          & 0 \\
-20     & \href{https://github.com/matklad/once_cell}{once\_cell}                      & 0.14       & 88         & 24         & 37       & 9          & 5 \\
-21     & \href{https://github.com/rust-lang/log}{log}                                 & 0.06       & 76         & 7          & 14       & 3          & 3 \\
-22     & \href{https://github.com/withoutboats/heck}{heck}                            & 0.08       & 75         & 0          & 0        & 0          & 0 \\
-23     & \href{https://github.com/rust-lang/cc-rs}{cc}                                & 0.84       & 98         & 4          & 8        & 0          & 0 \\
-24     & \href{https://github.com/rust-lang/regex}{regex}                             & 52.22      & 159        & 511        & 586      & 36         & 22 \\
-25     & \href{https://github.com/dtolnay/ryu}{ryu}                                   & 0.06       & 76         & 0          & 0        & 0          & 0 \\
-26     & \href{https://github.com/clap-rs/clap}{clap}                                 & 13.46      & 138        & 137        & 138      & 39         & 11 \\
-27     & \href{https://github.com/aho-corasick}{aho-corasick}                         & 5.22       & 122        & 134        & 145      & 11         & 6 \\
-28     & \href{https://github.com/servo/rust-smallvec}{smallvec}                      & 0.17       & 94         & 19         & 17       & 5          & 5 \\
-29     & \href{https://github.com/rapidfuzz/strsim-rs}{strsim}                        & 0.04       & 82         & 0          & 0        & 0          & 0 \\
-30     & \href{https://github.com/Amanieu/parking_lot}{parking\_lot}                  & 0.60       & 90         & 36         & 32       & 32         & 4 \\
-31     & \href{https://github.com/rust-lang-nursery/lazy-static.rs}{lazy\_static}     & 0.00       & 58         & 0          & 0        & 0          & 0 \\
-32     & \href{https://github.com/rust-num/num-traits}{num-traits}                    & 48.28      & 139        & 7122       & 1432     & 59         & 5 \\
-33     & \href{https://github.com/rust-lang/socket2}{socket2}                         & 0.36       & 94         & 8          & 10       & 2          & 1 \\
-34     & \href{https://github.com/dtolnay/semver}{semver}                             & 0.11       & 88         & 1          & 2        & 1          & 1 \\
-35     & \href{https://github.com/RustCrypto/traits}{digest}                          & 236.64     & 107        & 7767       & 402      & 37         & 34 \\
-36     & \href{https://github.com/rayon-rs/either}{either}                            & 0.25       & 98         & 37         & 20       & 2          & 2 \\
-37     & \href{https://github.com/SergioBenitez/version_check}{version\_check}        & 0.08       & 82         & 0          & 0        & 0          & 0 \\
-38     & \href{https://github.com/bytecodealliance/rustix}{rustix}                    & 6.46       & 329        & 76         & 87       & 18         & 7 \\
-39     & \href{https://github.com/tokio-rs/bytes}{bytes}                              & 11.11      & 101        & 153        & 106      & 20         & 13 \\
-40     & \href{https://github.com/time-rs/time}{time}                                 & 172.47     & 139        & 376        & 233      & 21         & 14 \\
-41     & \href{https://github.com/servo/rust-url}{url}                                & 0.35       & 108        & 0          & 0        & 0          & 0 \\
-42     & \href{https://github.com/toml-rs/toml}{toml}                                 & 12.24      & 109        & 8462       & 659      & 113        & 20 \\
-43     & \href{https://github.com/rust-lang/futures-rs}{futures}                      & 7.69       & 158        & 2274       & 593      & 86         & 30 \\
-44     & \href{https://github.com/rust-lang/glob}{glob}                               & 0.01       & 83         & 0          & 0        & 0          & 0 \\
-45     & \href{https://github.com/quickwit-oss/tantivy}{tantivy}                      & 11.14      & 251        & 328        & 254      & 46         & 16 \\
-46     & \href{https://github.com/tauri-apps/tauri}{tauri}                            & 146.85     & 350        & 2234       & 750      & 74         & 26 \\
-47     & \href{https://github.com/pola-rs/polars}{polars}                             & 9065.11    & 1458       & 28156      & 9196     & 1168       & 293 \\
-48     & \href{https://github.com/rust-lang/cargo}{cargo}                             & 22.23      & 400        & 577        & 222      & 24         & 14 \\
-49     & \href{https://github.com/sharkdp/bat}{bat}                                   & 0.33       & 142        & 0          & 0        & 0          & 0 \\
-50     & \href{https://github.com/BurntSushi/ripgrep}{ripgrep}                        & 3.55       & 111        & 184        & 179      & 1          & 1 \\
-51     & \href{https://github.com/cloudflare/quiche}{quiche}                          & 13.10      & 172        & 62         & 91       & 13         & 10 \\
-52     & \href{https://github.com/influxdata/influxdb}{influxdb}                      & 1241.06    & 601        & 2540       & 1034     & 175        & 48 \\
-53     & \href{https://github.com/typst/typst}{typst}                                 & 87.11      & 375        & 3694       & 689      & 315        & 42 \\
-54     & \href{https://github.com/alacritty/alacritty}{alacritty}                     & 722.07     & 261        & 610        & 112      & 7          & 7 \\
-55     & \href{https://github.com/helix-editor/helix}{helix}                          & 10.73      & 275        & 66         & 47       & 30         & 5 \\
-56     & \href{https://github.com/Nukesor/pueue}{pueue}                               & 0.67       & 176        & 25         & 38       & 7          & 4 \\
-57     & \href{https://github.com/GitoxideLabs/gitoxide}{gitoxide}                    & 79.75      & 202        & 1950       & 796      & 51         & 26 \\
-58     & \href{https://github.com/EmbarkStudios/texture-synthesis}{texture-synthesis} & 0.09       & 95         & 1          & 2        & 0          & 0 \\
-59     & \href{https://github.com/n0-computer/sendme}{sendme}                         & 0.09       & 191        & 24         & 16       & 6          & 1 \\
-60     & \href{https://github.com/unionlabs/union}{union}                             & 5467.20    & 781        & 39427      & 10465    & 7283       & 90 \\
-61     & \href{https://github.com/zed-industries/zed}{zed}                            & 4312.97    & 873        & 48138      & 10891    & 736        & 206 \\
-62     & \href{https://github.com/charliermarsh/ruff}{ruff}                           & 471.98     & 1074       & 10388      & 3698     & 2605       & 97 \\
-63     & \href{https://github.com/juspay/hyperswitch}{hyperswitch}                    & 12533.30   & 2642       & 159518     & 12309    & 12581      & 159 \\
-64     & \href{https://github.com/lapce/lapce}{lapce}                                 & 71.98      & 367        & 39         & 56       & 5          & 5 \\
-65     & \href{https://github.com/nushell/nushell}{nushell}                           & 132.82     & 325        & 7478       & 1148     & 325        & 51 \\
+1      & \href{https://github.com/dtolnay/syn}{syn}                                   & 200.97     & 181        & 1313     & 11.8\%		& 30       & 23.3\% 		\\
+2      & \href{https://github.com/rust-lang/hashbrown}{hashbrown}                     & 1.12       & 106        & 122      & 16.8\%		& 9        & 26.5\% 		\\
+3      & \href{https://github.com/bitflags/bitflags}{bitflags}                        & 0.11       & 90         & 34       & 21.1\%		& 15       & 57.7\% 		\\
+4      & \href{https://github.com/dtolnay/proc-macro2}{proc-macro2}                   & 1.24       & 94         & 30       & 6.5\%		& 0        & 0.0\%			\\
+5      & \href{https://github.com/dtolnay/quote}{quote}                               & 5.27       & 89         & 12       & 3.0\%		& 4        & 12.5\% 		\\
+6      & \href{https://github.com/marshallpierce/rust-base64}{base64}                 & 0.06       & 89         & 0        & 0.0\%		& 0        & 0.0\%			\\
+7      & \href{https://github.com/rust-lang/libc}{libc}                               & 293.78     & 108        & 2        & 0.3\%		& 0        & 0.0\%			\\
+8      & \href{https://github.com/rust-random/getrandom}{getrandom}                   & 0.04       & 88         & 6        & 15.8\%		& 0        & 0.0\%			\\
+9      & \href{https://github.com/rust-random/rand}{rand}                             & 18.10      & 121        & 215      & 36.0\%		& 11       & 22.0\% 		\\
+10     & \href{https://github.com/indexmap-rs/indexmap}{indexmap}                     & 1.96       & 110        & 230      & 24.7\%		& 17       & 40.5\% 		\\
+11     & \href{https://github.com/rust-lang/cfg-if}{cfg-if}                           & 0.00       & 51         & 0        & N/A			& 0        & N/A    		\\
+12     & \href{https://github.com/serde-rs/serde}{serde}                              & 293.97     & 284        & 1374     & 43.7\%		& 20       & 28.2\% 		\\
+13     & \href{https://github.com/rust-itertools/itertools}{itertools}                & 2.53       & 115        & 36       & 4.2\%		& 2        & 6.1\% 			\\
+14     & \href{https://github.com/cuviper/autocfg}{autocfg}                           & 0.13       & 83         & 0        & 0.0\%		& 0        & 0.0\%			\\
+15     & \href{https://github.com/BurntSushi/memchr}{memchr}                          & 8.64       & 101        & 75       & 20.4\%		& 2        & 22.2\% 		\\
+16     & \href{https://github.com/dtolnay/itoa}{itoa}                                 & 0.02       & 76         & 0        & 0.0\%		& 0        & 0.0\%			\\
+17     & \href{https://github.com/serde-rs/json}{json}                                & 11.31      & 119        & 533      & 37.2\%		& 10       & 20.4\% 		\\
+18     & \href{https://github.com/dtolnay/thiserror}{thiserror}                       & 0.32       & 96         & 18       & 9.6\%		& 1        & 4.8\% 			\\
+19     & \href{https://github.com/dtolnay/unicode-ident}{unicode-ident}               & 0.08       & 83         & 0        & 0.0\%		& 0        & 0.0\%			\\
+20     & \href{https://github.com/matklad/once_cell}{once\_cell}                      & 0.14       & 88         & 37       & 34.9\%		& 5        & 62.5\% 		\\
+21     & \href{https://github.com/rust-lang/log}{log}                                 & 0.06       & 76         & 14       & 18.2\%		& 3        & 42.9\% 		\\
+22     & \href{https://github.com/withoutboats/heck}{heck}                            & 0.08       & 75         & 0        & 0.0\%		& 0        & 0.0\%			\\
+23     & \href{https://github.com/rust-lang/cc-rs}{cc}                                & 0.84       & 98         & 8        & 1.5\%		& 0        & 0.0\%			\\
+24     & \href{https://github.com/rust-lang/regex}{regex}                             & 52.22      & 159        & 586      & 16.3\%		& 22       & 24.7\% 		\\
+25     & \href{https://github.com/dtolnay/ryu}{ryu}                                   & 0.06       & 76         & 0        & 0.0\%		& 0        & 0.0\%			\\
+26     & \href{https://github.com/clap-rs/clap}{clap}                                 & 13.46      & 138        & 138      & 8.0\%		& 11       & 15.1\% 		\\
+27     & \href{https://github.com/aho-corasick}{aho-corasick}                         & 5.22       & 122        & 145      & 20.7\%		& 6        & 23.1\% 		\\
+28     & \href{https://github.com/servo/rust-smallvec}{smallvec}                      & 0.17       & 94         & 17       & 9.8\%		& 5        & 14.3\% 		\\
+29     & \href{https://github.com/rapidfuzz/strsim-rs}{strsim}                        & 0.04       & 82         & 0        & 0.0\%		& 0        & 0.0\%			\\
+30     & \href{https://github.com/Amanieu/parking_lot}{parking\_lot}                  & 0.60       & 90         & 32       & 8.8\%		& 4        & 11.4\% 		\\
+31     & \href{https://github.com/rust-lang-nursery/lazy-static.rs}{lazy\_static}     & 0.00       & 58         & 0        & 0.0\%		& 0        & N/A    		\\
+32     & \href{https://github.com/rust-num/num-traits}{num-traits}                    & 48.28      & 139        & 1432     & 55.4\%		& 5        & 10.6\% 		\\
+33     & \href{https://github.com/rust-lang/socket2}{socket2}                         & 0.36       & 94         & 10       & 2.9\%		& 1        & 8.3\% 			\\
+34     & \href{https://github.com/dtolnay/semver}{semver}                             & 0.11       & 88         & 2        & 2.3\%		& 1        & 7.1\% 			\\
+35     & \href{https://github.com/RustCrypto/traits}{digest}                          & 236.64     & 107        & 402      & 35.2\%		& 34       & 20.7\% 		\\
+36     & \href{https://github.com/rayon-rs/either}{either}                            & 0.25       & 98         & 20       & 15.2\%		& 2        & 10.5\% 		\\
+37     & \href{https://github.com/SergioBenitez/version_check}{version\_check}        & 0.08       & 82         & 0        & 0.0\%		& 0        & 0.0\%			\\
+38     & \href{https://github.com/bytecodealliance/rustix}{rustix}                    & 6.46       & 329        & 87       & 4.8\%		& 7        & 17.9\% 		\\
+39     & \href{https://github.com/tokio-rs/bytes}{bytes}                              & 11.11      & 101        & 106      & 15.3\%		& 13       & 38.2\% 		\\
+40     & \href{https://github.com/time-rs/time}{time}                                 & 172.47     & 139        & 233      & 15.0\%		& 14       & 23.3\% 		\\
+41     & \href{https://github.com/servo/rust-url}{url}                                & 0.35       & 108        & 0        & 0.0\%		& 0        & 0.0\% 			\\
+42     & \href{https://github.com/toml-rs/toml}{toml}                                 & 12.24      & 109        & 659      & 29.5\%		& 20       & 16.4\% 		\\
+43     & \href{https://github.com/rust-lang/futures-rs}{futures}                      & 7.69       & 158        & 593      & 25.6\%		& 30       & 23.8\% 		\\
+44     & \href{https://github.com/rust-lang/glob}{glob}                               & 0.01       & 83         & 0        & 0.0\%		& 0        & 0.0\%			\\
+45     & \href{https://github.com/quickwit-oss/tantivy}{tantivy}                      & 11.14      & 251        & 254      & 6.6\%		& 16       & 10.7\% 		\\
+46     & \href{https://github.com/tauri-apps/tauri}{tauri}                            & 146.85     & 350        & 750      & 15.3\%		& 26       & 13.3\% 		\\
+47     & \href{https://github.com/pola-rs/polars}{polars}                             & 9065.11    & 1458       & 9196     & 21.0\%		& 293      & 19.9\% 		\\
+48     & \href{https://github.com/rust-lang/cargo}{cargo}                             & 22.23      & 400        & 222      & 5.0\%		& 14       & 13.0\% 		\\
+49     & \href{https://github.com/sharkdp/bat}{bat}                                   & 0.33       & 142        & 0        & 0.0\%		& 0        & 0.0\%			\\
+50     & \href{https://github.com/BurntSushi/ripgrep}{ripgrep}                        & 3.55       & 111        & 179      & 8.5\%		& 1        & 1.5\% 			\\
+51     & \href{https://github.com/cloudflare/quiche}{quiche}                          & 13.10      & 172        & 91       & 3.5\%		& 10       & 9.1\% 			\\
+52     & \href{https://github.com/influxdata/influxdb}{influxdb}                      & 1241.06    & 601        & 1034     & 29.2\%		& 48       & 22.6\% 		\\
+53     & \href{https://github.com/typst/typst}{typst}                                 & 87.11      & 375        & 689      & 9.5\%		& 42       & 18.0\% 		\\
+54     & \href{https://github.com/alacritty/alacritty}{alacritty}                     & 722.07     & 261        & 112      & 4.1\%		& 7        & 9.7\% 			\\
+55     & \href{https://github.com/helix-editor/helix}{helix}                          & 10.73      & 275        & 47       & 1.5\%		& 5        & 4.3\% 			\\
+56     & \href{https://github.com/Nukesor/pueue}{pueue}                               & 0.67       & 176        & 38       & 9.8\%		& 4        & 16.7\% 		\\
+57     & \href{https://github.com/GitoxideLabs/gitoxide}{gitoxide}                    & 79.75      & 202        & 796      & 11.1\%		& 26       & 5.4\% 			\\
+58     & \href{https://github.com/EmbarkStudios/texture-synthesis}{texture-synthesis} & 0.09       & 95         & 2        & 1.2\%		& 0        & 0.0\%			\\
+59     & \href{https://github.com/n0-computer/sendme}{sendme}                         & 0.09       & 191        & 16       & 21.6\%		& 1        & 14.3\% 		\\
+60     & \href{https://github.com/unionlabs/union}{union}                             & 5467.20    & 781        & 10465    & 35.4\%		& 90       & 8.6\% 			\\
+61     & \href{https://github.com/zed-industries/zed}{zed}                            & 4312.97    & 873        & 10891    & 19.8\%		& 206      & 12.3\% 		\\
+62     & \href{https://github.com/charliermarsh/ruff}{ruff}                           & 471.98     & 1074       & 3698     & 14.3\%		& 97       & 15.2\% 		\\
+63     & \href{https://github.com/juspay/hyperswitch}{hyperswitch}                    & 12533.30   & 2642       & 12309    & 38.3\%		& 159      & 19.2\% 		\\
+64     & \href{https://github.com/lapce/lapce}{lapce}                                 & 71.98      & 367        & 56       & 3.1\%		& 5        & 8.1\% 			\\
+65     & \href{https://github.com/nushell/nushell}{nushell}                           & 132.82     & 325        & 1148     & 10.8\%		& 51       & 15.5\% 		\\
 }
