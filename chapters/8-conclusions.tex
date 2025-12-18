@@ -1,3 +1,18 @@
 \chapter{Conclusions}\label{chap:conclusions}
 
-\lipsum[1-4]
+\paragraph{Summary of Contributions}
+This thesis has presented a novel approach to achieving trait specialization using metaprogramming techniques that operate within languages stable features.
+We designed and implemented a metaprogramming technique that allows developers to define specialized implementations of trait methods for specific types or trait bounds, effectively simulating the behavior of compiler-supported specialization without incurring runtime overhead.
+Our evaluation demonstrated that this approach can yield significant improvements in real-world scenarios, while maintaining code clarity and safety.
+Additionally, we developed an analysis tool to identify common patterns in existing Rust codebases where our stable specialization mechanism could be beneficial.
+
+\paragraph{Implications}
+The proposed metaprogramming-based specialization technique has important implications for the Rust ecosystem and systems programming in general.
+By enabling specialization in stable Rust, we lower the barrier for developers to adopt performance optimizations that were previously inaccessible due to the instability of the native specialization feature, hopefully laying a path for its eventual stabilization.
+This advancement promotes the broader adoption of Rust in performance-critical applications, as developers can now leverage specialization without sacrificing stability.
+Furthermore, our approach highlights the potential of metaprogramming as a powerful tool for extending language capabilities, suggesting that similar techniques could be applied to other languages with metaprogramming support.
+
+\paragraph{Final Remarks}
+In conclusion, this thesis has addressed a significant gap in the Rust programming language by providing a stable and effective mechanism for trait specialization through metaprogramming.
+Our contributions not only enhance the performance capabilities of Rust but also demonstrate the versatility and power of metaprogramming in extending language features.
+We believe that this work lays a solid foundation for future advancements in specialization techniques and encourages further exploration of metaprogramming as a means to overcome language limitations.
