@@ -22,13 +22,16 @@
 
 \newcommand{\cwcomment}[1]{\profcomment[Walter]{#1}}
 \newcommand{\evcomment}[1]{\studcomment[Edo]{#1}}
+\newcommand{\hlc}[2][yellow]{\colorbox{#1}{#2}}
 
 \setminted{style=default, fontfamily=cmtt}
 \setmintedinline{style=default, fontfamily=cmtt}
 \sisetup{group-separator={\;}, group-four-digits=true}
 \hypersetup{colorlinks = true}
-
 \providecommand{\defaultshellfontsize}{\scriptsize}
+\colorlet{OK}{LimeGreen!90}
+\colorlet{KO}{Salmon!90}
+
 \newcommand{\mytool}{\textsc{MyTool}\xspace}
 \newcommand{\mycsvtable}[6]{
   \begin{longtable}{#3}
