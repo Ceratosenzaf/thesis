@@ -164,7 +164,7 @@ For each project and threshold, we reported its analysis time in seconds, peak R
 
 \begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.png}
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_distribution_box_plot.pdf}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Fns}
 	\label{fig:distribution-specializable-functions}
@@ -178,7 +178,7 @@ As expected based on our initial hypotheses, the major results are in projects t
 We also found that as the number of functions and traits in a project increases, so does the percentage of specializable instances, indicating that larger codebases stand to benefit significantly from stable specialization, as we can see in Figure~\ref{fig:correlation-functions-specializable}.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figs/proportion_specializable_functions.png}
+	\includegraphics[width=0.75\textwidth]{figs/proportion_specializable_functions.pdf}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Correlation between Number of Functions and Spec. Functions}
 	\label{fig:correlation-functions-specializable}
@@ -186,7 +186,7 @@ We also found that as the number of functions and traits in a project increases,
 
 \begin{wrapfigure}{l}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_bar_chart.png}
+	\includegraphics[width=0.38\textwidth]{figs/specializable_functions_bar_chart.pdf}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Spec. Fns}
 	\label{fig:specializable-functions-already-vs-newly}
@@ -200,7 +200,7 @@ In particular, at 90\% similarity threshold, we found that on average around 67\
 
 \begin{wrapfigure}{r}{0.4\linewidth}
 	\centering
-	\includegraphics[width=0.38\textwidth]{figs/functions_kind_pie.png}
+	\includegraphics[width=0.38\textwidth]{figs/functions_kind_pie.pdf}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Types of Fns}
 	\label{fig:functions-by-kind}
@@ -214,7 +214,7 @@ These two patterns, as seen earlier, are also the ones that would benefit the mo
 By applying stable specialization, we could achieve significant reductions in code complexity and improved maintainability.
 \begin{figure}[htbp!]
 	\centering
-	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.png}
+	\includegraphics[width=0.75\textwidth]{figs/specializable_functions_box_plot.pdf}
 	\captionsetup{type=figure,skip=2pt}
 	\caption{Distribution of Spec. Functions by Kind}
 	\label{fig:distribution-function-kinds}
