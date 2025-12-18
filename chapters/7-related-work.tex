@@ -1,3 +1,42 @@
 \chapter{Related Work}\label{chap:related_work}
 
-\lipsum[1-4]
+\paragraph{Specialization Techniques}
+Beyond Rust, specialization has been explored in a variety of language and system settings.
+Work on extending OpenMP to support automated function specialization across translation units~\cite{OpenMPSpecialization22} illustrates how compiler-supported specialization can be integrated into parallel programming models.
+In the context of C++, template metaprogramming techniques for concept-based specialization~\cite{TemplateMetaprogrammingTechniques13} demonstrate how rich compile-time interfaces and constraints can drive the generation of specialized implementations while preserving generic code structure.
+At a higher level of abstraction, meta-level reuse approaches for mastering domain specialization~\cite{MetaLevelReuse16} investigate reusable meta-programs and frameworks that capture domain-specific knowledge and systematically apply specialization strategies.
+Specialization has also been extensively studied for dynamic languages, where trace-based just-in-time compilation performs aggressive type specialization along hot execution traces to eliminate dynamic checks and improve performance~\cite{Gal2009TracebasedJT}.
+Complementary work on run-time specialization for C proposes a general partial-evaluation-based framework that generates specialized versions of functions based on runtime information, enabling optimization opportunities that are not available to purely static compilation~\cite{Consel1996AGA}.
+
+\paragraph{Zero-Cost Abstractions}
+The concept of zero-cost abstractions is a fundamental principle in systems programming, particularly in languages like C++ and Rust~\cite{Ho23}.
+In C++, this principle has guided the evolution of templates and the standard library, enabling high-level generic code that compiles down to code competitive with hand-written low-level implementations~\cite{Stroustrup1994AbstractionEfficiency,Alexandrescu2001ModernCppDesign}.
+Rust adopts the same philosophy for its ownership model, iterators, and trait-based generics, emphasizing that safety-oriented and high-level abstractions should compile to code with minimal or no additional runtime overhead compared to equivalent unsafe, low-level code~\cite{Ho23,RustBook,RustNomicon}.
+
+\paragraph{Compile-Time Optimization Techniques}
+Compile-time optimization techniques are strategies employed by compilers to improve the performance of programs during the compilation process.
+These techniques include inlining, dead code elimination and loop unrolling, among others~\cite{Inlining97, Knoop94, LoopUnrolling99, CloneDetection98}.
+Modern compilers, such as LLVM, implement a variety of optimization passes to enhance the generated machine code~\cite{Lattner04}.
+Some research is also exploring the use of machine learning to guide optimization decisions~\cite{MLForCompilerOptimizations20}.
+
+\paragraph{Procedure Cloning}
+Procedure cloning is a closely related specialization technique in which the compiler creates specialized copies of procedures for selected call sites to expose more precise information to downstream optimizations~\cite{Cooper93}.
+More recent work applies procedure cloning to compiled dynamic languages, demonstrating that cloning guided by runtime profiles can yield significant performance improvements by tailoring procedures to common execution contexts~\cite{Husk2022UsingPC}.
+
+\paragraph{Type-Level Programming}
+Type-level programming is a paradigm that leverages the type system of a programming language to perform computations at compile time.
+Languages like Haskell and Scala have been pioneers in this area, providing advanced type systems that support type-level programming constructs~\cite{TypeLevelProgrammingHaskell19, TypeLevelProgrammingMatchTypes22}.
+
+\paragraph{Metaprogramming}
+Metaprogramming has become an essential technique in modern programming languages, allowing developers to write code that generates or manipulates other code~\cite{Clinger1991MacrosTW}.
+In the Lisp family of languages, powerful macro systems have been leveraged to build complex and flexible domain-specific models, for example in bioinformatics~\cite{Khomtchouk2016TheMT}.
+More and more languages are incorporating metaprogramming features to enhance code reuse and reduce boilerplate~\cite{HaskellMetaProgramming02, ScalaMacros13}.
+
+\paragraph{Performance Benchmarking}
+Performance benchmarking is a fundamental activity in systems programming, where latency and throughput are primary design constraints~\cite{kounev2020systems}.
+Sound benchmarking methodologies and tools are needed to obtain statistically robust measurements and avoid common pitfalls such as warm-up effects, unstable baselines, and measurement noise~\cite{BenchmarkingPitfalls19}.
+
+\paragraph{Rust for Safe Systems Programming}
+Many studies have highlighted Rust's capabilities for safe systems programming~\cite{SafeSystemsProgrammingRust21, SystemProgrammingRustBeyondSafety17}.
+Works are ongoing to build translation tools that convert C/C++ codebases to Rust, aiming to enhance safety and maintainability without sacrificing performance~\cite{Tripuramallu2024TowardsAT}.
+Rust is being particularly preferred in domains where safety and performance are critical, such as aerospace, automotive, and embedded systems~\cite{Seidel2024BringingRT, RustEmbeddedBook}.
