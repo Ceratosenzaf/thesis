@@ -7,7 +7,7 @@ Rust is a system programming language that focuses on safety, speed and concurre
 It ensures memory safety without garbage collection, meaning pure Rust programs are free from null pointer dereferences and data races.
 
 \paragraph{Ownership and Borrowing}
-Rust's ownership system—integrated into its type system—is inspired by \textit{linear logic}~\cite{Girard87, Girard95} and \textit{linear types}~\cite{Wadler90, Odersky92}, enforcing that each piece of memory (a value) has a single \textit{owner} (the variable binding) at any time~\cite{Clarke98, Boyapati02}.
+Rust's ownership system, integrated into its type system, is inspired by \textit{linear logic}~\cite{Girard87, Girard95} and \textit{linear types}~\cite{Wadler90, Odersky92}, enforcing that each piece of memory (a value) has a single \textit{owner} (the variable binding) at any time~\cite{Clarke98, Boyapati02}.
 When the owner goes out of scope, the memory is automatically deallocated, enabling user-defined destructors and supporting the \textit{resource acquisition is initialization} (RAII) pattern~\cite{Stroustrup94}.
 Ownership can be transferred (\textit{moved}) or temporarily shared (\textit{borrowed}) through references.
 Rust supports two types of borrows: multiple \textit{immutable} borrows or a single \textit{mutable} borrow, but never both at the same time.
@@ -155,7 +155,7 @@ The mechanism is conceptually related to multi-methods and ad hoc polymorphism i
 Metaprogramming refers to the practice of writing code that generates or manipulates other code, enabling abstraction, automation and domain-specific optimizations.
 Historically rooted in Lisp's symbolic macro systems~\cite{McCarthy60} and later expanded through compile-time techniques such as C++ templates~\cite{Vandevoorde02}, metaprogramming has evolved into a fundamental paradigm in modern language design.
 Its goals are multifaceted: reducing boilerplate, enforcing structural invariants, encoding repetitive patterns and enabling compile-time specialization or reasoning that would otherwise be impossible or inefficient at run-time.
-Across programming ecosystems, metaprogramming serves both practical and expressive purposes, ranging from code generation and DSL construction to advanced type-level computation.
+Across programming ecosystems, metaprogramming serves both practical and expressive purposes, ranging from code generation and DSL construction to advanced type-level computation~\cite{DSLMetaProgramming08, MetaprogrammingUr10}.
 Rust approaches metaprogramming through a powerful and expressive macro system designed to maintain the language's guarantees of safety, determinism and predictable compilation.
 Rust distinguishes between two primary categories: \textit{declarative macros} and \textit{procedural macros}.
 
