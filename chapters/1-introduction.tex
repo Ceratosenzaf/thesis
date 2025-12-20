@@ -1,10 +1,10 @@
 \chapter{Introduction}\label{chap:introduction}
 
 \paragraph{Premise}
-A core challenge in high-performance systems programming is achieving zero-cost abstraction through generic programming and polymorphism while allowing type-specific performance optimizations.
+A core challenge in high-performance systems programming is achieving zero-cost abstraction~\cite{Steele90,Stroustrup05} through generic programming~\cite{Musser89,Backhouse99} and polymorphism~\cite{Cardelli85,Wadler90} while allowing type-specific performance optimizations.
 This concept is known as \textit{specialization} and it's a common aspiration in advanced type systems.
 This challenge is particularly acute in Rust, a modern systems programming language designed for safety, concurrency and performance.
-Its trait system enable polymorphism and generic programming without incurring runtime overhead, as the compiler typically performs monomorphization, ensuring high performance across the board.
+Its trait system enable polymorphism and generic programming without incurring runtime overhead, as the compiler typically performs monomorphization~\cite{Griesemer2020FeatherweightG}, ensuring high performance across the board.
 However, for maximum efficiency, there are instances where a generic function could benefit significantly from a custom, highly optimized implementation when dealing with specific types / conditions.
 The ability to provide such a conditional, type-specific implementation for a trait method is known as Trait Specialization.
 
@@ -27,7 +27,7 @@ Specifically for Rust, given its performance focus and the significant utility o
 \paragraph{Proposal}
 To address the general limitations of specialization features in current stable ecosystems, this thesis proposes an innovative approach to the matter by moving the monomorphization and specialization logics to an earlier stage in the compilation process.
 To prove the effectiveness of this approach, we introduce a metaprogramming-based technique to simulate the behavior of compiler-implemented specialization.
-By utilizing the metaprogramming capabilities of the language, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code, avoiding runtime overhead entirely and circumventing the restrictions imposed by unstable compiler features.
+By utilizing the metaprogramming capabilities of the language~\cite{MetaprogrammingLanguagesSurvey19}, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code, avoiding runtime overhead entirely and circumventing the restrictions imposed by unstable compiler features.
 This approach can be applied to most languages with metaprogramming support and even directly into the compiler frontend of modern languages, as the compiler can simply replicate our approach internally.
 
 \paragraph{Contributions}
