@@ -74,10 +74,10 @@ For Listing~\ref{fig:type-level-dispatch}, the default implementation is not sup
 	\label{fig:call-check-type}
 \end{figure}
 
+Each pattern represents a different approach to achieving specialization in Rust and our analysis aimed to determine how stable specialization could enhance each of these approaches.
 It's important to note that even though each of these patterns could be implemented using stable specialization, some patterns are more likely to benefit from it than others.
 Firstly, for all patterns stable specialization would completely remove the method call boilerplate needed to select the correct specialized version, which as we've seen in Listing~\ref{fig:call-check-type} can be quite verbose and error-prone.
 Secondly, some patterns inherently introduce more complexity and boilerplate than others, making them more suitable candidates for stable specialization, like the \textbf{Monomorphized Traits} and \textbf{Manual Dispatch} patterns, which would also benefit from the removal of a whole trait and trait fn respectively.
-A summary of patterns shown in Listings~\ref{fig:tool-specialization} to~\ref{fig:type-level-dispatch} are reported in Table~\ref{tab:code-reduction-estimates}, where we also estimated the code reduction that stable specialization would provide for each pattern compared to their baseline implementations.
 Anyways, we believe that stable specialization could provide significant benefits across all these patterns by reducing boilerplate (as we've just discussed), improving performance and enhancing code readability and maintainability.
 Furthermore, many of these patterns do not support certain specialization features, like specialization based purely on trait bounds or default implementations.
 By leveraging stable specialization, developers can achieve more efficient and maintainable code across a variety of programming patterns.
@@ -155,6 +155,39 @@ By leveraging stable specialization, developers can achieve more efficient and m
 		\end{minipage}
 	\end{minipage}
 \end{figure}
+
+\paragraph{Code Reduction}
+To provide a clearer picture of the potential benefits of stable specialization, we estimated the code reduction that could be achieved for each of the identified patterns compared to their baseline implementations.
+Firstly, in Table~\ref{tab:code-reduction-estimates}, we evaluated the overhead of each pattern in terms of lines of code compared to the baseline of native stable specialization.
+The code examples used to build the table are the ones we've just seen in Listings~\ref{fig:unstable-specialization} to~\ref{fig:type-level-dispatch}.
+
+\mycsvtable{Overhead Estimates}{7}
+{|l|c|c|c|c|c|c|}
+{	{Pattern} 																										& {Defaults}	& {Traits}	& {Lifetimes}	& {Calls}	& {Lines \#}	& {Overhead}	}
+{\caption{
+		Overhead for not using Native Specialization.
+		For each pattern, we report the lines of code and implementation overhead, together with some metadata, such as if they support a default implementation, specialization based purely on trait bounds or lifetimes and if they only require a single call that the compiler can resolve on its own
+	}\label{tab:code-reduction-estimates}}
+{
+	\hyperref[fig:unstable-specialization]{Native Specialization}	& \done				& \done			& \todo				& \done		&	17					& -						\\
+	\hyperref[fig:tool-specialization]{\mytool Specialization}		& \done				& \done			& \done				& \todo		&	18					&	+5.9\%			\\
+	\hyperref[fig:manual-dispatch]{Manual Dispatch}								& \done				& \todo			& \todo				& \todo		&	16					& -5.9\%			\\
+	\hyperref[fig:monomorphized-traits]{Monomorphized Traits}			& \done				& \todo			& \todo				& \todo		&	20					& +17.6\%			\\
+	\hyperref[fig:inherent-impls]{Inherent Impls}									& \done				& \todo			& \todo				& \todo		&	12					& -29.4\%			\\
+	\hyperref[fig:standalone-functions]{Standalone Functions}			& \done				& \todo			& \todo				& \todo		&	10					& -41.2\%			\\
+	\hyperref[fig:type-level-dispatch]{Type Level Dispatch}				& \todo				& \todo			& \todo				& \done		&	24					& +41.2\%			\\
+}
+
+From the estimates, we can observe that stable specialization offers significantly less code overhead across various patterns.
+We can also note how \mytool{}'s specialization requires almost no additional boilerplate compared to native specialization, while being the only alternative to allow specialization based purely on trait bounds and lifetimes.
+Even though some patterns might require less overhead, they often lack expressiveness and flexibility, other than substantial features like default implementations and specialization based purely on trait bounds.
+
+It's also important to understand that these estimates are based on minimal examples, where the method call can be called directly without any additional logic.
+That's not always the case in real-world scenarios, like if the method call needs to be called in a point where the use of generic programming doesn't give the developer certainty about what should actually be called.
+This is a problem for all patterns that do not support a single call (column "calls" in the table above), in which cases we'd need some more complex call logic, using something similar to what we've seen in Listing~\ref{fig:call-check-type}.
+Overall, this gives us an average overhead of +41.2\% across all patterns.
+
+If we are interested in the code reduction rather than current overhead, we can use the inverse formula: $$\frac{Overhead}{1+Overhead}$$ from which we obtain that if we were to convert existing code using these patterns to native stabilized specialization, we'd achieve on average a code reduction of 29.2\% across all patterns, which is a significant improvement in terms of code maintainability and readability.
 
 % --------------------- Section 2 ---------------------
 
@@ -249,29 +282,9 @@ To wrap up, it's important to consider the broader implications of specializatio
 
 % --------------------- Section 4 ---------------------
 
-\section{Data}\label{sec:evaluation-data}
-
-\mycsvtable{Code Reduction Estimates}{6}
-{|l|c|c|c|c|c|}
-{	{Pattern} 																										& {Defaults}	& {Traits}	& {Lifetimes}	& {Single call} & {Overhead}}
-{\caption{
-		Estimated Code Reduction using Native Specialization.
-		For each pattern, we report the implementation overhead as the percentage increase in lines of code (LOC) compared to the baseline of native stable specialization.
-		Code reduction can be derived from the overhead ($O$) as $O/(1+O)$.
-		We also report some metadata, such as if they support a default impl, specialization based purely on trait bounds or lifetimes and if they only require a single call that the compiler can resolve on its own.
-		For each pattern that does not support a single call, we used the call function in Listing~\ref{fig:call-check-type}
-	}\label{tab:code-reduction-estimates}}
-{
-	\hyperref[fig:unstable-specialization]{Native Specialization}	& \done				& \done			& \todo				& \done					& -						\\ % 17
-	\hyperref[fig:tool-specialization]{\mytool Specialization}		& \done				& \done			& \done				& \todo					&	+58.8\%			\\ % 27
-	\hyperref[fig:manual-dispatch]{Manual Dispatch}								& \done				& \todo			& \todo				& \todo					& +47.1\%			\\ % 25
-	\hyperref[fig:monomorphized-traits]{Monomorphized Traits}			& \done				& \todo			& \todo				& \todo					& +70.6\%			\\ % 29
-	\hyperref[fig:inherent-impls]{Inherent Impls}									& \done				& \todo			& \todo				& \todo					& +23.5\%			\\ % 21
-	\hyperref[fig:standalone-functions]{Standalone Functions}			& \done				& \todo			& \todo				& \todo					& +11.8\%			\\ % 19
-	\hyperref[fig:type-level-dispatch]{Type Level Dispatch}				& \todo				& \todo			& \todo				& \done					& +41.2\%			\\ % 24
-}
-
 \clearpage
+
+\section{Data}\label{sec:evaluation-data}
 
 \mycsvtable{Analysis Projects}{7}
 {|c|l|S[table-format=5.0]|S[table-format=5.0]|S[table-format=10.0]|S[table-format=5.0]|S[table-format=4.0]|}

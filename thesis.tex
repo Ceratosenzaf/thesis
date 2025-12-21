@@ -38,14 +38,14 @@
 \newcommand{\mycsvtable}[6]{
   \begin{longtable}{#3}
     % header for the first page
-    \multicolumn{#2}{c}{\tablename\ \thetable\ -- #1}                                                                         \\
+    \multicolumn{#2}{c}{\tablename\ \thetable\ -- #1} \\
     \hline
     #4 \\
     \hline
     \endfirsthead
 
     % header for all pages except the first one
-    \multicolumn{#2}{c}{\tablename\ \thetable\ -- Continued from previous page}                                                                 \\
+    \multicolumn{#2}{c}{\tablename\ \thetable\ -- #1} \\
     \hline
     #4 \\
     \hline
@@ -53,7 +53,7 @@
 
     % footer for all pages except the last one
     \hline
-    \multicolumn{#2}{|r|}{Continued on next page}                                                                                               \\
+    \multicolumn{#2}{|r|}{Continued on next page} \\
     \hline
     \endfoot
 
