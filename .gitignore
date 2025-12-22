@@ -1,4 +1,4 @@
-.thesis-cache
+.*-cache
 *.aux
 *.bbl
 *.blg

@@ -1,0 +1,44 @@
+\documentclass{adapt-lab}
+
+\usepackage{lipsum}
+\usepackage{pifont}
+\usepackage{rotating}
+\usepackage{wrapfig}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{fvextra}
+\usepackage{minted}
+\usepackage{xcolor}
+\usepackage{amsmath}
+
+\newcommand{\cwcomment}[1]{\profcomment[Walter]{#1}}
+\newcommand{\evcomment}[1]{\studcomment[Edo]{#1}}
+
+\setminted{style=default, fontfamily=cmtt}
+\setmintedinline{style=default, fontfamily=cmtt}
+
+\begin{document}
+
+\title{Employing Metaprogramming: A Macro-Driven Strategy to Overcome Compiler-Imposed Limitations on Specialization}
+\author{Davide Cerato}
+\matricola{984481}
+\ayear{2024--2025}
+\advisor{Prof.\,Walter Cazzola}
+\coadvisor{Mr.\,Federico Bruzzone}
+\school{}
+\degree{BSc in Computer Science}
+\selectlanguage{english}
+
+\makefirstpage
+
+% \mainmatter
+\clearpage
+\setcounter{page}{1}
+
+\input{chapters/content.tex}
+
+\appendix
+
+\end{document}
