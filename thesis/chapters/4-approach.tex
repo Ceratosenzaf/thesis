@@ -302,6 +302,7 @@ While \mytool{} provides a powerful mechanism for stable specialization, it does
 	\item \textbf{Lifetimes Complexity}: While the tool provides mechanisms to handle lifetimes, the added complexity may lead to confusion or misuse if not properly understood by the user.
 	\item \textbf{Trait Bounds}: Since the tool generates a monomorphic version of each trait involved, the ability to involve those traits in trait bounds elsewhere in the code is lost.
 	\item \textbf{Limited Predicate Support}: Although the tool supports a variety of predicates for specialization, the current set of supported predicates may not cover all language feature (e.g.\@ \texttt{dyn Trait} or mutable references), potentially limiting the tool's applicability in certain cases.
+	\item \textbf{Same Project Traits}: The current implementation only supports specialization for traits defined within the same crate, because we need to analyze the trait's body to generate the monomorphized versions of the specialized implementations, limiting its usability with external libraries.
 \end{itemize}
 Despite these limitations, \mytool{} represents a significant step forward in enabling stable specialization through metaprogramming, providing developers with a powerful tool to optimize their code while adhering to Rust's safety guarantees.
 More generally, the concepts presented in this chapter can be adapted to other programming languages with similar capabilities, broadening the applicability of the approach beyond Rust.

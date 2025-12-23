@@ -16,13 +16,13 @@ Implementation of Reusable Tools: the creation of a Rust procedural macro librar
 
 \paragraph{Example}
 
-Let's consider a trait \texttt{MyTrait} with a method \texttt{my\_method}, and we want to have a generic implementation as well as provide a specialized implementation for the type \texttt{i32}.
+Let's consider a trait \texttt{MyTrait} with a method \texttt{my\_method} and we want to have a generic implementation as well as provide a specialized implementation for the type \texttt{i32}.
 In standard Rust this would not be possible due to the lack of stable specialization features.
 
 To apply our tool to this problem, the default implementation does not need any change compared to standard code.
 The specialized implementation instead, is annotated with the attribute macro \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
 In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}.
-This will create a specialized version of the \texttt{trait} and of the \texttt{impl}, through a process we'll be calling \textit{monomorphic specialization}.
+This will create a specialized version of the \texttt{trait} and of the \texttt{impl}, through a process we call \textit{monomorphic specialization}.
 
 After doing this, we also need to instruct the method calls to use the correct version of the method.
 This is done by using the \inlinerust{spec!} macro, which takes as first argument the method call and as second argument the type to specialize for.
@@ -40,4 +40,4 @@ As you can probably understand, this approach preserves the soundness of the typ
 \end{figure}
 
 With this simple example, we have shown how to use the tool to define a specialized implementation of a trait method for a specific type.
-More complex scenarios are also supported, including multiple specializations, constraints on generic parameters and more.
+More complex scenarios are also supported, including multiple specializations, constraints on generic parameters, trait bounds and more.
