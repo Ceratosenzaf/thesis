@@ -1,21 +1,34 @@
+\paragraph{Premise}
+A core challenge in systems programming is achieving zero-cost abstraction through generic programming while permitting type-specific optimizations, known as specialization.
+This is particularly relevant in Rust, where the trait system ensures performance via monomorphization.
+However, maximum efficiency occasionally requires to utilize some custom optimized implementations, through \textit{Trait Specialization}.
+
+\paragraph{State of the Art}
+Many languages have explored specialization mechanisms with varying degrees of success.
+Without native support, developers often rely on complex workarounds that yield cumbersome code or insufficient optimization.
+In 2015, Rust introduced experimental trait specialization, which soon received widespread interest.
+However, it remains confined to the experimental Nightly channel due to persistent design and implementation challenges.
+
+\paragraph{Limitations}
+Adopting cutting-edge features involves a tension between innovation and stability, often forcing developers to choose between forgoing performance benefits or committing to volatile compiler versions.
+In Rust, the Nightly-Stable divide prevents the adoption of specialization in production-ready codebases, effectively blocking its significant potential for optimization and cleaner design in commercial environments.
+
 \paragraph{Problem Statement}
-While the concept of specialization is a crucial tool for optimizing generic code in any performance-oriented language, its practical application is often gated by compiler maturity and stability concerns.
-The lack or instability of specialization in programming languages creates a gap between what is theoretically possible for optimization and what is practically available to the vast majority of the community, putting a performance ceiling on stable code.
-Specifically for Rust, given its performance focus and the significant utility of trait specialization, the central problem is the lack of a robust, idiomatic and performance-preserving mechanism for implementing trait specialization in stable code.
+While specialization is crucial for optimization, its application is restricted by compiler stability concerns.
+This creates a performance ceiling on stable code, putting a gap between theoretical possibilities and practical availability.
+Specifically for Rust, the central problem is the absence of a robust, idiomatic and efficient mechanism for implementing trait specialization within the stable ecosystem.
 
 \paragraph{Proposal}
-To address the general limitations of specialization features in current stable ecosystems, this thesis proposes an innovative approach to the matter by moving the monomorphization and specialization logics to an earlier stage in the compilation process.
-To prove the effectiveness of this approach, we introduce a metaprogramming-based technique to simulate the behavior of compiler-implemented specialization.
-By utilizing the metaprogramming capabilities of the language, we can analyze the input and generate the necessary boilerplate and type-checking logic at compile time, effectively allowing a user to define specialized implementations in stable code, avoiding runtime overhead entirely and circumventing the restrictions imposed by unstable compiler features.
-This approach can be applied to most languages with metaprogramming support and even directly into the compiler frontend of modern languages, as the compiler can simply replicate our approach internally.
+To address these limitations, this thesis proposes moving specialization logic to an earlier compilation stage.
+We introduce a metaprogramming-based technique that simulates compiler-implemented specialization by generating the necessary logic at compile time.
+This allows users to define specialized implementations in stable code with zero runtime overhead.
+This approach is also applicable to any other language with strong metaprogramming support.
 
 \paragraph{Contributions}
-This work provides the following key contributions.
-A Novel Stable Specialization Technique: the design and implementation of a new, purely metaprogramming-based approach for achieving specialization.
-Implementation of Reusable Tools: the creation of a Rust procedural macro library that provides an alternative to nightly specialization and an analysis tool that evaluates real-world public Rust codebases to identify common patterns where this stable specialization mechanism could yield substantial benefits.
+This work provides two key contributions: a novel metaprogramming-based approach for achieving stable specialization and the implementation of reusable tools.
+These tools include a Rust procedural macro library serving as an alternative to nightly specialization and an analysis tool designed to identify potential optimization benefits in real-world codebases.
 
 \paragraph{Example}
-
 Let's consider a trait \texttt{MyTrait} with a method \texttt{my\_method} and we want to have a generic implementation as well as provide a specialized implementation for the type \texttt{i32}.
 In standard Rust this would not be possible due to the lack of stable specialization features.
 
