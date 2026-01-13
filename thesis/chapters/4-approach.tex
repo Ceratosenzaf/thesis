@@ -33,7 +33,7 @@ The three primary components needed by the approach are:
 \section{Conditions Definition}\label{sec:conditions_definition}
 The first step to achieve specialization through metaprogramming is to define various specialized implementations that should be applied when certain conditions are met.
 In \mytool{}, this is accomplished using the \inlinerust{#[when(predicate)]} attribute macro, which takes as argument the predicate, which is the condition that must be satisfied for the specialized implementation to be selected.
-Please note that if we wanted a simpler drop-in replacement for the unstable specialization feature, we could edit the tool to avoid passing the predicate altogether and just use normal rust syntax for implementations, but we still would need to mark the implementation with some kind of macro to generate the necessary boilerplate.
+Please note that if we wanted a simpler drop-in replacement for the unstable specialization feature, we could avoid passing the predicate altogether and just use normal rust syntax for implementations, but we still would need to mark the implementation with some kind of macro to generate the necessary boilerplate.
 However, we believe that our approach of using a predicate provides more flexibility and control over the specialization process, allowing for more fine-grained optimizations and better integration with existing codebases.
 
 \paragraph{Predicates}
