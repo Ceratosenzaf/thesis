@@ -1,0 +1,58 @@
+\documentclass[9pt,xcolor=table,svgnames]{beamer}
+\usetheme{adapt-lab}
+
+\usepackage{showcode}
+\let\Square\undefined
+\usepackage{bbding}
+\usepackage{pifont}
+\usepackage{txfonts}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{enumitem}
+\usepackage{makecell}
+\usepackage{colortbl}
+\usepackage{wasysym}
+\usepackage{booktabs}
+\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{media9}
+
+\usetikzlibrary{angles,shadows.blur,positioning,backgrounds}
+\newcommand{\globalminwidth}{15cm}
+\newcommand{\globalminheight}{12cm}
+\newcommand{\scopeminwidth}{((\globalminwidth - 1cm) / 2 - 0.5cm)}
+\newcommand{\scopeminheight}{(\globalminheight / 3)}
+
+\setlist[itemize,1]{label=\alert{--}}
+
+\title[MonoSpec]{Employing Metaprogramming: A Macro-Driven Strategy to Overcome Compiler-Imposed Limitations on Specialization}
+\author[Davide Cerato]
+{\vspace{-10pt}Davide Cerato\\\vspace{7pt}{\scriptsize Id. Number: 984481}}
+\institute{\small
+	Universit\`a degli Studi di Milano\\
+	Computer Science Department\\
+	BSc in Computer Science\\\vspace{10pt}
+	\begin{tabular}{r l}
+        Advisor: & Prof. Walter Cazzola \\
+		Co-Advisor: & M.Sc. Federico Bruzzone \\
+	\end{tabular}
+}
+\date{\scriptsize{XX/02/2026\\\vspace{5pt}L-31 - Computer science\\Academic Year 2024-2025}}
+
+\tolerance=10
+\emergencystretch=\maxdimen
+\hyphenpenalty=10000
+\hbadness=10000
+
+\begin{document}
+
+\begin{frame}
+	\titlepage
+\end{frame}
+
+\input{chapters/content.tex}
+
+\end{document}
