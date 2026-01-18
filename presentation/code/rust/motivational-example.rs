@@ -11,3 +11,7 @@ impl MyTrait for i32 {
         println!("Specialized for i32");
     }
 }
+fn main() {
+    10.my_method();   // should print "Specialized for i32"
+    10.5.my_method(); // should print "Generic implementation"
+}

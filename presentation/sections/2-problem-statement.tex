@@ -9,11 +9,13 @@
 
 	In 2015, an RFC introduced specialization to Rust as an unstable feature confined to the \alert{Nightly Channel}. % Rust's unstable channel, where new features are tested before being stabilized.
 
+	% \pause
 	\bigskip
 
 	However, due to unresolved design issues and concerns about long-term maintenance, specialization is still unstable.
 	% This has led to frustration within the Rust community, as many developers were eager to leverage specialization for performance optimizations.
 
+	% \pause
 	\bigskip
 
 	Without stable specialization, developers often resort to code duplication or complex workarounds.
@@ -28,22 +30,27 @@
 \begin{frame}{\secname}
 	\framesubtitle{\subsecname}
 
-	Consider a scenario where we want to implement a trait for different types, with a specialized implementation for a specific one.
+	Consider implementing a trait for different types, with a specialized implementation for a specific type.
 	% Without specialization, we might have to write separate implementations for each type, leading to code duplication.
 	% With specialization, we could provide a default implementation and then override it for specific types, reducing redundancy and improving maintainability.
 
-	\bigskip
+	% \pause
+	\vspace{-0.5em}
 
 	% In Rust this would look something like this:
-
-	% TODO: show code/rust/motivational-example.rs
-
+	\begin{figure}[h!]
+		\sliderust*[0.98\linewidth]{motivational-example.rs}
+	\end{figure}
 	% In this example, we have a trait MyTrait with a method my_method and we have a generic implementation as well as a specialized implementation for the type i32 (32-bit integer).
 
-	\bigskip
+	% \pause
+	\vspace{-1.5em}
 
 	% Unfortunately, this would not be possible due to the lack of stable specialization features, and indeed the above code would not compile.
-
-	% TODO: show code/bash-session/motivational-example.sh
+	\begin{figure}[h!]
+		\slidebashcon[0.98\linewidth]{motivational-example.sh}
+	\end{figure}
+	% Why is that? Because type i32 has two distinct implementations of the trait MyTrait associated with it: one generic and one specialized.
+	% This leads to ambiguity during method resolution, as the compiler cannot currently determine which implementation to use for i32.
 
 \end{frame}
