@@ -1,0 +1,49 @@
+\section{Problem Statement}\label{sec:problem_statement}
+
+% --------------------- Sub Section 1 ---------------------
+
+\subsection[ ]{What's happening in Rust?}\label{subsec:rust_issue}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
+
+	In 2015, an RFC introduced specialization to Rust as an unstable feature confined to the \alert{Nightly Channel}. % Rust's unstable channel, where new features are tested before being stabilized.
+
+	\bigskip
+
+	However, due to unresolved design issues and concerns about long-term maintenance, specialization is still unstable.
+	% This has led to frustration within the Rust community, as many developers were eager to leverage specialization for performance optimizations.
+
+	\bigskip
+
+	Without stable specialization, developers often resort to code duplication or complex workarounds.
+	% This leads to increased maintenance costs and potential for bugs, other than performance degradation and missed optimization opportunities.
+
+\end{frame}
+
+% --------------------- Sub Section 2 ---------------------
+
+\subsection[ ]{Motivational Example}\label{subsec:motivational_example}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
+
+	Consider a scenario where we want to implement a trait for different types, with a specialized implementation for a specific one.
+	% Without specialization, we might have to write separate implementations for each type, leading to code duplication.
+	% With specialization, we could provide a default implementation and then override it for specific types, reducing redundancy and improving maintainability.
+
+	\bigskip
+
+	% In Rust this would look something like this:
+
+	% TODO: show code/rust/motivational-example.rs
+
+	% In this example, we have a trait MyTrait with a method my_method and we have a generic implementation as well as a specialized implementation for the type i32 (32-bit integer).
+
+	\bigskip
+
+	% Unfortunately, this would not be possible due to the lack of stable specialization features, and indeed the above code would not compile.
+
+	% TODO: show code/bash-session/motivational-example.sh
+
+\end{frame}

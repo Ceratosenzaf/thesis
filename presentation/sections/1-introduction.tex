@@ -1,0 +1,22 @@
+\section{Specialization}\label{sec:introduction}
+\subsection[ ]{State of the Art and Limitations}\label{subsec:state_of_art_and_limitations}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
+
+	Systems programming aims to combine generic programming with type-specific \alert{optimizations}.
+	% This concept is known as specialization and it allows developers to write flexible code that can be optimized for specific types or use cases.
+
+	\bigskip
+
+	Mechanisms vary widely, from mature and widely used systems % e.g. C++ templates, which have been part of the language for decades
+	to experimental features, % e.g. Rust or other languages, where specialization is still under active development.
+	with varying degrees of success.
+
+	\bigskip
+
+	In many modern ecosystems, specialization is often \alert{unstable}, forcing a tradeoff between performance and compiler stability.
+	% The tradeoff is quite crucial, as leaving the stable channel may compromise the reliability of the software being developed and is also not always feasible in production environments.
+	% On the other hand, the lack of specialization can lead to performance degradation, especially in performance-critical applications.
+
+\end{frame}
