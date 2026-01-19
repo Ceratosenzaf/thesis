@@ -12,7 +12,8 @@
 	% \pause
 	\bigskip
 
-	However, due to unresolved design issues and concerns about long-term maintenance, specialization is still unstable.
+	However, due to unresolved design issues and concerns about soundness of the system, % especially with regards to lifetimes 
+	specialization is still unstable.
 	% This has led to frustration within the Rust community, as many developers were eager to leverage specialization for performance optimizations.
 
 	% \pause
@@ -30,14 +31,15 @@
 \begin{frame}{\secname}
 	\framesubtitle{\subsecname}
 
-	Consider implementing a trait for different types, with a specialized implementation for a specific type.
+	Consider implementing a trait % which is the equivalent of an interface in other languages 
+	for different types, with a specialized implementation for a specific type.
 	% Without specialization, we might have to write separate implementations for each type, leading to code duplication.
 	% With specialization, we could provide a default implementation and then override it for specific types, reducing redundancy and improving maintainability.
 
 	% \pause
 	\vspace{-0.5em}
 
-	% In Rust this would look something like this:
+	% In Rust we could have something like this:
 	\begin{figure}[h!]
 		\sliderust*[0.98\linewidth]{motivational-example.rs}
 	\end{figure}

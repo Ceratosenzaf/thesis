@@ -1,6 +1,37 @@
 \section{Proposal}\label{sec:proposal}
+\subsection[ ]{Macro-based Specialization}\label{}
 
 \begin{frame}{\secname}
-	% \framesubtitle{\subsecname}
-	\lipsum[1-1]
+	\framesubtitle{\subsecname}
+
+	Employ the powerful metaprogramming capabilities of Rust to build a \alert{macro library} that simulates native specialization, with:
+
+	% \pause
+	\bigskip
+
+	\begin{tabular}{p{0.45\textwidth} p{0.55\textwidth}}
+		\begin{itemize}
+			\item Native-like look and feel % similar syntax to native specialization, easy to use and easy to migrate existing code
+			\item \alert{Compile-time resolution} % all the monomorphized implementations are available and the method calls are resolved at compile time 
+			\item Sound and stable % no unsafe code, no compiler modifications, sits on top of stable Rust
+		\end{itemize}
+		 &
+		\begin{itemize}
+			\item \alert{Zero runtime overhead} % no vtables, no dynamic dispatch, because everything is monomorphized at compile time
+			\item Powerful API % predicates support (all, any, not) and support for most common use cases
+		\end{itemize}
+	\end{tabular}
+
+	% \pause
+	\bigskip
+
+	To do this, we use two macros:
+	\texttt{\#when} % which is an attribute macro applied to the specialized implementations to specify their applicability conditions
+	and \texttt{spec!}. % which is a function-like macro wraps the method calls to resolve them at compile time
+
+	% \pause
+	\bigskip
+
+	The approach can also be applied to other languages with powerful metaprogramming capabilities that lack native specialization support.
+
 \end{frame}

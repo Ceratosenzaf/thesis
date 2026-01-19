@@ -1,6 +1,75 @@
 \section{By Example: Implementing the Proposal}\label{sec:by_example_implementing_the_proposal}
 
+% --------------------- Sub Section 1 ---------------------
+
+\subsection[ ]{Motivational Example}\label{subsec:example_motivational_example}
+
 \begin{frame}{\secname}
-	% \framesubtitle{\subsecname}
+	\framesubtitle{\subsecname}
+
+	To illustrate how the proposed approach works in practice, let's revisit the motivational example we presented earlier.
+
+	\begin{figure}[h!]
+		\sliderust*[0.98\linewidth]{motivational-example-solution.rs}
+	\end{figure}
+	% As we can see, the changes are minimal and mostly involve adding the necessary annotations to support the new functionality.
+	% This demonstrates the practicality and ease of adoption of the proposed solution.
+	% The spec! macro requires to specify all the types of the items involved in the method call, but we'll discuss why this is necessary later.
+	% The #when macro is used to specify the conditions under which this implementation is valid.
+
+\end{frame}
+
+% --------------------- Sub Section 2 ---------------------
+
+\subsection[ ]{Supported Predicates and Forms}\label{subsec:example_supported_predicates_and_forms}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
+
+	The following predicates are supported:
+
+	\begin{tabular}{p{0.45\textwidth} p{0.55\textwidth}}
+		\begin{itemize}
+			\item \inlinerust{T = Type} % Type equality: a generic type parameter is of a specific type
+			\item \inlinerust{all(p1, p2, ...)} % Logical AND: all inner predicates are satisfied
+			\item \inlinerust{not(p)} % Logical NOT: the inner predicate is not satisfied
+		\end{itemize}
+		 &
+		\begin{itemize}
+			\item \inlinerust{T: Tr1 + Tr2} % Trait implementation: a generic type parameter implements a specific trait or multiple traits
+			\item \inlinerust{any(p1, p2, ...)} % Logical OR: at least one of the inner predicates is satisfied
+		\end{itemize}
+	\end{tabular}
+	% These predicates can be combined to form complex conditions that must be met for the implementation to be valid.
+
+	% \pause
+	\bigskip
+
+	We also support the following implementations forms:
+
+	\begin{itemize}
+		\item \inlinerust{impl<T> Trait for T} % Generic impl type: the type being implemented is a generic type parameter
+		\item \inlinerust{impl<T> Trait for Type<T>} % Generic type parameter: the type being implemented is a concrete type with a generic type parameter
+		\item \inlinerust{impl<T> Trait<T> for Type} % Generic trait parameter: the trait being implemented has a generic type parameter
+	\end{itemize}
+	% And all combinations of the above forms.
+
+\end{frame}
+
+% --------------------- Sub Section 3 ---------------------
+
+\subsection[ ]{Lifetimes}\label{subsec:example_lifetimes}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
+	\lipsum[1-1]
+\end{frame}
+
+% --------------------- Sub Section 4 ---------------------
+
+\subsection[ ]{}\label{}
+
+\begin{frame}{\secname}
+	\framesubtitle{\subsecname}
 	\lipsum[1-1]
 \end{frame}
