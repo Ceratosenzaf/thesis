@@ -5,15 +5,16 @@
 	\framesubtitle{\subsecname}
 
 	Conditions defined in the \inlinerust{when} macro are normalized into \alert{DNF}, % Disjunctive Normal Form (disjunction of conjunctions)
-	flattening when possible, % e.g. \inlinerust{all(all(p1, p2), p3)} becomes \inlinerust{all(p1, p2, p3)}
-	and then each disjunct condition is treated as a separate implementation, e.g.: % This allows to handle each disjunct independently during method resolution
+	flattening when possible, e.g.:
+	% Once we have the dnf conditions, each disjunct condition is treated as a separate implementation
+	% This allows to handle each disjunction independently during method resolution
 
 	\smallskip
 
 	{\footnotesize\inlinerust{all(T = Vec<U>, any(U = i32, U = f64))} $\rightarrow$ \inlinerust{any(T = Vec<i32>, T = Vec<f64>)}}
 
 	\bigskip
-	% \pause
+	\pause
 
 	A \alert{partial order} defined over the predicates is used to determine the specificity of each implementation, e.g.:
 
@@ -22,11 +23,11 @@
 	{\footnotesize\inlinerust{T = &i32} $>$ \inlinerust{T = &U} $>$ \inlinerust{T: Copy}}
 
 	\bigskip
-	% \pause
+	\pause
 
 	% In addition to the two macros
 	We need a way to collect all the traits defined in the crate % to be used in the monomorphization phase
-	and to handle the order of their implementations during method resolution.
+	and to handle the order of their implementations. % such that a method call can also call an implementation defined later in the code
 	In Rust, this is done with \alert{Build Scripts}, e.g.:
 
 	\smallskip

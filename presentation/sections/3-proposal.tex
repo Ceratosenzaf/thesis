@@ -6,8 +6,7 @@
 
 	Employ the powerful metaprogramming capabilities of Rust to build a \alert{macro library} that simulates native specialization, with:
 
-	% \pause
-	\bigskip
+	\pause
 
 	\begin{tabular}{p{0.45\textwidth} p{0.55\textwidth}}
 		\begin{itemize}
@@ -22,14 +21,14 @@
 		\end{itemize}
 	\end{tabular}
 
-	% \pause
-	\bigskip
+	\pause
+	\smallskip
 
 	To do this, we use two macros:
 	\texttt{\#when} % which is an attribute macro applied to the specialized implementations to specify their applicability conditions
 	and \texttt{spec!}. % which is a function-like macro wraps the method calls to resolve them at compile time
 
-	% \pause
+	\pause
 	\bigskip
 
 	The approach can also be applied to other languages with powerful metaprogramming capabilities that lack native specialization support.

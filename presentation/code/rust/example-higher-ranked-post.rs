@@ -18,7 +18,6 @@ impl<'b, V> TraitFn<'b, V> for S {
 fn main() {
     let s = S;
     let lambda = |s: &str, n: &i32| s.len() as u32 + *n as u32;
-
     let x: i32 = <S as Trait<_, _, _>>::f(&s, "abc", 2);  // returns 0
     let y: u32 = <S as TraitFn<_>>::f(&s, "abc", lambda); // returns 10
 }
