@@ -1,3 +1,3 @@
 fn main() {
-    spec_trait_order::handle_order();
+    mono_spec::handle_order();
 }

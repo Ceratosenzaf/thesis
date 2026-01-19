@@ -20,7 +20,7 @@ fn main() {
     let s = S;
     let lambda = |s: &str, n: &i32| s.len() as u32 + *n as u32;
 
-    let x: i32 = spec! { s.f("abc", 2); S; [&str, i32] }; // returns 0
+    let x: i32 = spec! { s.f("abc", 2); S; [&str, i32]; i32: Default }; // returns 0
     let y: u32 = spec! { s.f("abc", lambda); S;
-      [&str, for<'a> fn(&str, &'a i32) -> u32] };         // returns 10
+      [&str, for<'a> fn(&str, &'a i32) -> u32]; u32: Default }; // returns 10
 }
