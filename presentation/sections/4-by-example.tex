@@ -9,13 +9,24 @@
 
 	To illustrate how the proposed approach works in practice, let's revisit the motivational example we presented earlier.
 
-	\begin{figure}[h!]
-		\sliderust*[0.98\linewidth]{motivational-example-solution.rs}
-	\end{figure}
-	% As we can see, the changes are minimal and mostly involve adding the necessary annotations to support the new functionality.
-	% This demonstrates the practicality and ease of adoption of the proposed solution.
-	% The spec! macro requires to specify all the types of the items involved in the method call, but we'll discuss why this is necessary later.
-	% The #when macro is used to specify the conditions under which this implementation is valid.
+	\begin{overprint}
+		\onslide<1>
+		\begin{figure}[h!]
+			\sliderust*[0.98\linewidth]{motivational-example-solution.rs}
+		\end{figure}
+		% As we can see, the changes are minimal and mostly involve adding the necessary annotations to support the new functionality.
+		% This demonstrates the practicality and ease of adoption of the proposed solution.
+		% The spec! macro requires to specify all the types of the items involved in the method call, but we'll discuss why this is necessary later.
+		% The #when macro is used to specify the conditions under which this implementation is valid.
+
+		\onslide<2>
+		\begin{figure}[h!]
+			\sliderust*[0.98\linewidth]{motivational-example-solution-expanded.rs}
+		\end{figure}
+		% As we can see, the #when macro creates a monomorphized version of the trait and its implementations for i32, replacing the generic type parameter T with i32 where necessary.
+		% The spec! macro then uses these monomorphized versions to resolve the method calls correctly, casting the type to the appropriate interface as needed.
+		% This ensures that the correct implementation is used based on the specified conditions, allowing for safe and efficient specialization.
+	\end{overprint}
 
 \end{frame}
 
@@ -36,7 +47,8 @@
 		\end{itemize}
 		 &
 		\begin{itemize}
-			\item \inlinerust{T: Tr1 + Tr2} % Trait implementation: a generic type parameter implements a specific trait or multiple traits
+			\item \inlinerust{T: Tr1 + Tr2} % Trait implementation: a generic type parameter implements a specific trait or multiple traits.
+			      % If we have trait bounds in the #when macro, we then also have to specify them in the spec! macro to ensure soundness, using the same syntax as in normal Rust. 
 			\item \inlinerust{any(p1, p2, ...)} % Logical OR: at least one of the inner predicates is satisfied
 		\end{itemize}
 	\end{tabular}
@@ -62,14 +74,67 @@
 
 \begin{frame}{\secname}
 	\framesubtitle{\subsecname}
-	\lipsum[1-1]
+
+	Lifetimes % which are the scope for which a reference is valid
+	are one of the main reasons why the original RFC is still unstable. % this is because at code generation time, the lifetimes have already been erased, so we cannot reason about them
+
+	% \pause
+	\bigskip
+
+	Lifetimes bounds can be implicit or explicit. % making them harder to detect
+	% For example, one of the initially proposed solutions was to forbid specialization based on lifetimes, but since lifetimes bounds can be implicit, to be safe they ended up forbidding specialization in many cases, even when it would have been safe to use.
+
+	% \pause
+	\bigskip
+
+	% There have been long discussions on how to properly handle lifetimes in the context of specialization.
+	In our belief, this is an \alert{architectural limitation} of the compiler that can be overcome with proper re-design.
+	% This has already been brought up, but was never properly addressed because believed to be too costly to fix.
+
+	% \pause
+	\bigskip
+
+	Our proposal treats lifetimes as first-class citizens:
+
+	\begin{tabular}{p{0.45\textwidth} p{0.55\textwidth}}
+		\begin{itemize}
+			\item \inlinerust{T = &'a U} % Reference types: a generic type parameter is a reference with a specific lifetime
+		\end{itemize}
+		 &
+		\begin{itemize}
+			\item \inlinerust{T: 'a} % Lifetime bounds: a generic type parameter has a specific lifetime bound
+		\end{itemize}
+	\end{tabular}
+	% This syntax is available in both macros and can be used to express complex lifetime relationships.
+	% Like earlier, when available, all information is inferred in the monomorphized code to ensure soundness.
+
 \end{frame}
 
 % --------------------- Sub Section 4 ---------------------
 
-\subsection[ ]{}\label{}
+\subsection[ ]{Higher-Ranked Polymorphism}\label{subsec:example_higher_ranked_polymorphism}
 
 \begin{frame}{\secname}
 	\framesubtitle{\subsecname}
-	\lipsum[1-1]
+
+	\vspace{0.5em}
+
+	% Rust doesn't only support first-order polymorphism, but also Higher-Ranked Polymorphism (HRP), which allows for functions to be generic over lifetimes, enabling more flexible and reusable code.
+	% This is particularly useful in scenarios where we want to express that a function can accept references with any lifetime.
+	Our macro system also supports Higher-Ranked Polymorphism.
+
+	% \pause
+
+	\begin{overprint}
+		\onslide<1>
+		\begin{figure}[h!]
+			\sliderust*[0.98\linewidth]{example-higher-ranked-pre.rs}
+		\end{figure}
+
+		\onslide<2>
+		\begin{figure}[h!]
+			\sliderust*[0.98\linewidth]{example-higher-ranked-post.rs}
+		\end{figure}
+	\end{overprint}
+
 \end{frame}

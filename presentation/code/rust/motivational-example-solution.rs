@@ -1,6 +1,4 @@
-trait MyTrait {
-    fn my_method(&self);
-}
+trait MyTrait { fn my_method(&self); }
 impl<T> MyTrait for T {
     fn my_method(&self) {
         println!("Generic implementation");
@@ -13,6 +11,6 @@ impl<T> MyTrait for T {
     }
 }
 fn main() {
-    spec! { 10.my_method(); i32 };   // prints "Specialized for i32"
-    spec! { 10.5.my_method(); f64 }; // prints "Generic implementation"
+    spec! { 10.my_method(); i32 };       // prints "Specialized for i32"
+    spec! { 10.5.my_method(); f64 };     // prints "Generic implementation"
 }
