@@ -2,18 +2,42 @@
 
 % --------------------- Sub Section 1 ---------------------
 
-\subsection[ ]{Approach}
-
 \begin{frame}{\secname}
-	\framesubtitle{\subsecname}
-	% TODO: compiler instrumentation details
-	% TODO: specialization heuristics
+	\framesubtitle{Approach}
+
+	% Our goal was to analyze existing codebases to find instances where specialization helps
+	Once identified some patterns, % code patterns used in real-world codebases to overcome the lack of specialization
+	we \alert{instrumented} the compiler to analyze at \alert{HIR} level % High-level Intermediate Representation (HIR) level, because here we still have access to type and lifetime information
+	any function definition.
+
+	\bigskip
+	\pause
+
+	For each one, we created a custom \alert{AST} % Abstract Syntax Tree
+	and using heuristics, we grouped functions that could be mutually specializable. % specializable with each other
+	% For example, two functions with similar names that work on similar number of arguments
+
+	\bigskip
+	\pause
+
+	We then calculated the \alert{tree edit distance} % between each pair of ASTs
+	using the ZSS algorithm % Zhang-Shasha from 1989, which calculates the minimum number of edit operations required to transform one tree into another
+	and from that, we derived a similarity score:
+
+	$$1 - \frac{\text{dist}}{\text{max size}}$$
+
+	% For example, if we had a function named process_int taking an i32 parameter and another function named process_float taking an f32 parameter, and the ASTs were similar enough, we could consider them to be the specialized versions of a more generic function process<T>
+
 \end{frame}
 
 % --------------------- Sub Section 2 ---------------------
 
-\subsection[ ]{Results}
-
 \begin{frame}{\secname}
-	\framesubtitle{\subsecname}
+	\framesubtitle{Results}
+
+	The analysis was run twice on 65 open-source Rust codebases: % from various domains, ranging from small libraries to large applications, with some having almost 1b downloads on crates.io (Rust's package registry) and others over 70k stars on GitHub
+	with a similarity threshold of 90\% and 99\% respectively.
+
+	% TODO: add graphs 
+
 \end{frame}
