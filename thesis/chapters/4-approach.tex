@@ -292,6 +292,31 @@ Furthermore, we could add a new type of annotation to specify lifetime relations
 	\label{fig:lifetimes-specialization-pre}
 \end{figure}
 
+\paragraph{Higher Ranked Polymorphism}
+Other than first-order polymorphism (i.e.\@ generics over types), Rust also supports higher-ranked polymorphism through the use of \inlinerust{for<'a>} syntax.
+This feature allows for functions to be generic over lifetimes, enabling more flexible and reusable code.
+This is particularly useful in scenarios like callbacks or functional programming constructs that operate on references without being tied to a specific lifetime.
+To support specialization involving higher-ranked polymorphism, we extended both macros to handle higher-ranked lifetime parameters.
+
+An example of this can be seen in Listings~\ref{fig:higher-ranked-pre} and~\ref{fig:higher-ranked-post}, where we define a specialized implementation for a trait \inlinerust{Bar} that has a method \inlinerust{bar} accepting a higher-ranked reference.
+Here we can also see how \mytool{} handles returning values from specialized implementations' functions.
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{higher-ranked-pre.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of specialization using higher-ranked polymorphism}
+	\label{fig:higher-ranked-pre}
+\end{figure}
+
+\begin{figure}[htbp!]
+	\centering
+	\showrust*[0.98\linewidth]{higher-ranked-post.rs}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Example of expansion of higher-ranked polymorphism specialization from Listing \ref{fig:higher-ranked-pre}}
+	\label{fig:higher-ranked-post}
+\end{figure}
+
 % --------------------- Section 6 ---------------------
 
 \section{Limitations}\label{sec:limitations}

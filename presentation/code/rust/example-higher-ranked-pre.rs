@@ -13,7 +13,7 @@ impl<'b, T, U, V> Trait<T, U, V> for S {
 }
 fn main() {
     let s = S;
-    let lambda = |s: &str, n: &i32| s.len() as u32 + *n as u32;
+    let lambda = |a: &str, b: &i32| a.len() as u32 + *b as u32;
     let res: u32 = spec! { s.f("abc", lambda); S;
       [&str, for<'a> fn(&str, &'a i32) -> u32] }; // returns 10
 }
