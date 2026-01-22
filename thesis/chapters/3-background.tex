@@ -128,9 +128,9 @@ This approach ensures predictable dispatch behavior, maintains clarity in method
 \paragraph{Specialization}
 Specialization is an advanced dispatch mechanism that allows more specific trait implementations to refine or override default behavior.
 In Rust, specialization aims to resolve long-standing expressiveness gaps in the trait system by enabling prioritized selection among overlapping implementations.
-This is particularly useful when a general-purpose implementation exists (often expressed as a \textit{default} method in a trait) but certain types require optimized or semantically distinct behavior~\cite{MatsakisRFC1210}.
+This is particularly useful when a general-purpose implementation exists (often expressed as a \textit{default} method in a trait) but certain types require optimized or semantically distinct behavior~\cite{SpecializationRFC}.
 The feature builds on Rust's \textit{coherence} and \textit{orphan rules}\cite{RustOrphanRules}, ensuring that overlapping implementations maintain type-safety and global consistency~\cite{Chlipala11}.
-Although as of today specialization remains unstable and experimental (through the \inlinerust{#![feature(specialization)]} or \inlinerust{#![feature(min_specialization)]} flags~\cite{SpecializationRFC,MinSpecialization}), it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs~\cite{MatsakisRFC1210}.
+Although as of today specialization remains unstable and experimental (through the \inlinerust{#![feature(specialization)]} or \inlinerust{#![feature(min_specialization)]} flags~\cite{SpecializationRFC,MinSpecialization}), it provides a foundation for advanced library design patterns, such as optimized container types, numerical traits and fallback-based APIs.
 The mechanism is conceptually related to multi-methods and ad hoc polymorphism in other languages~\cite{Chambers92,Castagna95}, but Rust restricts its form to preserve determinism and avoid ambiguity in resolution that have yet to be fully addressed.
 
 \begin{figure}[htbp!]
@@ -165,7 +165,7 @@ While reminiscent of Lisp macros in spirit, Rust's declarative macros enforce \t
 This prevents entire classes of errors common in textual or non-hygienic macro systems.
 
 \paragraph{Procedural Macros}
-Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,Baxter98}) through the \inlinerust{proc_macro} API.
+Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,CloneDetection98}) through the \inlinerust{proc_macro} API.
 These macros behave as compiler plugins that transform annotated code items at compile time.
 Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros} and \textit{derive macros}.
 The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic declarative APIs.

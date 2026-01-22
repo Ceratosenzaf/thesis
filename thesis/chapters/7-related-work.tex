@@ -16,7 +16,7 @@ Compared to these lines of work, we do not propose new compiler infrastructures 
 
 \paragraph{Zero-Cost Abstractions}
 The concept of zero-cost abstractions is a fundamental principle in systems programming, particularly in languages like C++ and Rust~\cite{Ho23}.
-In C++, this principle has guided the evolution of templates and the standard library, enabling high-level generic code that compiles down to code competitive with hand-written low-level implementations~\cite{Stroustrup1994AbstractionEfficiency,Alexandrescu2001ModernCppDesign}.
+In C++, this principle has guided the evolution of templates and the standard library, enabling high-level generic code that compiles down to code competitive with hand-written low-level implementations~\cite{Stroustrup94,Alexandrescu2001ModernCppDesign}.
 Rust adopts the same philosophy for its ownership model, iterators and trait-based generics, emphasizing that safety-oriented and high-level abstractions should compile to code with minimal or no additional runtime overhead compared to equivalent unsafe, low-level code~\cite{Ho23,RustBook,RustNomicon}.
 
 In this thesis we empirically study how concrete metaprogramming and specialization patterns affect the extent to which zero-cost abstractions are actually realized in practice.

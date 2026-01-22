@@ -56,6 +56,7 @@ As you can probably understand, this approach preserves the soundness of the typ
 
 In addition to using the two macros, we need to instruct the compiler to allow us to define and use the macros correctly independently from the order of their definition.
 In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:monomorphic_specialization_build_rs} and better explained later in Section~\ref{sec:build_script}.
+This step is also useful to collect all the traits and default implementations present in the codebase, so that the tool can generate the specialized versions as needed.
 
 \begin{figure}[htbp!]
 	\centering
