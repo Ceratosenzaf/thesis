@@ -5,6 +5,7 @@ We'll show the example in Rust, but the approach is general and can be applied t
 
 Let's consider a trait \texttt{MyTrait} with a method \texttt{my\_method}, and we want to have a generic implementation as well as provide a specialized implementation for the type \texttt{i32}.
 In standard Rust this would look something like Listing~\ref{fig:monomorphic_specialization_problem}, but unfortunately this code would not compile due to the lack of stable specialization features.
+More specifically, the Rust compiler would produce the error message shown in Listing~\ref{fig:monomorphic_specialization_error}, indicating that the specialized implementation conflicts with the generic one.
 
 \begin{figure}[htbp!]
 	\centering
@@ -14,14 +15,25 @@ In standard Rust this would look something like Listing~\ref{fig:monomorphic_spe
 	\label{fig:monomorphic_specialization_problem}
 \end{figure}
 
-To apply our tool to this problem, the default implementation does not need any change compared to standard code.
-The specialized implementation instead, is annotated with the attribute macro \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
-In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}.
-This will create a specialized version of the \texttt{trait} and of the \texttt{impl}, through a process we'll be calling \textit{monomorphic specialization}.
+\begin{figure}[htbp!]
+	\centering
+	\showbashcon[0.98\linewidth]{monomorphized-specialization-error.sh}
+	\captionsetup{type=listing,skip=2pt}
+	\caption{Error message produced by the Rust compiler for the code in Listing~\ref{fig:monomorphic_specialization_problem}}
+	\label{fig:monomorphic_specialization_error}
+\end{figure}
+
+To solve this problem we can use \mytool{}, which allows us to define specialized implementations of trait methods for specific types without running into the conflicts that Rust's type system would normally prevent.
+
+Using the tool, the default implementation does not need any change compared to standard Rust code.
+The specialized implementation, instead, is annotated with the attribute macro \inlinerust{#[when(...)]}, that lets us specify the conditions under which that implementation should be used.
+In this case, we want to specialize the implementation of \texttt{MyTrait} for the type \texttt{i32}, so we write \inlinerust{#[when(T = i32)]}, indicating that this implementation should be used whenever the generic parameter \texttt{T} corresponds to \texttt{i32}.
+This will create a specialized version of the \texttt{trait} and of the \texttt{impl} for \texttt{i32}, replacing in them all occurrences of the generic parameter \texttt{T} with our specialized type, through a process we'll be calling \textit{monomorphic specialization}.
 
 After doing this, we also need to instruct the method calls to use the correct version of the method.
-This is done by using the \inlinerust{spec!} macro, which takes as first argument the method call and as second argument the type to specialize for.
-As better explained in Chapter~\ref{chap:approach}, this is required because in the macro expansion phase the Rust compiler doesn't give us enough information to automatically determine the types of the variables involved in the method call.
+This is done by using the \inlinerust{spec!} macro, which takes as first argument the method call you'd like to specialize and as second argument the type to specialize for.
+As better explained in Chapter~\ref{chap:approach}, this is required because in the macro expansion phase, the Rust compiler doesn't give us enough information to automatically determine the types of the variables involved in the method call, so we need to provide that information ourselves.
+This extra piece of information allows the macro to rewrite the method call to use the appropriate version of the method, but could be omitted in languages with more powerful macro systems or reflection capabilities.
 
 The complete code is shown in Listing~\ref{fig:monomorphic_specialization_pre}, where you can see the macros in action.
 As you can probably understand, this approach preserves the soundness of the type system, since after the monomorphization process (see Listing~\ref{fig:monomorphic_specialization_post}) we have two completely separate versions of the trait and its implementation, that the compiler can easily distinguish and type check independently.
@@ -43,7 +55,7 @@ As you can probably understand, this approach preserves the soundness of the typ
 \end{figure}
 
 In addition to using the two macros, we need to instruct the compiler to allow us to define and use the macros correctly independently from the order of their definition.
-In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:monomorphic_specialization_build_rs}.
+In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:monomorphic_specialization_build_rs} and better explained later in Section~\ref{sec:build_script}.
 
 \begin{figure}[htbp!]
 	\centering
@@ -53,5 +65,5 @@ In Rust this is done with \textit{build scripts}, as shown in Listing~\ref{fig:m
 	\label{fig:monomorphic_specialization_build_rs}
 \end{figure}
 
-With this simple example, we have shown how to use the tool to define a specialized implementation of a trait method for a specific type.
+With this simple example, we have shown how to use \mytool{} to define a specialized implementation of a trait method for a specific type.
 In the next chapters, we will explore more complex scenarios, including multiple specializations, constraints on generic parameters and how the tool handles these cases internally.
