@@ -2,10 +2,10 @@ struct S;
 trait Trait<T, U, V> {
     fn f(&self, t: T, u: U) -> V;
 }
-trait TraitFn<'b, V> {
+trait Trait_fn<'b, V> {
     fn f(&self, t: &'b str, u: for<'a> fn(&'b str, &'a i32) -> V) -> V;
 }
-impl<'b, V> TraitFn<'b, V> for S {
+impl<'b, V> Trait_fn<'b, V> for S {
     fn f(&self, t: &'b str, u: for<'a> fn(&'b str, &'a i32) -> V) -> V {
         u(t, &7)
     }
@@ -13,5 +13,5 @@ impl<'b, V> TraitFn<'b, V> for S {
 fn main() {
     let s = S;
     let lambda = |a: &str, b: &i32| a.len() as u32 + *b as u32;
-    let res: u32 = <S as TraitFn<_>>::f(&s, "abc", lambda); // returns 10
+    let res: u32 = <S as Trait_fn<_>>::f(&s, "abc", lambda); // returns 10
 }
