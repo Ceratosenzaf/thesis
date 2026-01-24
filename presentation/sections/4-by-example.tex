@@ -11,6 +11,12 @@
 	\begin{overprint}
 		\onslide<1>
 		\begin{figure}[h!]
+			\sliderust*[0.98\linewidth]{motivational-example.rs}
+		\end{figure}
+		% As we said earlier, we have a trait that we want to implement for any type T, with a specialized implementation for type i32.
+
+		\onslide<2>
+		\begin{figure}[h!]
 			\sliderust*[0.98\linewidth]{motivational-example-solution.rs}
 		\end{figure}
 		% As we can see, the changes are minimal and mostly involve adding the necessary annotations to support the new functionality.
@@ -18,7 +24,7 @@
 		% The spec! macro requires to specify all the types of the items involved in the method call, but we'll discuss why this is necessary later.
 		% The #when macro is used to specify the conditions under which this implementation is valid.
 
-		\onslide<2>
+		\onslide<3>
 		\begin{figure}[h!]
 			\sliderust*[0.98\linewidth]{motivational-example-solution-expanded.rs}
 		\end{figure}
