@@ -13,7 +13,7 @@
 		\end{itemize}
 		 &
 		\begin{itemize}
-			\item \alert{Zero runtime overhead} % no vtables, no dynamic dispatch, because everything is monomorphized at compile time
+			\item \alert{Monomorphization} % no vtables, no dynamic dispatch, because everything is monomorphized at compile time
 			\item Powerful API % predicates support (all, any, not) and support for most common use cases
 		\end{itemize}
 	\end{tabular}
@@ -22,8 +22,8 @@
 	\smallskip
 
 	To do this, we use two macros:
-	\texttt{\#when} % which is an attribute macro applied to the specialized implementations to specify their applicability conditions
-	and \texttt{spec!}. % which is a function-like macro wraps the method calls to resolve them at compile time
+	\texttt{when} % which is an attribute macro applied to the specialized implementations to specify their applicability conditions
+	and \texttt{spec}. % which is a function-like macro wraps the method calls to resolve them at compile time
 
 	\pause
 	\bigskip
