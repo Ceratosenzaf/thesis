@@ -11,14 +11,14 @@
 	any function definition.
 
 	\bigskip
-	\pause
+	% \pause
 
 	For each one, we created a custom \alert{AST} % Abstract Syntax Tree
 	and using heuristics, we grouped functions that could be mutually specializable. % specializable with each other
 	% For example, two functions with similar names that work on similar number of arguments
 
 	\bigskip
-	\pause
+	% \pause
 
 	We then calculated the \alert{tree edit distance} % between each pair of ASTs
 	using the ZSS algorithm % Zhang-Shasha from 1989, which calculates the minimum number of edit operations required to transform one tree into another
@@ -39,7 +39,7 @@
 	with a similarity threshold of \alert{90\%} and \alert{99\%} respectively.
 
 	\bigskip
-	\pause
+	% \pause
 
 	\begin{center}
 		\begin{columns}[c]
@@ -51,7 +51,7 @@
 
 			\column{0.05\textwidth}
 
-			\pause
+			% \pause
 
 			\column{0.3\textwidth}
 			\includegraphics[width=\linewidth]{figs/specializable_functions_bar_chart.pdf}

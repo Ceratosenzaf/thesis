@@ -57,7 +57,7 @@
 	\end{tabular}
 	% These predicates can be combined to form complex conditions that must be met for the implementation to be valid.
 
-	\pause
+	% \pause
 	\bigskip
 
 	We also support the following implementations forms:
@@ -79,20 +79,20 @@
 	Lifetimes % which are the scope for which a reference is valid
 	are one of the main reasons native specialization is still unstable. % this is because at code generation time, the lifetimes have already been erased, so we cannot reason about them
 
-	\pause
+	% \pause
 	\bigskip
 
 	Lifetimes bounds can be implicit or explicit. % making them harder to detect
 	% For example, one of the initially proposed solutions was to forbid specialization based on lifetimes, but since lifetimes bounds can be implicit, to be safe they ended up forbidding specialization in many cases, even when it would have been safe to use.
 
-	\pause
+	% \pause
 	\bigskip
 
 	% There have been long discussions on how to properly handle lifetimes in the context of specialization.
 	In our belief, this is an \alert{architectural limitation} of the compiler that can be overcome with proper re-design.
 	% This has already been brought up, but was never properly addressed because believed to be too costly to fix.
 
-	\pause
+	% \pause
 	\bigskip
 
 	Our proposal treats lifetimes as first-class citizens:
@@ -120,15 +120,15 @@
 	% This is particularly useful in scenarios where we want to express that a function can accept references with any lifetime.
 	Our macro system also supports Higher-Ranked Polymorphism.
 
-	\pause
+	% \pause
 
 	\begin{overprint}
-		\onslide<2>
+		\onslide<1>
 		\begin{figure}[h!]
 			\sliderust*[0.98\linewidth]{example-higher-ranked-pre.rs}
 		\end{figure}
 
-		\onslide<3>
+		\onslide<2>
 		\begin{figure}[h!]
 			\sliderust*[0.98\linewidth]{example-higher-ranked-post.rs}
 		\end{figure}
