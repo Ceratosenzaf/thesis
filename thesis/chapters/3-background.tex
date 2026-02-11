@@ -160,15 +160,15 @@ Rust approaches metaprogramming through a powerful and expressive macro system d
 Rust distinguishes between two primary categories: \textit{declarative macros} and \textit{procedural macros}.
 
 \paragraph{Declarative Macros}
-Declarative macros (defined using \inlinerust{macro_rules!}) operate using pattern matching over token streams, allowing developers to define custom syntactic constructs that expand into valid Rust code.
+Declarative macros (defined using \texttt{macro\_rules!}) operate using pattern matching over token streams, allowing developers to define custom syntactic constructs that expand into valid Rust code.
 While reminiscent of Lisp macros in spirit, Rust's declarative macros enforce \textit{hygiene}~\cite{HygienicMacros92,Kohlbecker1986HygienicME,Clinger2020HygienicMT}: macro-generated identifiers cannot inadvertently capture variables or introduce unintended bindings.
 This prevents entire classes of errors common in textual or non-hygienic macro systems.
 
 \paragraph{Procedural Macros}
-Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,CloneDetection98}) through the \inlinerust{proc_macro} API.
+Procedural macros provide direct access to the compiler's abstract syntax tree (AST~\cite{Aho06,CloneDetection98}) through the \texttt{proc\_macro} API.
 These macros behave as compiler plugins that transform annotated code items at compile time.
 Three major forms exist: \textit{function-like procedural macros}, \textit{attribute macros} and \textit{derive macros}.
-The latter are widely used to automatically implement traits such as \inlinerust{Clone}, \inlinerust{Debug} or \inlinerust{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic declarative APIs.
+The latter are widely used to automatically implement traits such as \texttt{Clone}, \texttt{Debug} or \texttt{Serialize}, significantly reducing repetitive boilerplate and enabling library authors to design ergonomic declarative APIs.
 Attribute macros allow developers to attach custom semantics or transformations to items, facilitating the creation of embedded domain-specific languages (DSLs) and compile-time validation tools; the \inlinerust{#[when(...)]} attribute macro introduced in this thesis is an example of such usage.
 Function-like procedural macros (e.g. the \inlinerust{spec!} macro) enable arbitrary code generation based on input token streams, allowing for complex compile-time computations and code synthesis.
 Because procedural macros operate on structured syntax trees instead of raw text, they can enforce well-formedness and preserve strong static guarantees during expansion.

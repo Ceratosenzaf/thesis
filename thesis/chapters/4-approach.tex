@@ -78,7 +78,7 @@ Some particular cases could also be completely flattened during normalization, e
 Whenever possible, the conditions are evaluated at compile time and the generic parameters are replaced or constrained accordingly in all occurrences.
 For example: if we have a type equality condition, the generic parameter is replaced with the specific type in all its occurrencies; if we have a trait implementation condition, the generic parameter is constrained to implement the specified trait(s).
 Given that all the conditions are normalized, the macro expansion can be greatly optimized, allowing for efficient resolution of the conditions at compile time.
-Each disjunct condition is expanded into its own \inlinerust{trait} and \inlinerust{impl} couple, where the new trait's name is originated by appending the conditions hash to the original trait name.
+Each disjunct condition is expanded into its own \texttt{trait} and \texttt{impl} couple, where the new trait's name is originated by appending the conditions hash to the original trait name.
 This is the reason why we previously defined this approach \textit{monomorphic specialization}.
 For ease of read, in this thesis we will give each specialized trait a name that represents the underlying conditions, instead of the actual names the tool would output.
 An example of this expansion is the "Specialized implementation for MyI8 or \&u8" shown in Listings~\ref{fig:conditions-definition-pre} and~\ref{fig:conditions-definition-post}, which we'll see in the following paragraph.
