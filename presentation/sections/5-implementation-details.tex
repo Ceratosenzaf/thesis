@@ -13,6 +13,7 @@
 	{\footnotesize\inlinerust{all(all(T = Vec<U>), any(U = i32, U = f64))} $\rightarrow$ \inlinerust{any(T = Vec<i32>, T = Vec<f64>)}}
 
 	\bigskip
+	\bigskip
 	% \pause
 
 	A \alert{partial order} defined over the predicates is used to determine the specificity of each implementation, e.g.:
@@ -20,7 +21,19 @@
 	\smallskip
 
 	{\footnotesize\inlinerust{T = &i32} $>$ \inlinerust{T = &_} $>$ \inlinerust{T: Copy}}
+\end{frame}
 
+
+\begin{frame}{\secname}
+	\framesubtitle{Handling Conditional Implementations}
+
+	Due to the lack of reflection, some \alert{annotations} are required to guide the monomorphization process, e.g.:
+
+	\smallskip
+
+	{\footnotesize\inlinerust{spec!{ x.f(y); TyX; [TyY]; TyX: Tr1 + Tr2 }}}
+
+	\bigskip
 	\bigskip
 	% \pause
 
