@@ -1,0 +1,52 @@
+\section{Conclusions}\label{sec:conclusions}
+
+% --------------------- Sub Section 1 ---------------------
+
+\begin{frame}{\secname}
+	\framesubtitle{Wrapping up}
+
+	Our macros bring \alert{stable specialization} to Rust, enabling more efficient code and improving readability and maintainability.
+
+	\bigskip
+
+	We are also the only approach to support specialization based on \alert{trait bounds}, \alert{lifetime bounds} and \alert{negative bounds}.
+
+	\bigskip
+
+	As an extension, we also support \alert{overloading}, a feature not natively available in Rust. % as it's seen as an extension of specialization
+
+	\bigskip
+
+	All of this works without compiler modifications, preserving \alert{soundness} and ensuring easy adoption by the Rust community.
+
+\end{frame}
+
+% --------------------- Sub Section 2 ---------------------
+
+\begin{frame}{\secname}
+	\framesubtitle{Final notes}
+
+	\Large Interesting results:
+	\normalsize
+	\begin{itemize}
+		\item We've written an article (\alert{Meta-Monomorphizing Specializations}), submitted to \alert{ECOOP}.
+	\end{itemize}
+
+	\bigskip
+
+	\Large Interesting twist:
+	\normalsize
+	\begin{itemize}
+		\item The approach can also be applied to other \alert{languages} % with powerful metaprogramming capabilities, needed to implement the macros
+		      \\or even directly into the \alert{compiler}. % since the compiler already has all the necessary information during the compilation process and can simply replicate the macro's behavior natively
+	\end{itemize}
+
+\end{frame}
+
+% --------------------- Sub Section 3 ---------------------
+
+\begin{frame}
+	\begin{center}
+		\huge Thanks for your attention!
+	\end{center}
+\end{frame}

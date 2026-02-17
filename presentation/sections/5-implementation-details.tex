@@ -3,7 +3,7 @@
 \begin{frame}{\secname}
 	\framesubtitle{Handling Conditional Implementations}
 
-	Conditions defined in the \inlinerust{when} macro are normalized into \alert{DNF}, % Disjunctive Normal Form (disjunction of conjunctions)
+	Conditions defined in the \inlinerust{when} macro are canonized into \alert{DNF}, % Disjunctive Normal Form (disjunction of conjunctions)
 	flattening when possible, e.g.:
 	% Once we have the dnf conditions, each disjunct condition is treated as a separate implementation
 	% This allows to handle each disjunction independently during method resolution
