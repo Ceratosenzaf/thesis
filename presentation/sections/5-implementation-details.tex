@@ -16,11 +16,11 @@
 	\bigskip
 	% \pause
 
-	A \alert{partial order} defined over the predicates is used to determine the specificity of each implementation, e.g.:
+	A \alert{partial order} defined over the predicates is used to determine the specificity of each implementation (defined as a relaxation of the lattice-based approach), e.g.:
 
 	\smallskip
 
-	{\footnotesize\inlinerust{T = &i32} $>$ \inlinerust{T = &_} $>$ \inlinerust{T: Copy}}
+	{\footnotesize\inlinerust{T = &i32} $>$ \inlinerust{T: Clone} $||$ \inlinerust{T: Copy}}
 \end{frame}
 
 
