@@ -17,7 +17,7 @@
 
 	\bigskip
 
-	All of this works without compiler modifications, preserving \alert{soundness} and ensuring easy adoption by the Rust community.
+	All of this works without compiler modifications, preserving \alert{soundness} and ensuring easy adoption by the community.
 
 \end{frame}
 
@@ -26,19 +26,19 @@
 \begin{frame}{\secname}
 	\framesubtitle{Final notes}
 
-	\Large Interesting results:
+	\Large Interesting twist:
 	\normalsize
 	\begin{itemize}
-		\item We've written an article (\alert{Meta-Monomorphizing Specializations}), submitted to \alert{ECOOP}.
+		\item The approach can be applied to other \alert{languages} with similar features and capabilities % with powerful metaprogramming capabilities, needed to implement the macros
+		      or even directly into the \alert{compiler}. % since the compiler already has all the necessary information during the compilation process and can simply replicate the macro's behavior natively
 	\end{itemize}
 
 	\bigskip
 
-	\Large Interesting twist:
+	\Large Interesting results:
 	\normalsize
 	\begin{itemize}
-		\item The approach can also be applied to other \alert{languages} % with powerful metaprogramming capabilities, needed to implement the macros
-		      \\or even directly into the \alert{compiler}. % since the compiler already has all the necessary information during the compilation process and can simply replicate the macro's behavior natively
+		\item We've written an article (\alert{Meta-Monomorphizing Specializations}), submitted to \alert{ECOOP}.
 	\end{itemize}
 
 \end{frame}
